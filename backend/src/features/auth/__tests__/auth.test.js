@@ -91,6 +91,14 @@ describe('POST /api/auth/send-otp', () => {
     expect(res.status).toBe(400);
     expect(res.body.success).toBe(false);
   });
+
+  it('normalizes mixed-case email before storing OTP', async () => {
+    const res = await request(app).post('/api/auth/send-otp').send({ email: 'Case.User@Test.COM ' });
+    expect(res.status).toBe(200);
+    const user = await User.findOne({ email: 'case.user@test.com' });
+    expect(user).toBeTruthy();
+    expect(user.otp).toBeTruthy();
+  });
 });
 
 describe('POST /api/auth/verify-otp', () => {
@@ -129,6 +137,21 @@ describe('POST /api/auth/verify-otp', () => {
     const res = await request(app).post('/api/auth/verify-otp').send({ email: 'expired@test.com', otp: '222222' });
     expect(res.status).toBe(400);
     expect(res.body.code).toBe('OTP_EXPIRED');
+  });
+
+  it('accepts mixed-case email for OTP verification lookup', async () => {
+    const user = await User.create({
+      email: 'normalize@test.com',
+      otp: await hashOtp('121212'),
+      otpExpiry: new Date(Date.now() + 5 * 60 * 1000),
+    });
+
+    const res = await request(app)
+      .post('/api/auth/verify-otp')
+      .send({ email: ' Normalize@Test.COM ', otp: '121212' });
+
+    expect(res.status).toBe(200);
+    expect(res.body.userId.toString()).toBe(user._id.toString());
   });
 });
 

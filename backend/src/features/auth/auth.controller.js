@@ -64,7 +64,7 @@ const sendOtp = async (req, res, next) => {
       });
     }
 
-    const { email } = req.body;
+    const email = req.body.email.trim().toLowerCase();
     let user = await User.findOne({ email });
     if (!user) user = new User({ email });
 
@@ -92,7 +92,8 @@ const verifyOtpHandler = async (req, res, next) => {
       });
     }
 
-    const { email, otp } = req.body;
+    const email = req.body.email.trim().toLowerCase();
+    const { otp } = req.body;
     const user = await User.findOne({ email }).select('+refreshTokens');
 
     if (!user || !user.otp) {

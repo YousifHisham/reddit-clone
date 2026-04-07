@@ -27,7 +27,7 @@ const otpLimiter = rateLimit({
 router.post(
   '/send-otp',
   otpLimiter,
-  [body('email').isEmail().withMessage('Valid email required')],
+  [body('email').trim().normalizeEmail().isEmail().withMessage('Valid email required')],
   sendOtp
 );
 
@@ -35,7 +35,7 @@ router.post(
   '/verify-otp',
   otpLimiter,
   [
-    body('email').isEmail().withMessage('Valid email required'),
+    body('email').trim().normalizeEmail().isEmail().withMessage('Valid email required'),
     body('otp').isLength({ min: 6, max: 6 }).withMessage('OTP must be 6 digits'),
   ],
   verifyOtpHandler
