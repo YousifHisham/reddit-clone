@@ -221,6 +221,22 @@ describe('POST /api/auth/complete-profile', () => {
     expect(res.status).toBe(400);
     expect(res.body.code).toBe('USERNAME_TAKEN');
   });
+
+  it('returns 400 and does not update when username fails validation', async () => {
+    const user = await User.create({ email: 'invalid-username@test.com', verified: true });
+    const token = createToken(user._id);
+
+    const res = await request(app)
+      .post('/api/auth/complete-profile')
+      .set('Authorization', `Bearer ${token}`)
+      .send({ username: 'ab', gender: 'male', interests: [], tags: [] });
+
+    expect(res.status).toBe(400);
+    expect(res.body.code).toBe('VALIDATION_ERROR');
+
+    const unchanged = await User.findById(user._id);
+    expect(unchanged.username).toBeUndefined();
+  });
 });
 
 describe('GET /api/auth/me', () => {

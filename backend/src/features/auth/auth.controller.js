@@ -222,6 +222,15 @@ const refreshSession = async (req, res, next) => {
 
 const completeProfile = async (req, res, next) => {
   try {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({
+        success: false,
+        message: errors.array()[0].msg,
+        code: 'VALIDATION_ERROR',
+      });
+    }
+
     const { username, gender, interests, tags } = req.body;
 
     const existing = await User.findOne({ username });
