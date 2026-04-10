@@ -13,7 +13,7 @@ const refreshTokenSchema = new mongoose.Schema(
 
 const userSchema = new mongoose.Schema(
   {
-    username: { type: String, unique: true, sparse: true, trim: true },
+    username: { type: String, unique: true, sparse: true, trim: true, lowercase: true },
     email: { type: String, required: true, unique: true, lowercase: true, trim: true },
     bio: { type: String, default: '' },
     profilePicture: { type: String, default: '' },

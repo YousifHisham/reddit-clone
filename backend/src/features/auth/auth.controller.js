@@ -13,6 +13,7 @@ const {
 const { sendOtpEmail } = require('../../config/email');
 
 const REFRESH_COOKIE_NAME = 'refreshToken';
+const normalizeUsername = (username = '') => username.trim().toLowerCase();
 
 const getRefreshCookieOptions = () => ({
   httpOnly: true,
@@ -232,8 +233,9 @@ const completeProfile = async (req, res, next) => {
     }
 
     const { username, gender, interests, tags } = req.body;
+    const normalizedUsername = normalizeUsername(username);
 
-    const existing = await User.findOne({ username });
+    const existing = await User.exists({ username: normalizedUsername });
     if (existing && existing._id.toString() !== req.user.id) {
       return res.status(400).json({
         success: false,
@@ -244,7 +246,7 @@ const completeProfile = async (req, res, next) => {
 
     const user = await User.findByIdAndUpdate(
       req.user.id,
-      { username, gender, interests: interests || [], tags: tags || [] },
+      { username: normalizedUsername, gender, interests: interests || [], tags: tags || [] },
       { returnDocument: 'after' }
     ).select('-otp -otpExpiry');
 
@@ -296,8 +298,17 @@ const logout = async (req, res, next) => {
 
 const checkUsername = async (req, res, next) => {
   try {
-    const { username } = req.query;
-    const existing = await User.findOne({ username });
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({
+        success: false,
+        message: errors.array()[0].msg,
+        code: 'VALIDATION_ERROR',
+      });
+    }
+
+    const username = normalizeUsername(req.query.username);
+    const existing = await User.exists({ username });
     return res.json({ available: !existing });
   } catch (err) {
     return next(err);

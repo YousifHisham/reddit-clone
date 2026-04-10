@@ -198,7 +198,7 @@ describe('POST /api/auth/complete-profile', () => {
       .post('/api/auth/complete-profile')
       .set('Authorization', `Bearer ${token}`)
       .send({
-        username: 'testuser',
+        username: 'TestUser',
         gender: 'male',
         interests: ['Technology', 'Gaming'],
         tags: ['#python', '#react'],
@@ -217,7 +217,7 @@ describe('POST /api/auth/complete-profile', () => {
     const res = await request(app)
       .post('/api/auth/complete-profile')
       .set('Authorization', `Bearer ${token}`)
-      .send({ username: 'takenuser', gender: '', interests: [], tags: [] });
+      .send({ username: 'TakenUser', gender: '', interests: [], tags: [] });
     expect(res.status).toBe(400);
     expect(res.body.code).toBe('USERNAME_TAKEN');
   });
@@ -300,5 +300,18 @@ describe('GET /api/auth/check-username', () => {
     const res = await request(app).get('/api/auth/check-username?username=takenname');
     expect(res.status).toBe(200);
     expect(res.body.available).toBe(false);
+  });
+
+  it('treats username lookup as case-insensitive', async () => {
+    await User.create({ email: 'taken3@test.com', username: 'mixedcase' });
+    const res = await request(app).get('/api/auth/check-username?username=MixedCase');
+    expect(res.status).toBe(200);
+    expect(res.body.available).toBe(false);
+  });
+
+  it('returns 400 for invalid username length', async () => {
+    const res = await request(app).get('/api/auth/check-username?username=ab');
+    expect(res.status).toBe(400);
+    expect(res.body.code).toBe('VALIDATION_ERROR');
   });
 });

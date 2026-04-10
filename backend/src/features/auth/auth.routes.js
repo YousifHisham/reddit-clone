@@ -1,5 +1,5 @@
 const express = require('express');
-const { body } = require('express-validator');
+const { body, query } = require('express-validator');
 const rateLimit = require('express-rate-limit');
 const { verifyToken } = require('../../middleware/auth.middleware');
 const {
@@ -52,6 +52,10 @@ router.post(
 
 router.get('/me', verifyToken, getMe);
 router.post('/logout', verifyToken, logout);
-router.get('/check-username', checkUsername);
+router.get(
+  '/check-username',
+  [query('username').trim().isLength({ min: 3, max: 20 }).withMessage('Username must be 3-20 characters')],
+  checkUsername
+);
 
 module.exports = router;
