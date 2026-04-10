@@ -1,5 +1,5 @@
 const cloudinary = require('cloudinary').v2;
-const { CloudinaryStorage } = require('multer-storage-cloudinary');
+const cloudinaryStorage = require('multer-storage-cloudinary');
 const multer = require('multer');
 
 cloudinary.config({
@@ -8,29 +8,23 @@ cloudinary.config({
   api_secret: process.env.CLOUDINARY_API_SECRET,
 });
 
-const profileStorage = new CloudinaryStorage({
+const profileStorage = cloudinaryStorage({
   cloudinary,
-  params: {
-    folder: 'reddit-clone/profiles',
-    allowed_formats: ['jpg', 'jpeg', 'png', 'webp'],
-    transformation: [{ width: 256, height: 256, crop: 'fill' }],
-  },
+  folder: 'reddit-clone/profiles',
+  allowedFormats: ['jpg', 'jpeg', 'png', 'webp'],
+  transformation: [{ width: 256, height: 256, crop: 'fill' }],
 });
 
-const postStorage = new CloudinaryStorage({
+const postStorage = cloudinaryStorage({
   cloudinary,
-  params: {
-    folder: 'reddit-clone/posts',
-    allowed_formats: ['jpg', 'jpeg', 'png', 'webp', 'gif', 'mp4', 'webm', 'mov'],
-  },
+  folder: 'reddit-clone/posts',
+  allowedFormats: ['jpg', 'jpeg', 'png', 'webp', 'gif', 'mp4', 'webm', 'mov'],
 });
 
-const communityStorage = new CloudinaryStorage({
+const communityStorage = cloudinaryStorage({
   cloudinary,
-  params: {
-    folder: 'reddit-clone/communities',
-    allowed_formats: ['jpg', 'jpeg', 'png', 'webp'],
-  },
+  folder: 'reddit-clone/communities',
+  allowedFormats: ['jpg', 'jpeg', 'png', 'webp'],
 });
 
 const uploadProfile = multer({ storage: profileStorage });
