@@ -5,6 +5,7 @@ const cookieParser = require('cookie-parser');
 const connectDB = require('./config/db');
 const errorMiddleware = require('./middleware/error.middleware');
 const authRoutes = require('./features/auth/auth.routes');
+const usersRoutes = require('./features/users/users.routes');
 
 const app = express();
 
@@ -13,6 +14,7 @@ app.use(express.json());
 app.use(cookieParser());
 
 app.use('/api/auth', authRoutes);
+app.use('/api/users', usersRoutes);
 
 app.use(errorMiddleware);
 
