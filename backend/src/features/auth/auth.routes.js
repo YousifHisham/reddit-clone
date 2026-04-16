@@ -1,6 +1,5 @@
 const express = require('express');
 const { body, query } = require('express-validator');
-const rateLimit = require('express-rate-limit');
 const { verifyToken } = require('../../middleware/auth.middleware');
 const {
   sendOtp,
@@ -14,26 +13,18 @@ const {
 
 const router = express.Router();
 
-const otpLimiter = rateLimit({
-  windowMs: 15 * 60 * 1000,
-  max: process.env.NODE_ENV === 'production' ? 5 : 1000,
-  message: {
-    success: false,
-    message: 'Too many OTP requests, try again later',
-    code: 'RATE_LIMITED',
-  },
-});
+const otpMiddleware = (_req, _res, next) => next();
 
 router.post(
   '/send-otp',
-  otpLimiter,
+  otpMiddleware,
   [body('email').trim().normalizeEmail().isEmail().withMessage('Valid email required')],
   sendOtp
 );
 
 router.post(
   '/verify-otp',
-  otpLimiter,
+  otpMiddleware,
   [
     body('email').trim().normalizeEmail().isEmail().withMessage('Valid email required'),
     body('otp').isLength({ min: 6, max: 6 }).withMessage('OTP must be 6 digits'),
