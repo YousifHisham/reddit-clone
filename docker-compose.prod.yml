@@ -5,7 +5,7 @@ services:
       target: prod
     ports:
       - "${BACKEND_PORT}:${BACKEND_PORT}"
-    env_file: ./backend/.env
+    env_file: .env
 
   frontend:
     build:
