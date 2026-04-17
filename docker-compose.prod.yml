@@ -4,7 +4,7 @@ services:
       context: ./backend
       target: prod
     ports:
-      - "5000:5000"
+      - "${BACKEND_PORT}:${BACKEND_PORT}"
     env_file: ./backend/.env
 
   frontend:
