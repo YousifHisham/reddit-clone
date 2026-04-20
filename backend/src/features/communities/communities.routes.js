@@ -9,6 +9,7 @@ const {
   joinCommunity,
   leaveCommunity,
 } = require('./communities.controller');
+const { getCommunityPosts } = require('../posts/posts.controller');
 
 const router = express.Router();
 
@@ -42,5 +43,7 @@ router.post(
   [param('id').isMongoId().withMessage('Valid community id required')],
   leaveCommunity
 );
+
+router.get('/:id/posts', getCommunityPosts);
 
 module.exports = router;
