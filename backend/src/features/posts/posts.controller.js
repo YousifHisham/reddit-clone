@@ -1,6 +1,7 @@
 const Post = require('./post.model');
 const Community = require('../communities/community.model');
 const User = require('../auth/auth.model');
+const { cloudinary } = require('../../config/cloudinary');
 
 const createPost = async (req, res, next) => {
   try {
@@ -90,6 +91,10 @@ const deletePost = async (req, res, next) => {
     if (!post) return res.status(404).json({ success: false, message: 'Post not found', code: 'NOT_FOUND' });
     if (post.author.toString() !== req.user.id) {
       return res.status(403).json({ success: false, message: 'Not your post', code: 'FORBIDDEN' });
+    }
+    if (post.image) {
+      const publicId = post.image.split('/').slice(-2).join('/').split('.')[0];
+      await cloudinary.uploader.destroy(publicId);
     }
     await post.deleteOne();
     res.json({ success: true, message: 'Post deleted' });
