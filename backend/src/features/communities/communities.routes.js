@@ -13,9 +13,21 @@ const { getCommunityPosts } = require('../posts/posts.controller');
 
 const router = express.Router();
 
+const optionalAuth = (req, res, next) => {
+  const authHeader = req.headers.authorization;
+  if (authHeader && authHeader.startsWith('Bearer ')) {
+    const jwt = require('jsonwebtoken');
+    try {
+      const decoded = jwt.verify(authHeader.split(' ')[1], process.env.ACCESS_TOKEN_SECRET || process.env.JWT_SECRET);
+      req.user = { id: decoded.id };
+    } catch {}
+  }
+  next();
+};
+
 router.get('/search', [query('q').optional().trim().isLength({ max: 50 })], searchCommunities);
 
-router.get('/', listCommunities);
+router.get('/', optionalAuth, listCommunities);
 
 router.post(
   '/',

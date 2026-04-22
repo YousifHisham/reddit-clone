@@ -28,6 +28,66 @@ export async function verifyOtp(email, otp) {
   return parseResponse(res);
 }
 
+export async function refreshAccessToken() {
+  const res = await fetch(`${BASE}/refresh`, {
+    method: 'POST',
+    credentials: 'include',
+  });
+  const data = await parseResponse(res);
+  if (data.success && data.accessToken) {
+    localStorage.setItem('accessToken', data.accessToken);
+    return data.accessToken;
+  }
+  localStorage.removeItem('accessToken');
+  return null;
+}
+
+export async function fetchWithAuth(url, options = {}) {
+  let token = localStorage.getItem('accessToken');
+
+  // Check if token is expired or about to expire (within 60s)
+  if (token) {
+    try {
+      const payload = JSON.parse(atob(token.split('.')[1]));
+      if (payload.exp * 1000 - Date.now() < 60000) {
+        token = await refreshAccessToken();
+      }
+    } catch {
+      token = await refreshAccessToken();
+    }
+  }
+
+  if (!token) return { success: false, message: 'Not authenticated', code: 'UNAUTHORIZED' };
+
+  const res = await fetch(url, {
+    ...options,
+    credentials: 'include',
+    headers: {
+      'Content-Type': 'application/json',
+      ...options.headers,
+      Authorization: `Bearer ${token}`,
+    },
+  });
+
+  // If still 401, try one more refresh
+  if (res.status === 401) {
+    token = await refreshAccessToken();
+    if (!token) return { success: false, message: 'Session expired. Please log in again.', code: 'UNAUTHORIZED' };
+    const retry = await fetch(url, {
+      ...options,
+      credentials: 'include',
+      headers: {
+        'Content-Type': 'application/json',
+        ...options.headers,
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return parseResponse(retry);
+  }
+
+  return parseResponse(res);
+}
+
 export async function completeProfile(data, token) {
   const res = await fetch(`${BASE}/complete-profile`, {
     method: 'POST',
