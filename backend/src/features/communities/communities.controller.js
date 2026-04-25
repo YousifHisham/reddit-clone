@@ -67,7 +67,12 @@ const getCommunity = async (req, res, next) => {
 
 const listCommunities = async (req, res, next) => {
   try {
-    const communities = await Community.find().sort({ memberCount: -1 }).limit(50);
+    let communities;
+    if (req.query.joined === 'true' && req.user) {
+      communities = await Community.find({ members: req.user.id }).sort({ memberCount: -1 }).limit(50);
+    } else {
+      communities = await Community.find().sort({ memberCount: -1 }).limit(50);
+    }
     return res.json({ success: true, communities });
   } catch (err) {
     return next(err);
