@@ -1,0 +1,15 @@
+services:
+  backend:
+    build:
+      context: ./backend
+      target: prod
+    ports:
+      - "${BACKEND_PORT}:${BACKEND_PORT}"
+    env_file: .env
+
+  frontend:
+    build:
+      context: ./frontend
+      target: prod
+    ports:
+      - "80:80"
