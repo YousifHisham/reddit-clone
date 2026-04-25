@@ -9,7 +9,7 @@
       "source_file": "C:\\Users\\Michael Maged\\Desktop\\ASU\\term 8\\ip\\Project\\reddit-clone\\backend\\jest.config.js",
       "source_location": "L1",
       "id": "c_users_michael_maged_desktop_asu_term_8_ip_project_reddit_clone_backend_jest_config_js",
-      "community": 20,
+      "community": 22,
       "norm_label": "jest.config.js"
     },
     {
@@ -18,7 +18,7 @@
       "source_file": "C:\\Users\\Michael Maged\\Desktop\\ASU\\term 8\\ip\\Project\\reddit-clone\\backend\\src\\server.js",
       "source_location": "L1",
       "id": "c_users_michael_maged_desktop_asu_term_8_ip_project_reddit_clone_backend_src_server_js",
-      "community": 21,
+      "community": 23,
       "norm_label": "server.js"
     },
     {
@@ -27,7 +27,7 @@
       "source_file": "C:\\Users\\Michael Maged\\Desktop\\ASU\\term 8\\ip\\Project\\reddit-clone\\backend\\src\\config\\cloudinary.js",
       "source_location": "L1",
       "id": "c_users_michael_maged_desktop_asu_term_8_ip_project_reddit_clone_backend_src_config_cloudinary_js",
-      "community": 10,
+      "community": 12,
       "norm_label": "cloudinary.js"
     },
     {
@@ -36,7 +36,7 @@
       "source_file": "C:\\Users\\Michael Maged\\Desktop\\ASU\\term 8\\ip\\Project\\reddit-clone\\backend\\src\\config\\cloudinary.js",
       "source_location": "L11",
       "id": "cloudinary_createcloudinarystorage",
-      "community": 10,
+      "community": 12,
       "norm_label": "createcloudinarystorage()"
     },
     {
@@ -45,7 +45,7 @@
       "source_file": "C:\\Users\\Michael Maged\\Desktop\\ASU\\term 8\\ip\\Project\\reddit-clone\\backend\\src\\config\\db.js",
       "source_location": "L1",
       "id": "c_users_michael_maged_desktop_asu_term_8_ip_project_reddit_clone_backend_src_config_db_js",
-      "community": 11,
+      "community": 13,
       "norm_label": "db.js"
     },
     {
@@ -54,7 +54,7 @@
       "source_file": "C:\\Users\\Michael Maged\\Desktop\\ASU\\term 8\\ip\\Project\\reddit-clone\\backend\\src\\config\\db.js",
       "source_location": "L6",
       "id": "db_connectdb",
-      "community": 11,
+      "community": 13,
       "norm_label": "connectdb()"
     },
     {
@@ -63,7 +63,7 @@
       "source_file": "C:\\Users\\Michael Maged\\Desktop\\ASU\\term 8\\ip\\Project\\reddit-clone\\backend\\src\\config\\email.js",
       "source_location": "L1",
       "id": "c_users_michael_maged_desktop_asu_term_8_ip_project_reddit_clone_backend_src_config_email_js",
-      "community": 0,
+      "community": 1,
       "norm_label": "email.js"
     },
     {
@@ -72,7 +72,7 @@
       "source_file": "C:\\Users\\Michael Maged\\Desktop\\ASU\\term 8\\ip\\Project\\reddit-clone\\backend\\src\\config\\email.js",
       "source_location": "L11",
       "id": "email_sendotpemail",
-      "community": 0,
+      "community": 1,
       "norm_label": "sendotpemail()"
     },
     {
@@ -126,7 +126,7 @@
       "source_file": "C:\\Users\\Michael Maged\\Desktop\\ASU\\term 8\\ip\\Project\\reddit-clone\\backend\\src\\features\\auth\\auth.controller.js",
       "source_location": "L57",
       "id": "auth_controller_sendotp",
-      "community": 0,
+      "community": 1,
       "norm_label": "sendotp()"
     },
     {
@@ -189,7 +189,7 @@
       "source_file": "C:\\Users\\Michael Maged\\Desktop\\ASU\\term 8\\ip\\Project\\reddit-clone\\backend\\src\\features\\auth\\auth.model.js",
       "source_location": "L1",
       "id": "c_users_michael_maged_desktop_asu_term_8_ip_project_reddit_clone_backend_src_features_auth_auth_model_js",
-      "community": 22,
+      "community": 24,
       "norm_label": "auth.model.js"
     },
     {
@@ -198,7 +198,7 @@
       "source_file": "C:\\Users\\Michael Maged\\Desktop\\ASU\\term 8\\ip\\Project\\reddit-clone\\backend\\src\\features\\auth\\auth.routes.js",
       "source_location": "L1",
       "id": "c_users_michael_maged_desktop_asu_term_8_ip_project_reddit_clone_backend_src_features_auth_auth_routes_js",
-      "community": 12,
+      "community": 14,
       "norm_label": "auth.routes.js"
     },
     {
@@ -207,7 +207,7 @@
       "source_file": "C:\\Users\\Michael Maged\\Desktop\\ASU\\term 8\\ip\\Project\\reddit-clone\\backend\\src\\features\\auth\\auth.routes.js",
       "source_location": "L16",
       "id": "auth_routes_otpmiddleware",
-      "community": 12,
+      "community": 14,
       "norm_label": "otpmiddleware()"
     },
     {
@@ -216,7 +216,7 @@
       "source_file": "C:\\Users\\Michael Maged\\Desktop\\ASU\\term 8\\ip\\Project\\reddit-clone\\backend\\src\\features\\auth\\auth.utils.js",
       "source_location": "L1",
       "id": "c_users_michael_maged_desktop_asu_term_8_ip_project_reddit_clone_backend_src_features_auth_auth_utils_js",
-      "community": 0,
+      "community": 1,
       "norm_label": "auth.utils.js"
     },
     {
@@ -225,7 +225,7 @@
       "source_file": "C:\\Users\\Michael Maged\\Desktop\\ASU\\term 8\\ip\\Project\\reddit-clone\\backend\\src\\features\\auth\\auth.utils.js",
       "source_location": "L5",
       "id": "auth_utils_generateotp",
-      "community": 0,
+      "community": 1,
       "norm_label": "generateotp()"
     },
     {
@@ -234,7 +234,7 @@
       "source_file": "C:\\Users\\Michael Maged\\Desktop\\ASU\\term 8\\ip\\Project\\reddit-clone\\backend\\src\\features\\auth\\auth.utils.js",
       "source_location": "L9",
       "id": "auth_utils_hashotp",
-      "community": 0,
+      "community": 1,
       "norm_label": "hashotp()"
     },
     {
@@ -243,7 +243,7 @@
       "source_file": "C:\\Users\\Michael Maged\\Desktop\\ASU\\term 8\\ip\\Project\\reddit-clone\\backend\\src\\features\\auth\\auth.utils.js",
       "source_location": "L13",
       "id": "auth_utils_verifyotp",
-      "community": 0,
+      "community": 1,
       "norm_label": "verifyotp()"
     },
     {
@@ -252,7 +252,7 @@
       "source_file": "C:\\Users\\Michael Maged\\Desktop\\ASU\\term 8\\ip\\Project\\reddit-clone\\backend\\src\\features\\auth\\auth.utils.js",
       "source_location": "L17",
       "id": "auth_utils_durationtoms",
-      "community": 0,
+      "community": 1,
       "norm_label": "durationtoms()"
     },
     {
@@ -261,7 +261,7 @@
       "source_file": "C:\\Users\\Michael Maged\\Desktop\\ASU\\term 8\\ip\\Project\\reddit-clone\\backend\\src\\features\\auth\\auth.utils.js",
       "source_location": "L36",
       "id": "auth_utils_getaccesssecret",
-      "community": 0,
+      "community": 1,
       "norm_label": "getaccesssecret()"
     },
     {
@@ -270,7 +270,7 @@
       "source_file": "C:\\Users\\Michael Maged\\Desktop\\ASU\\term 8\\ip\\Project\\reddit-clone\\backend\\src\\features\\auth\\auth.utils.js",
       "source_location": "L37",
       "id": "auth_utils_getrefreshsecret",
-      "community": 0,
+      "community": 1,
       "norm_label": "getrefreshsecret()"
     },
     {
@@ -279,7 +279,7 @@
       "source_file": "C:\\Users\\Michael Maged\\Desktop\\ASU\\term 8\\ip\\Project\\reddit-clone\\backend\\src\\features\\auth\\auth.utils.js",
       "source_location": "L39",
       "id": "auth_utils_createaccesstoken",
-      "community": 0,
+      "community": 1,
       "norm_label": "createaccesstoken()"
     },
     {
@@ -288,7 +288,7 @@
       "source_file": "C:\\Users\\Michael Maged\\Desktop\\ASU\\term 8\\ip\\Project\\reddit-clone\\backend\\src\\features\\auth\\auth.utils.js",
       "source_location": "L45",
       "id": "auth_utils_createrefreshtoken",
-      "community": 0,
+      "community": 1,
       "norm_label": "createrefreshtoken()"
     },
     {
@@ -297,7 +297,7 @@
       "source_file": "C:\\Users\\Michael Maged\\Desktop\\ASU\\term 8\\ip\\Project\\reddit-clone\\backend\\src\\features\\auth\\auth.utils.js",
       "source_location": "L55",
       "id": "auth_utils_verifyaccesstoken",
-      "community": 0,
+      "community": 1,
       "norm_label": "verifyaccesstoken()"
     },
     {
@@ -306,7 +306,7 @@
       "source_file": "C:\\Users\\Michael Maged\\Desktop\\ASU\\term 8\\ip\\Project\\reddit-clone\\backend\\src\\features\\auth\\auth.utils.js",
       "source_location": "L56",
       "id": "auth_utils_verifyrefreshtoken",
-      "community": 0,
+      "community": 1,
       "norm_label": "verifyrefreshtoken()"
     },
     {
@@ -324,7 +324,7 @@
       "source_file": "C:\\Users\\Michael Maged\\Desktop\\ASU\\term 8\\ip\\Project\\reddit-clone\\backend\\src\\features\\auth\\__tests__\\auth.test.js",
       "source_location": "L1",
       "id": "c_users_michael_maged_desktop_asu_term_8_ip_project_reddit_clone_backend_src_features_auth_tests_auth_test_js",
-      "community": 13,
+      "community": 15,
       "norm_label": "auth.test.js"
     },
     {
@@ -333,7 +333,7 @@
       "source_file": "C:\\Users\\Michael Maged\\Desktop\\ASU\\term 8\\ip\\Project\\reddit-clone\\backend\\src\\features\\auth\\__tests__\\auth.test.js",
       "source_location": "L13",
       "id": "auth_test_getrefreshcookie",
-      "community": 13,
+      "community": 15,
       "norm_label": "getrefreshcookie()"
     },
     {
@@ -349,7 +349,7 @@
       "label": "escapeRegex()",
       "file_type": "code",
       "source_file": "C:\\Users\\Michael Maged\\Desktop\\ASU\\term 8\\ip\\Project\\reddit-clone\\backend\\src\\features\\communities\\communities.controller.js",
-      "source_location": "L4",
+      "source_location": "L5",
       "id": "communities_controller_escaperegex",
       "community": 4,
       "norm_label": "escaperegex()"
@@ -358,7 +358,7 @@
       "label": "validationError()",
       "file_type": "code",
       "source_file": "C:\\Users\\Michael Maged\\Desktop\\ASU\\term 8\\ip\\Project\\reddit-clone\\backend\\src\\features\\communities\\communities.controller.js",
-      "source_location": "L6",
+      "source_location": "L7",
       "id": "communities_controller_validationerror",
       "community": 4,
       "norm_label": "validationerror()"
@@ -367,7 +367,7 @@
       "label": "createCommunity()",
       "file_type": "code",
       "source_file": "C:\\Users\\Michael Maged\\Desktop\\ASU\\term 8\\ip\\Project\\reddit-clone\\backend\\src\\features\\communities\\communities.controller.js",
-      "source_location": "L16",
+      "source_location": "L17",
       "id": "communities_controller_createcommunity",
       "community": 4,
       "norm_label": "createcommunity()"
@@ -376,7 +376,7 @@
       "label": "getCommunity()",
       "file_type": "code",
       "source_file": "C:\\Users\\Michael Maged\\Desktop\\ASU\\term 8\\ip\\Project\\reddit-clone\\backend\\src\\features\\communities\\communities.controller.js",
-      "source_location": "L48",
+      "source_location": "L49",
       "id": "communities_controller_getcommunity",
       "community": 4,
       "norm_label": "getcommunity()"
@@ -385,7 +385,7 @@
       "label": "listCommunities()",
       "file_type": "code",
       "source_file": "C:\\Users\\Michael Maged\\Desktop\\ASU\\term 8\\ip\\Project\\reddit-clone\\backend\\src\\features\\communities\\communities.controller.js",
-      "source_location": "L68",
+      "source_location": "L69",
       "id": "communities_controller_listcommunities",
       "community": 4,
       "norm_label": "listcommunities()"
@@ -394,7 +394,7 @@
       "label": "searchCommunities()",
       "file_type": "code",
       "source_file": "C:\\Users\\Michael Maged\\Desktop\\ASU\\term 8\\ip\\Project\\reddit-clone\\backend\\src\\features\\communities\\communities.controller.js",
-      "source_location": "L82",
+      "source_location": "L83",
       "id": "communities_controller_searchcommunities",
       "community": 4,
       "norm_label": "searchcommunities()"
@@ -403,7 +403,7 @@
       "label": "joinCommunity()",
       "file_type": "code",
       "source_file": "C:\\Users\\Michael Maged\\Desktop\\ASU\\term 8\\ip\\Project\\reddit-clone\\backend\\src\\features\\communities\\communities.controller.js",
-      "source_location": "L101",
+      "source_location": "L102",
       "id": "communities_controller_joincommunity",
       "community": 4,
       "norm_label": "joincommunity()"
@@ -412,7 +412,7 @@
       "label": "leaveCommunity()",
       "file_type": "code",
       "source_file": "C:\\Users\\Michael Maged\\Desktop\\ASU\\term 8\\ip\\Project\\reddit-clone\\backend\\src\\features\\communities\\communities.controller.js",
-      "source_location": "L134",
+      "source_location": "L137",
       "id": "communities_controller_leavecommunity",
       "community": 4,
       "norm_label": "leavecommunity()"
@@ -423,7 +423,7 @@
       "source_file": "C:\\Users\\Michael Maged\\Desktop\\ASU\\term 8\\ip\\Project\\reddit-clone\\backend\\src\\features\\communities\\communities.routes.js",
       "source_location": "L1",
       "id": "c_users_michael_maged_desktop_asu_term_8_ip_project_reddit_clone_backend_src_features_communities_communities_routes_js",
-      "community": 14,
+      "community": 16,
       "norm_label": "communities.routes.js"
     },
     {
@@ -432,7 +432,7 @@
       "source_file": "C:\\Users\\Michael Maged\\Desktop\\ASU\\term 8\\ip\\Project\\reddit-clone\\backend\\src\\features\\communities\\communities.routes.js",
       "source_location": "L16",
       "id": "communities_routes_optionalauth",
-      "community": 14,
+      "community": 16,
       "norm_label": "optionalauth()"
     },
     {
@@ -441,7 +441,7 @@
       "source_file": "C:\\Users\\Michael Maged\\Desktop\\ASU\\term 8\\ip\\Project\\reddit-clone\\backend\\src\\features\\communities\\community.model.js",
       "source_location": "L1",
       "id": "c_users_michael_maged_desktop_asu_term_8_ip_project_reddit_clone_backend_src_features_communities_community_model_js",
-      "community": 23,
+      "community": 25,
       "norm_label": "community.model.js"
     },
     {
@@ -450,8 +450,116 @@
       "source_file": "C:\\Users\\Michael Maged\\Desktop\\ASU\\term 8\\ip\\Project\\reddit-clone\\backend\\src\\features\\communities\\__tests__\\communities.test.js",
       "source_location": "L1",
       "id": "c_users_michael_maged_desktop_asu_term_8_ip_project_reddit_clone_backend_src_features_communities_tests_communities_test_js",
-      "community": 24,
+      "community": 26,
       "norm_label": "communities.test.js"
+    },
+    {
+      "label": "message.model.js",
+      "file_type": "code",
+      "source_file": "C:\\Users\\Michael Maged\\Desktop\\ASU\\term 8\\ip\\Project\\reddit-clone\\backend\\src\\features\\messages\\message.model.js",
+      "source_location": "L1",
+      "id": "c_users_michael_maged_desktop_asu_term_8_ip_project_reddit_clone_backend_src_features_messages_message_model_js",
+      "community": 27,
+      "norm_label": "message.model.js"
+    },
+    {
+      "label": "messages.controller.js",
+      "file_type": "code",
+      "source_file": "C:\\Users\\Michael Maged\\Desktop\\ASU\\term 8\\ip\\Project\\reddit-clone\\backend\\src\\features\\messages\\messages.controller.js",
+      "source_location": "L1",
+      "id": "c_users_michael_maged_desktop_asu_term_8_ip_project_reddit_clone_backend_src_features_messages_messages_controller_js",
+      "community": 9,
+      "norm_label": "messages.controller.js"
+    },
+    {
+      "label": "getThreads()",
+      "file_type": "code",
+      "source_file": "C:\\Users\\Michael Maged\\Desktop\\ASU\\term 8\\ip\\Project\\reddit-clone\\backend\\src\\features\\messages\\messages.controller.js",
+      "source_location": "L3",
+      "id": "messages_controller_getthreads",
+      "community": 9,
+      "norm_label": "getthreads()"
+    },
+    {
+      "label": "getMessages()",
+      "file_type": "code",
+      "source_file": "C:\\Users\\Michael Maged\\Desktop\\ASU\\term 8\\ip\\Project\\reddit-clone\\backend\\src\\features\\messages\\messages.controller.js",
+      "source_location": "L15",
+      "id": "messages_controller_getmessages",
+      "community": 9,
+      "norm_label": "getmessages()"
+    },
+    {
+      "label": "sendMessage()",
+      "file_type": "code",
+      "source_file": "C:\\Users\\Michael Maged\\Desktop\\ASU\\term 8\\ip\\Project\\reddit-clone\\backend\\src\\features\\messages\\messages.controller.js",
+      "source_location": "L26",
+      "id": "messages_controller_sendmessage",
+      "community": 9,
+      "norm_label": "sendmessage()"
+    },
+    {
+      "label": "markThreadRead()",
+      "file_type": "code",
+      "source_file": "C:\\Users\\Michael Maged\\Desktop\\ASU\\term 8\\ip\\Project\\reddit-clone\\backend\\src\\features\\messages\\messages.controller.js",
+      "source_location": "L60",
+      "id": "messages_controller_markthreadread",
+      "community": 9,
+      "norm_label": "markthreadread()"
+    },
+    {
+      "label": "messages.routes.js",
+      "file_type": "code",
+      "source_file": "C:\\Users\\Michael Maged\\Desktop\\ASU\\term 8\\ip\\Project\\reddit-clone\\backend\\src\\features\\messages\\messages.routes.js",
+      "source_location": "L1",
+      "id": "c_users_michael_maged_desktop_asu_term_8_ip_project_reddit_clone_backend_src_features_messages_messages_routes_js",
+      "community": 28,
+      "norm_label": "messages.routes.js"
+    },
+    {
+      "label": "notification.model.js",
+      "file_type": "code",
+      "source_file": "C:\\Users\\Michael Maged\\Desktop\\ASU\\term 8\\ip\\Project\\reddit-clone\\backend\\src\\features\\notifications\\notification.model.js",
+      "source_location": "L1",
+      "id": "c_users_michael_maged_desktop_asu_term_8_ip_project_reddit_clone_backend_src_features_notifications_notification_model_js",
+      "community": 29,
+      "norm_label": "notification.model.js"
+    },
+    {
+      "label": "notifications.controller.js",
+      "file_type": "code",
+      "source_file": "C:\\Users\\Michael Maged\\Desktop\\ASU\\term 8\\ip\\Project\\reddit-clone\\backend\\src\\features\\notifications\\notifications.controller.js",
+      "source_location": "L1",
+      "id": "c_users_michael_maged_desktop_asu_term_8_ip_project_reddit_clone_backend_src_features_notifications_notifications_controller_js",
+      "community": 10,
+      "norm_label": "notifications.controller.js"
+    },
+    {
+      "label": "getNotifications()",
+      "file_type": "code",
+      "source_file": "C:\\Users\\Michael Maged\\Desktop\\ASU\\term 8\\ip\\Project\\reddit-clone\\backend\\src\\features\\notifications\\notifications.controller.js",
+      "source_location": "L3",
+      "id": "notifications_controller_getnotifications",
+      "community": 10,
+      "norm_label": "getnotifications()"
+    },
+    {
+      "label": "markAllRead()",
+      "file_type": "code",
+      "source_file": "C:\\Users\\Michael Maged\\Desktop\\ASU\\term 8\\ip\\Project\\reddit-clone\\backend\\src\\features\\notifications\\notifications.controller.js",
+      "source_location": "L12",
+      "id": "notifications_controller_markallread",
+      "community": 10,
+      "norm_label": "markallread()"
+    },
+    {
+      "label": "notifications.routes.js",
+      "file_type": "code",
+      "source_file": "C:\\Users\\Michael Maged\\Desktop\\ASU\\term 8\\ip\\Project\\reddit-clone\\backend\\src\\features\\notifications\\notifications.routes.js",
+      "source_location": "L1",
+      "id": "c_users_michael_maged_desktop_asu_term_8_ip_project_reddit_clone_backend_src_features_notifications_notifications_routes_js",
+      "community": 30,
+      "norm_label": "notifications.routes.js"
     },
     {
       "label": "post.model.js",
@@ -459,7 +567,7 @@
       "source_file": "C:\\Users\\Michael Maged\\Desktop\\ASU\\term 8\\ip\\Project\\reddit-clone\\backend\\src\\features\\posts\\post.model.js",
       "source_location": "L1",
       "id": "c_users_michael_maged_desktop_asu_term_8_ip_project_reddit_clone_backend_src_features_posts_post_model_js",
-      "community": 25,
+      "community": 31,
       "norm_label": "post.model.js"
     },
     {
@@ -475,7 +583,7 @@
       "label": "createPost()",
       "file_type": "code",
       "source_file": "C:\\Users\\Michael Maged\\Desktop\\ASU\\term 8\\ip\\Project\\reddit-clone\\backend\\src\\features\\posts\\posts.controller.js",
-      "source_location": "L6",
+      "source_location": "L7",
       "id": "posts_controller_createpost",
       "community": 5,
       "norm_label": "createpost()"
@@ -484,7 +592,7 @@
       "label": "getPost()",
       "file_type": "code",
       "source_file": "C:\\Users\\Michael Maged\\Desktop\\ASU\\term 8\\ip\\Project\\reddit-clone\\backend\\src\\features\\posts\\posts.controller.js",
-      "source_location": "L26",
+      "source_location": "L27",
       "id": "posts_controller_getpost",
       "community": 5,
       "norm_label": "getpost()"
@@ -493,7 +601,7 @@
       "label": "getCommunityPosts()",
       "file_type": "code",
       "source_file": "C:\\Users\\Michael Maged\\Desktop\\ASU\\term 8\\ip\\Project\\reddit-clone\\backend\\src\\features\\posts\\posts.controller.js",
-      "source_location": "L36",
+      "source_location": "L37",
       "id": "posts_controller_getcommunityposts",
       "community": 5,
       "norm_label": "getcommunityposts()"
@@ -502,7 +610,7 @@
       "label": "getFeed()",
       "file_type": "code",
       "source_file": "C:\\Users\\Michael Maged\\Desktop\\ASU\\term 8\\ip\\Project\\reddit-clone\\backend\\src\\features\\posts\\posts.controller.js",
-      "source_location": "L48",
+      "source_location": "L49",
       "id": "posts_controller_getfeed",
       "community": 5,
       "norm_label": "getfeed()"
@@ -511,7 +619,7 @@
       "label": "deletePost()",
       "file_type": "code",
       "source_file": "C:\\Users\\Michael Maged\\Desktop\\ASU\\term 8\\ip\\Project\\reddit-clone\\backend\\src\\features\\posts\\posts.controller.js",
-      "source_location": "L88",
+      "source_location": "L89",
       "id": "posts_controller_deletepost",
       "community": 5,
       "norm_label": "deletepost()"
@@ -520,7 +628,7 @@
       "label": "upvotePost()",
       "file_type": "code",
       "source_file": "C:\\Users\\Michael Maged\\Desktop\\ASU\\term 8\\ip\\Project\\reddit-clone\\backend\\src\\features\\posts\\posts.controller.js",
-      "source_location": "L104",
+      "source_location": "L105",
       "id": "posts_controller_upvotepost",
       "community": 5,
       "norm_label": "upvotepost()"
@@ -529,7 +637,7 @@
       "label": "downvotePost()",
       "file_type": "code",
       "source_file": "C:\\Users\\Michael Maged\\Desktop\\ASU\\term 8\\ip\\Project\\reddit-clone\\backend\\src\\features\\posts\\posts.controller.js",
-      "source_location": "L126",
+      "source_location": "L130",
       "id": "posts_controller_downvotepost",
       "community": 5,
       "norm_label": "downvotepost()"
@@ -540,7 +648,7 @@
       "source_file": "C:\\Users\\Michael Maged\\Desktop\\ASU\\term 8\\ip\\Project\\reddit-clone\\backend\\src\\features\\posts\\posts.routes.js",
       "source_location": "L1",
       "id": "c_users_michael_maged_desktop_asu_term_8_ip_project_reddit_clone_backend_src_features_posts_posts_routes_js",
-      "community": 15,
+      "community": 17,
       "norm_label": "posts.routes.js"
     },
     {
@@ -549,7 +657,7 @@
       "source_file": "C:\\Users\\Michael Maged\\Desktop\\ASU\\term 8\\ip\\Project\\reddit-clone\\backend\\src\\features\\posts\\posts.routes.js",
       "source_location": "L8",
       "id": "posts_routes_optionalauth",
-      "community": 15,
+      "community": 17,
       "norm_label": "optionalauth()"
     },
     {
@@ -558,7 +666,7 @@
       "source_file": "C:\\Users\\Michael Maged\\Desktop\\ASU\\term 8\\ip\\Project\\reddit-clone\\backend\\src\\features\\posts\\__tests__\\posts.test.js",
       "source_location": "L1",
       "id": "c_users_michael_maged_desktop_asu_term_8_ip_project_reddit_clone_backend_src_features_posts_tests_posts_test_js",
-      "community": 26,
+      "community": 32,
       "norm_label": "posts.test.js"
     },
     {
@@ -639,7 +747,7 @@
       "source_file": "C:\\Users\\Michael Maged\\Desktop\\ASU\\term 8\\ip\\Project\\reddit-clone\\backend\\src\\features\\users\\users.routes.js",
       "source_location": "L1",
       "id": "c_users_michael_maged_desktop_asu_term_8_ip_project_reddit_clone_backend_src_features_users_users_routes_js",
-      "community": 27,
+      "community": 33,
       "norm_label": "users.routes.js"
     },
     {
@@ -648,7 +756,7 @@
       "source_file": "C:\\Users\\Michael Maged\\Desktop\\ASU\\term 8\\ip\\Project\\reddit-clone\\backend\\src\\features\\users\\__tests__\\users.test.js",
       "source_location": "L1",
       "id": "c_users_michael_maged_desktop_asu_term_8_ip_project_reddit_clone_backend_src_features_users_tests_users_test_js",
-      "community": 28,
+      "community": 34,
       "norm_label": "users.test.js"
     },
     {
@@ -657,7 +765,7 @@
       "source_file": "C:\\Users\\Michael Maged\\Desktop\\ASU\\term 8\\ip\\Project\\reddit-clone\\backend\\src\\middleware\\auth.middleware.js",
       "source_location": "L1",
       "id": "c_users_michael_maged_desktop_asu_term_8_ip_project_reddit_clone_backend_src_middleware_auth_middleware_js",
-      "community": 0,
+      "community": 1,
       "norm_label": "auth.middleware.js"
     },
     {
@@ -666,7 +774,7 @@
       "source_file": "C:\\Users\\Michael Maged\\Desktop\\ASU\\term 8\\ip\\Project\\reddit-clone\\backend\\src\\middleware\\auth.middleware.js",
       "source_location": "L3",
       "id": "auth_middleware_verifytoken",
-      "community": 0,
+      "community": 1,
       "norm_label": "verifytoken()"
     },
     {
@@ -675,7 +783,7 @@
       "source_file": "C:\\Users\\Michael Maged\\Desktop\\ASU\\term 8\\ip\\Project\\reddit-clone\\backend\\src\\middleware\\error.middleware.js",
       "source_location": "L1",
       "id": "c_users_michael_maged_desktop_asu_term_8_ip_project_reddit_clone_backend_src_middleware_error_middleware_js",
-      "community": 16,
+      "community": 18,
       "norm_label": "error.middleware.js"
     },
     {
@@ -684,7 +792,7 @@
       "source_file": "C:\\Users\\Michael Maged\\Desktop\\ASU\\term 8\\ip\\Project\\reddit-clone\\backend\\src\\middleware\\error.middleware.js",
       "source_location": "L1",
       "id": "error_middleware_errormiddleware",
-      "community": 16,
+      "community": 18,
       "norm_label": "errormiddleware()"
     },
     {
@@ -693,7 +801,7 @@
       "source_file": "C:\\Users\\Michael Maged\\Desktop\\ASU\\term 8\\ip\\Project\\reddit-clone\\frontend\\eslint.config.js",
       "source_location": "L1",
       "id": "c_users_michael_maged_desktop_asu_term_8_ip_project_reddit_clone_frontend_eslint_config_js",
-      "community": 29,
+      "community": 35,
       "norm_label": "eslint.config.js"
     },
     {
@@ -702,7 +810,7 @@
       "source_file": "C:\\Users\\Michael Maged\\Desktop\\ASU\\term 8\\ip\\Project\\reddit-clone\\frontend\\vite.config.js",
       "source_location": "L1",
       "id": "c_users_michael_maged_desktop_asu_term_8_ip_project_reddit_clone_frontend_vite_config_js",
-      "community": 30,
+      "community": 36,
       "norm_label": "vite.config.js"
     },
     {
@@ -711,7 +819,7 @@
       "source_file": "C:\\Users\\Michael Maged\\Desktop\\ASU\\term 8\\ip\\Project\\reddit-clone\\frontend\\src\\App.jsx",
       "source_location": "L1",
       "id": "c_users_michael_maged_desktop_asu_term_8_ip_project_reddit_clone_frontend_src_app_jsx",
-      "community": 9,
+      "community": 11,
       "norm_label": "app.jsx"
     },
     {
@@ -720,7 +828,7 @@
       "source_file": "C:\\Users\\Michael Maged\\Desktop\\ASU\\term 8\\ip\\Project\\reddit-clone\\frontend\\src\\App.jsx",
       "source_location": "L7",
       "id": "app_protectedroute",
-      "community": 9,
+      "community": 11,
       "norm_label": "protectedroute()"
     },
     {
@@ -729,7 +837,7 @@
       "source_file": "C:\\Users\\Michael Maged\\Desktop\\ASU\\term 8\\ip\\Project\\reddit-clone\\frontend\\src\\App.jsx",
       "source_location": "L12",
       "id": "app_app",
-      "community": 9,
+      "community": 11,
       "norm_label": "app()"
     },
     {
@@ -738,7 +846,7 @@
       "source_file": "C:\\Users\\Michael Maged\\Desktop\\ASU\\term 8\\ip\\Project\\reddit-clone\\frontend\\src\\main.jsx",
       "source_location": "L1",
       "id": "c_users_michael_maged_desktop_asu_term_8_ip_project_reddit_clone_frontend_src_main_jsx",
-      "community": 31,
+      "community": 37,
       "norm_label": "main.jsx"
     },
     {
@@ -747,7 +855,7 @@
       "source_file": "C:\\Users\\Michael Maged\\Desktop\\ASU\\term 8\\ip\\Project\\reddit-clone\\frontend\\src\\api\\auth.js",
       "source_location": "L1",
       "id": "c_users_michael_maged_desktop_asu_term_8_ip_project_reddit_clone_frontend_src_api_auth_js",
-      "community": 1,
+      "community": 0,
       "norm_label": "auth.js"
     },
     {
@@ -756,7 +864,7 @@
       "source_file": "C:\\Users\\Michael Maged\\Desktop\\ASU\\term 8\\ip\\Project\\reddit-clone\\frontend\\src\\api\\auth.js",
       "source_location": "L3",
       "id": "auth_parseresponse",
-      "community": 1,
+      "community": 0,
       "norm_label": "parseresponse()"
     },
     {
@@ -765,7 +873,7 @@
       "source_file": "C:\\Users\\Michael Maged\\Desktop\\ASU\\term 8\\ip\\Project\\reddit-clone\\frontend\\src\\api\\auth.js",
       "source_location": "L12",
       "id": "auth_sendotp",
-      "community": 1,
+      "community": 0,
       "norm_label": "sendotp()"
     },
     {
@@ -774,7 +882,7 @@
       "source_file": "C:\\Users\\Michael Maged\\Desktop\\ASU\\term 8\\ip\\Project\\reddit-clone\\frontend\\src\\api\\auth.js",
       "source_location": "L21",
       "id": "auth_verifyotp",
-      "community": 1,
+      "community": 0,
       "norm_label": "verifyotp()"
     },
     {
@@ -783,7 +891,7 @@
       "source_file": "C:\\Users\\Michael Maged\\Desktop\\ASU\\term 8\\ip\\Project\\reddit-clone\\frontend\\src\\api\\auth.js",
       "source_location": "L31",
       "id": "auth_refreshaccesstoken",
-      "community": 1,
+      "community": 0,
       "norm_label": "refreshaccesstoken()"
     },
     {
@@ -792,7 +900,7 @@
       "source_file": "C:\\Users\\Michael Maged\\Desktop\\ASU\\term 8\\ip\\Project\\reddit-clone\\frontend\\src\\api\\auth.js",
       "source_location": "L45",
       "id": "auth_fetchwithauth",
-      "community": 1,
+      "community": 0,
       "norm_label": "fetchwithauth()"
     },
     {
@@ -801,7 +909,7 @@
       "source_file": "C:\\Users\\Michael Maged\\Desktop\\ASU\\term 8\\ip\\Project\\reddit-clone\\frontend\\src\\api\\auth.js",
       "source_location": "L93",
       "id": "auth_getme",
-      "community": 1,
+      "community": 0,
       "norm_label": "getme()"
     },
     {
@@ -810,7 +918,7 @@
       "source_file": "C:\\Users\\Michael Maged\\Desktop\\ASU\\term 8\\ip\\Project\\reddit-clone\\frontend\\src\\api\\auth.js",
       "source_location": "L97",
       "id": "auth_logout",
-      "community": 1,
+      "community": 0,
       "norm_label": "logout()"
     },
     {
@@ -819,7 +927,7 @@
       "source_file": "C:\\Users\\Michael Maged\\Desktop\\ASU\\term 8\\ip\\Project\\reddit-clone\\frontend\\src\\api\\auth.js",
       "source_location": "L101",
       "id": "auth_completeprofile",
-      "community": 1,
+      "community": 0,
       "norm_label": "completeprofile()"
     },
     {
@@ -828,7 +936,7 @@
       "source_file": "C:\\Users\\Michael Maged\\Desktop\\ASU\\term 8\\ip\\Project\\reddit-clone\\frontend\\src\\api\\communities.js",
       "source_location": "L1",
       "id": "c_users_michael_maged_desktop_asu_term_8_ip_project_reddit_clone_frontend_src_api_communities_js",
-      "community": 8,
+      "community": 0,
       "norm_label": "communities.js"
     },
     {
@@ -837,7 +945,7 @@
       "source_file": "C:\\Users\\Michael Maged\\Desktop\\ASU\\term 8\\ip\\Project\\reddit-clone\\frontend\\src\\api\\communities.js",
       "source_location": "L5",
       "id": "communities_parseresponse",
-      "community": 8,
+      "community": 0,
       "norm_label": "parseresponse()"
     },
     {
@@ -846,7 +954,7 @@
       "source_file": "C:\\Users\\Michael Maged\\Desktop\\ASU\\term 8\\ip\\Project\\reddit-clone\\frontend\\src\\api\\communities.js",
       "source_location": "L11",
       "id": "communities_getcommunities",
-      "community": 8,
+      "community": 0,
       "norm_label": "getcommunities()"
     },
     {
@@ -855,7 +963,7 @@
       "source_file": "C:\\Users\\Michael Maged\\Desktop\\ASU\\term 8\\ip\\Project\\reddit-clone\\frontend\\src\\api\\communities.js",
       "source_location": "L16",
       "id": "communities_getjoinedcommunities",
-      "community": 8,
+      "community": 0,
       "norm_label": "getjoinedcommunities()"
     },
     {
@@ -864,7 +972,7 @@
       "source_file": "C:\\Users\\Michael Maged\\Desktop\\ASU\\term 8\\ip\\Project\\reddit-clone\\frontend\\src\\api\\communities.js",
       "source_location": "L23",
       "id": "communities_joincommunity",
-      "community": 8,
+      "community": 0,
       "norm_label": "joincommunity()"
     },
     {
@@ -873,7 +981,7 @@
       "source_file": "C:\\Users\\Michael Maged\\Desktop\\ASU\\term 8\\ip\\Project\\reddit-clone\\frontend\\src\\api\\communities.js",
       "source_location": "L27",
       "id": "communities_leavecommunity",
-      "community": 8,
+      "community": 0,
       "norm_label": "leavecommunity()"
     },
     {
@@ -882,8 +990,89 @@
       "source_file": "C:\\Users\\Michael Maged\\Desktop\\ASU\\term 8\\ip\\Project\\reddit-clone\\frontend\\src\\api\\communities.js",
       "source_location": "L31",
       "id": "communities_createcommunity",
-      "community": 8,
+      "community": 0,
       "norm_label": "createcommunity()"
+    },
+    {
+      "label": "messages.js",
+      "file_type": "code",
+      "source_file": "C:\\Users\\Michael Maged\\Desktop\\ASU\\term 8\\ip\\Project\\reddit-clone\\frontend\\src\\api\\messages.js",
+      "source_location": "L1",
+      "id": "c_users_michael_maged_desktop_asu_term_8_ip_project_reddit_clone_frontend_src_api_messages_js",
+      "community": 0,
+      "norm_label": "messages.js"
+    },
+    {
+      "label": "getThreads()",
+      "file_type": "code",
+      "source_file": "C:\\Users\\Michael Maged\\Desktop\\ASU\\term 8\\ip\\Project\\reddit-clone\\frontend\\src\\api\\messages.js",
+      "source_location": "L5",
+      "id": "messages_getthreads",
+      "community": 0,
+      "norm_label": "getthreads()"
+    },
+    {
+      "label": "getMessages()",
+      "file_type": "code",
+      "source_file": "C:\\Users\\Michael Maged\\Desktop\\ASU\\term 8\\ip\\Project\\reddit-clone\\frontend\\src\\api\\messages.js",
+      "source_location": "L12",
+      "id": "messages_getmessages",
+      "community": 0,
+      "norm_label": "getmessages()"
+    },
+    {
+      "label": "sendMessage()",
+      "file_type": "code",
+      "source_file": "C:\\Users\\Michael Maged\\Desktop\\ASU\\term 8\\ip\\Project\\reddit-clone\\frontend\\src\\api\\messages.js",
+      "source_location": "L16",
+      "id": "messages_sendmessage",
+      "community": 0,
+      "norm_label": "sendmessage()"
+    },
+    {
+      "label": "markThreadRead()",
+      "file_type": "code",
+      "source_file": "C:\\Users\\Michael Maged\\Desktop\\ASU\\term 8\\ip\\Project\\reddit-clone\\frontend\\src\\api\\messages.js",
+      "source_location": "L20",
+      "id": "messages_markthreadread",
+      "community": 0,
+      "norm_label": "markthreadread()"
+    },
+    {
+      "label": "searchUsers()",
+      "file_type": "code",
+      "source_file": "C:\\Users\\Michael Maged\\Desktop\\ASU\\term 8\\ip\\Project\\reddit-clone\\frontend\\src\\api\\messages.js",
+      "source_location": "L24",
+      "id": "messages_searchusers",
+      "community": 0,
+      "norm_label": "searchusers()"
+    },
+    {
+      "label": "notifications.js",
+      "file_type": "code",
+      "source_file": "C:\\Users\\Michael Maged\\Desktop\\ASU\\term 8\\ip\\Project\\reddit-clone\\frontend\\src\\api\\notifications.js",
+      "source_location": "L1",
+      "id": "c_users_michael_maged_desktop_asu_term_8_ip_project_reddit_clone_frontend_src_api_notifications_js",
+      "community": 0,
+      "norm_label": "notifications.js"
+    },
+    {
+      "label": "getNotifications()",
+      "file_type": "code",
+      "source_file": "C:\\Users\\Michael Maged\\Desktop\\ASU\\term 8\\ip\\Project\\reddit-clone\\frontend\\src\\api\\notifications.js",
+      "source_location": "L3",
+      "id": "notifications_getnotifications",
+      "community": 0,
+      "norm_label": "getnotifications()"
+    },
+    {
+      "label": "markNotificationsRead()",
+      "file_type": "code",
+      "source_file": "C:\\Users\\Michael Maged\\Desktop\\ASU\\term 8\\ip\\Project\\reddit-clone\\frontend\\src\\api\\notifications.js",
+      "source_location": "L7",
+      "id": "notifications_marknotificationsread",
+      "community": 0,
+      "norm_label": "marknotificationsread()"
     },
     {
       "label": "posts.js",
@@ -891,7 +1080,7 @@
       "source_file": "C:\\Users\\Michael Maged\\Desktop\\ASU\\term 8\\ip\\Project\\reddit-clone\\frontend\\src\\api\\posts.js",
       "source_location": "L1",
       "id": "c_users_michael_maged_desktop_asu_term_8_ip_project_reddit_clone_frontend_src_api_posts_js",
-      "community": 1,
+      "community": 8,
       "norm_label": "posts.js"
     },
     {
@@ -900,7 +1089,7 @@
       "source_file": "C:\\Users\\Michael Maged\\Desktop\\ASU\\term 8\\ip\\Project\\reddit-clone\\frontend\\src\\api\\posts.js",
       "source_location": "L5",
       "id": "posts_parseresponse",
-      "community": 1,
+      "community": 8,
       "norm_label": "parseresponse()"
     },
     {
@@ -909,7 +1098,7 @@
       "source_file": "C:\\Users\\Michael Maged\\Desktop\\ASU\\term 8\\ip\\Project\\reddit-clone\\frontend\\src\\api\\posts.js",
       "source_location": "L11",
       "id": "posts_getfeed",
-      "community": 1,
+      "community": 8,
       "norm_label": "getfeed()"
     },
     {
@@ -918,7 +1107,7 @@
       "source_file": "C:\\Users\\Michael Maged\\Desktop\\ASU\\term 8\\ip\\Project\\reddit-clone\\frontend\\src\\api\\posts.js",
       "source_location": "L19",
       "id": "posts_createpost",
-      "community": 1,
+      "community": 8,
       "norm_label": "createpost()"
     },
     {
@@ -927,7 +1116,7 @@
       "source_file": "C:\\Users\\Michael Maged\\Desktop\\ASU\\term 8\\ip\\Project\\reddit-clone\\frontend\\src\\api\\posts.js",
       "source_location": "L32",
       "id": "posts_upvotepost",
-      "community": 1,
+      "community": 8,
       "norm_label": "upvotepost()"
     },
     {
@@ -936,7 +1125,7 @@
       "source_file": "C:\\Users\\Michael Maged\\Desktop\\ASU\\term 8\\ip\\Project\\reddit-clone\\frontend\\src\\api\\posts.js",
       "source_location": "L36",
       "id": "posts_downvotepost",
-      "community": 1,
+      "community": 8,
       "norm_label": "downvotepost()"
     },
     {
@@ -945,7 +1134,7 @@
       "source_file": "C:\\Users\\Michael Maged\\Desktop\\ASU\\term 8\\ip\\Project\\reddit-clone\\frontend\\src\\api\\posts.js",
       "source_location": "L40",
       "id": "posts_deletepost",
-      "community": 1,
+      "community": 8,
       "norm_label": "deletepost()"
     },
     {
@@ -1026,7 +1215,7 @@
       "source_file": "C:\\Users\\Michael Maged\\Desktop\\ASU\\term 8\\ip\\Project\\reddit-clone\\frontend\\src\\pages\\EmailPage.jsx",
       "source_location": "L1",
       "id": "c_users_michael_maged_desktop_asu_term_8_ip_project_reddit_clone_frontend_src_pages_emailpage_jsx",
-      "community": 17,
+      "community": 19,
       "norm_label": "emailpage.jsx"
     },
     {
@@ -1035,7 +1224,7 @@
       "source_file": "C:\\Users\\Michael Maged\\Desktop\\ASU\\term 8\\ip\\Project\\reddit-clone\\frontend\\src\\pages\\EmailPage.jsx",
       "source_location": "L5",
       "id": "emailpage_emailpage",
-      "community": 17,
+      "community": 19,
       "norm_label": "emailpage()"
     },
     {
@@ -1051,7 +1240,7 @@
       "label": "Icon()",
       "file_type": "code",
       "source_file": "C:\\Users\\Michael Maged\\Desktop\\ASU\\term 8\\ip\\Project\\reddit-clone\\frontend\\src\\pages\\HomePage.jsx",
-      "source_location": "L8",
+      "source_location": "L10",
       "id": "homepage_icon",
       "community": 3,
       "norm_label": "icon()"
@@ -1060,7 +1249,7 @@
       "label": "RedditLogo()",
       "file_type": "code",
       "source_file": "C:\\Users\\Michael Maged\\Desktop\\ASU\\term 8\\ip\\Project\\reddit-clone\\frontend\\src\\pages\\HomePage.jsx",
-      "source_location": "L14",
+      "source_location": "L16",
       "id": "homepage_redditlogo",
       "community": 3,
       "norm_label": "redditlogo()"
@@ -1069,7 +1258,7 @@
       "label": "timeAgo()",
       "file_type": "code",
       "source_file": "C:\\Users\\Michael Maged\\Desktop\\ASU\\term 8\\ip\\Project\\reddit-clone\\frontend\\src\\pages\\HomePage.jsx",
-      "source_location": "L21",
+      "source_location": "L23",
       "id": "homepage_timeago",
       "community": 3,
       "norm_label": "timeago()"
@@ -1078,7 +1267,7 @@
       "label": "formatScore()",
       "file_type": "code",
       "source_file": "C:\\Users\\Michael Maged\\Desktop\\ASU\\term 8\\ip\\Project\\reddit-clone\\frontend\\src\\pages\\HomePage.jsx",
-      "source_location": "L39",
+      "source_location": "L41",
       "id": "homepage_formatscore",
       "community": 3,
       "norm_label": "formatscore()"
@@ -1087,7 +1276,7 @@
       "label": "PostCard()",
       "file_type": "code",
       "source_file": "C:\\Users\\Michael Maged\\Desktop\\ASU\\term 8\\ip\\Project\\reddit-clone\\frontend\\src\\pages\\HomePage.jsx",
-      "source_location": "L45",
+      "source_location": "L47",
       "id": "homepage_postcard",
       "community": 3,
       "norm_label": "postcard()"
@@ -1096,7 +1285,7 @@
       "label": "SidebarSection()",
       "file_type": "code",
       "source_file": "C:\\Users\\Michael Maged\\Desktop\\ASU\\term 8\\ip\\Project\\reddit-clone\\frontend\\src\\pages\\HomePage.jsx",
-      "source_location": "L104",
+      "source_location": "L106",
       "id": "homepage_sidebarsection",
       "community": 3,
       "norm_label": "sidebarsection()"
@@ -1105,7 +1294,7 @@
       "label": "CreatePostModal()",
       "file_type": "code",
       "source_file": "C:\\Users\\Michael Maged\\Desktop\\ASU\\term 8\\ip\\Project\\reddit-clone\\frontend\\src\\pages\\HomePage.jsx",
-      "source_location": "L128",
+      "source_location": "L130",
       "id": "homepage_createpostmodal",
       "community": 3,
       "norm_label": "createpostmodal()"
@@ -1114,16 +1303,25 @@
       "label": "CreateCommunityModal()",
       "file_type": "code",
       "source_file": "C:\\Users\\Michael Maged\\Desktop\\ASU\\term 8\\ip\\Project\\reddit-clone\\frontend\\src\\pages\\HomePage.jsx",
-      "source_location": "L170",
+      "source_location": "L172",
       "id": "homepage_createcommunitymodal",
       "community": 3,
       "norm_label": "createcommunitymodal()"
     },
     {
+      "label": "ChatPanel()",
+      "file_type": "code",
+      "source_file": "C:\\Users\\Michael Maged\\Desktop\\ASU\\term 8\\ip\\Project\\reddit-clone\\frontend\\src\\pages\\HomePage.jsx",
+      "source_location": "L206",
+      "id": "homepage_chatpanel",
+      "community": 3,
+      "norm_label": "chatpanel()"
+    },
+    {
       "label": "RedditLayout()",
       "file_type": "code",
       "source_file": "C:\\Users\\Michael Maged\\Desktop\\ASU\\term 8\\ip\\Project\\reddit-clone\\frontend\\src\\pages\\HomePage.jsx",
-      "source_location": "L204",
+      "source_location": "L441",
       "id": "homepage_redditlayout",
       "community": 3,
       "norm_label": "redditlayout()"
@@ -1134,7 +1332,7 @@
       "source_file": "C:\\Users\\Michael Maged\\Desktop\\ASU\\term 8\\ip\\Project\\reddit-clone\\frontend\\src\\pages\\InterestsPage.jsx",
       "source_location": "L1",
       "id": "c_users_michael_maged_desktop_asu_term_8_ip_project_reddit_clone_frontend_src_pages_interestspage_jsx",
-      "community": 18,
+      "community": 20,
       "norm_label": "interestspage.jsx"
     },
     {
@@ -1143,7 +1341,7 @@
       "source_file": "C:\\Users\\Michael Maged\\Desktop\\ASU\\term 8\\ip\\Project\\reddit-clone\\frontend\\src\\pages\\InterestsPage.jsx",
       "source_location": "L24",
       "id": "interestspage_interestspage",
-      "community": 18,
+      "community": 20,
       "norm_label": "interestspage()"
     },
     {
@@ -1152,7 +1350,7 @@
       "source_file": "C:\\Users\\Michael Maged\\Desktop\\ASU\\term 8\\ip\\Project\\reddit-clone\\frontend\\src\\pages\\OtpPage.jsx",
       "source_location": "L1",
       "id": "c_users_michael_maged_desktop_asu_term_8_ip_project_reddit_clone_frontend_src_pages_otppage_jsx",
-      "community": 19,
+      "community": 21,
       "norm_label": "otppage.jsx"
     },
     {
@@ -1161,7 +1359,7 @@
       "source_file": "C:\\Users\\Michael Maged\\Desktop\\ASU\\term 8\\ip\\Project\\reddit-clone\\frontend\\src\\pages\\OtpPage.jsx",
       "source_location": "L5",
       "id": "otppage_otppage",
-      "community": 19,
+      "community": 21,
       "norm_label": "otppage()"
     }
   ],
@@ -1818,7 +2016,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "C:\\Users\\Michael Maged\\Desktop\\ASU\\term 8\\ip\\Project\\reddit-clone\\backend\\src\\features\\communities\\communities.controller.js",
-      "source_location": "L4",
+      "source_location": "L5",
       "weight": 1.0,
       "_src": "c_users_michael_maged_desktop_asu_term_8_ip_project_reddit_clone_backend_src_features_communities_communities_controller_js",
       "_tgt": "communities_controller_escaperegex",
@@ -1830,7 +2028,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "C:\\Users\\Michael Maged\\Desktop\\ASU\\term 8\\ip\\Project\\reddit-clone\\backend\\src\\features\\communities\\communities.controller.js",
-      "source_location": "L6",
+      "source_location": "L7",
       "weight": 1.0,
       "_src": "c_users_michael_maged_desktop_asu_term_8_ip_project_reddit_clone_backend_src_features_communities_communities_controller_js",
       "_tgt": "communities_controller_validationerror",
@@ -1842,7 +2040,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "C:\\Users\\Michael Maged\\Desktop\\ASU\\term 8\\ip\\Project\\reddit-clone\\backend\\src\\features\\communities\\communities.controller.js",
-      "source_location": "L16",
+      "source_location": "L17",
       "weight": 1.0,
       "_src": "c_users_michael_maged_desktop_asu_term_8_ip_project_reddit_clone_backend_src_features_communities_communities_controller_js",
       "_tgt": "communities_controller_createcommunity",
@@ -1854,7 +2052,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "C:\\Users\\Michael Maged\\Desktop\\ASU\\term 8\\ip\\Project\\reddit-clone\\backend\\src\\features\\communities\\communities.controller.js",
-      "source_location": "L48",
+      "source_location": "L49",
       "weight": 1.0,
       "_src": "c_users_michael_maged_desktop_asu_term_8_ip_project_reddit_clone_backend_src_features_communities_communities_controller_js",
       "_tgt": "communities_controller_getcommunity",
@@ -1866,7 +2064,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "C:\\Users\\Michael Maged\\Desktop\\ASU\\term 8\\ip\\Project\\reddit-clone\\backend\\src\\features\\communities\\communities.controller.js",
-      "source_location": "L68",
+      "source_location": "L69",
       "weight": 1.0,
       "_src": "c_users_michael_maged_desktop_asu_term_8_ip_project_reddit_clone_backend_src_features_communities_communities_controller_js",
       "_tgt": "communities_controller_listcommunities",
@@ -1878,7 +2076,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "C:\\Users\\Michael Maged\\Desktop\\ASU\\term 8\\ip\\Project\\reddit-clone\\backend\\src\\features\\communities\\communities.controller.js",
-      "source_location": "L82",
+      "source_location": "L83",
       "weight": 1.0,
       "_src": "c_users_michael_maged_desktop_asu_term_8_ip_project_reddit_clone_backend_src_features_communities_communities_controller_js",
       "_tgt": "communities_controller_searchcommunities",
@@ -1890,7 +2088,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "C:\\Users\\Michael Maged\\Desktop\\ASU\\term 8\\ip\\Project\\reddit-clone\\backend\\src\\features\\communities\\communities.controller.js",
-      "source_location": "L101",
+      "source_location": "L102",
       "weight": 1.0,
       "_src": "c_users_michael_maged_desktop_asu_term_8_ip_project_reddit_clone_backend_src_features_communities_communities_controller_js",
       "_tgt": "communities_controller_joincommunity",
@@ -1902,7 +2100,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "C:\\Users\\Michael Maged\\Desktop\\ASU\\term 8\\ip\\Project\\reddit-clone\\backend\\src\\features\\communities\\communities.controller.js",
-      "source_location": "L134",
+      "source_location": "L137",
       "weight": 1.0,
       "_src": "c_users_michael_maged_desktop_asu_term_8_ip_project_reddit_clone_backend_src_features_communities_communities_controller_js",
       "_tgt": "communities_controller_leavecommunity",
@@ -1914,7 +2112,7 @@
       "relation": "calls",
       "confidence": "EXTRACTED",
       "source_file": "C:\\Users\\Michael Maged\\Desktop\\ASU\\term 8\\ip\\Project\\reddit-clone\\backend\\src\\features\\communities\\communities.controller.js",
-      "source_location": "L90",
+      "source_location": "L91",
       "weight": 1.0,
       "_src": "communities_controller_searchcommunities",
       "_tgt": "communities_controller_escaperegex",
@@ -1926,7 +2124,7 @@
       "relation": "calls",
       "confidence": "EXTRACTED",
       "source_file": "C:\\Users\\Michael Maged\\Desktop\\ASU\\term 8\\ip\\Project\\reddit-clone\\backend\\src\\features\\communities\\communities.controller.js",
-      "source_location": "L18",
+      "source_location": "L19",
       "weight": 1.0,
       "_src": "communities_controller_createcommunity",
       "_tgt": "communities_controller_validationerror",
@@ -1938,7 +2136,7 @@
       "relation": "calls",
       "confidence": "EXTRACTED",
       "source_file": "C:\\Users\\Michael Maged\\Desktop\\ASU\\term 8\\ip\\Project\\reddit-clone\\backend\\src\\features\\communities\\communities.controller.js",
-      "source_location": "L50",
+      "source_location": "L51",
       "weight": 1.0,
       "_src": "communities_controller_getcommunity",
       "_tgt": "communities_controller_validationerror",
@@ -1950,7 +2148,7 @@
       "relation": "calls",
       "confidence": "EXTRACTED",
       "source_file": "C:\\Users\\Michael Maged\\Desktop\\ASU\\term 8\\ip\\Project\\reddit-clone\\backend\\src\\features\\communities\\communities.controller.js",
-      "source_location": "L84",
+      "source_location": "L85",
       "weight": 1.0,
       "_src": "communities_controller_searchcommunities",
       "_tgt": "communities_controller_validationerror",
@@ -1962,7 +2160,7 @@
       "relation": "calls",
       "confidence": "EXTRACTED",
       "source_file": "C:\\Users\\Michael Maged\\Desktop\\ASU\\term 8\\ip\\Project\\reddit-clone\\backend\\src\\features\\communities\\communities.controller.js",
-      "source_location": "L103",
+      "source_location": "L104",
       "weight": 1.0,
       "_src": "communities_controller_joincommunity",
       "_tgt": "communities_controller_validationerror",
@@ -1974,7 +2172,7 @@
       "relation": "calls",
       "confidence": "EXTRACTED",
       "source_file": "C:\\Users\\Michael Maged\\Desktop\\ASU\\term 8\\ip\\Project\\reddit-clone\\backend\\src\\features\\communities\\communities.controller.js",
-      "source_location": "L136",
+      "source_location": "L139",
       "weight": 1.0,
       "_src": "communities_controller_leavecommunity",
       "_tgt": "communities_controller_validationerror",
@@ -1997,8 +2195,80 @@
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
+      "source_file": "C:\\Users\\Michael Maged\\Desktop\\ASU\\term 8\\ip\\Project\\reddit-clone\\backend\\src\\features\\messages\\messages.controller.js",
+      "source_location": "L3",
+      "weight": 1.0,
+      "_src": "c_users_michael_maged_desktop_asu_term_8_ip_project_reddit_clone_backend_src_features_messages_messages_controller_js",
+      "_tgt": "messages_controller_getthreads",
+      "source": "c_users_michael_maged_desktop_asu_term_8_ip_project_reddit_clone_backend_src_features_messages_messages_controller_js",
+      "target": "messages_controller_getthreads",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "C:\\Users\\Michael Maged\\Desktop\\ASU\\term 8\\ip\\Project\\reddit-clone\\backend\\src\\features\\messages\\messages.controller.js",
+      "source_location": "L15",
+      "weight": 1.0,
+      "_src": "c_users_michael_maged_desktop_asu_term_8_ip_project_reddit_clone_backend_src_features_messages_messages_controller_js",
+      "_tgt": "messages_controller_getmessages",
+      "source": "c_users_michael_maged_desktop_asu_term_8_ip_project_reddit_clone_backend_src_features_messages_messages_controller_js",
+      "target": "messages_controller_getmessages",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "C:\\Users\\Michael Maged\\Desktop\\ASU\\term 8\\ip\\Project\\reddit-clone\\backend\\src\\features\\messages\\messages.controller.js",
+      "source_location": "L26",
+      "weight": 1.0,
+      "_src": "c_users_michael_maged_desktop_asu_term_8_ip_project_reddit_clone_backend_src_features_messages_messages_controller_js",
+      "_tgt": "messages_controller_sendmessage",
+      "source": "c_users_michael_maged_desktop_asu_term_8_ip_project_reddit_clone_backend_src_features_messages_messages_controller_js",
+      "target": "messages_controller_sendmessage",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "C:\\Users\\Michael Maged\\Desktop\\ASU\\term 8\\ip\\Project\\reddit-clone\\backend\\src\\features\\messages\\messages.controller.js",
+      "source_location": "L60",
+      "weight": 1.0,
+      "_src": "c_users_michael_maged_desktop_asu_term_8_ip_project_reddit_clone_backend_src_features_messages_messages_controller_js",
+      "_tgt": "messages_controller_markthreadread",
+      "source": "c_users_michael_maged_desktop_asu_term_8_ip_project_reddit_clone_backend_src_features_messages_messages_controller_js",
+      "target": "messages_controller_markthreadread",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "C:\\Users\\Michael Maged\\Desktop\\ASU\\term 8\\ip\\Project\\reddit-clone\\backend\\src\\features\\notifications\\notifications.controller.js",
+      "source_location": "L3",
+      "weight": 1.0,
+      "_src": "c_users_michael_maged_desktop_asu_term_8_ip_project_reddit_clone_backend_src_features_notifications_notifications_controller_js",
+      "_tgt": "notifications_controller_getnotifications",
+      "source": "c_users_michael_maged_desktop_asu_term_8_ip_project_reddit_clone_backend_src_features_notifications_notifications_controller_js",
+      "target": "notifications_controller_getnotifications",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "C:\\Users\\Michael Maged\\Desktop\\ASU\\term 8\\ip\\Project\\reddit-clone\\backend\\src\\features\\notifications\\notifications.controller.js",
+      "source_location": "L12",
+      "weight": 1.0,
+      "_src": "c_users_michael_maged_desktop_asu_term_8_ip_project_reddit_clone_backend_src_features_notifications_notifications_controller_js",
+      "_tgt": "notifications_controller_markallread",
+      "source": "c_users_michael_maged_desktop_asu_term_8_ip_project_reddit_clone_backend_src_features_notifications_notifications_controller_js",
+      "target": "notifications_controller_markallread",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
       "source_file": "C:\\Users\\Michael Maged\\Desktop\\ASU\\term 8\\ip\\Project\\reddit-clone\\backend\\src\\features\\posts\\posts.controller.js",
-      "source_location": "L6",
+      "source_location": "L7",
       "weight": 1.0,
       "_src": "c_users_michael_maged_desktop_asu_term_8_ip_project_reddit_clone_backend_src_features_posts_posts_controller_js",
       "_tgt": "posts_controller_createpost",
@@ -2010,7 +2280,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "C:\\Users\\Michael Maged\\Desktop\\ASU\\term 8\\ip\\Project\\reddit-clone\\backend\\src\\features\\posts\\posts.controller.js",
-      "source_location": "L26",
+      "source_location": "L27",
       "weight": 1.0,
       "_src": "c_users_michael_maged_desktop_asu_term_8_ip_project_reddit_clone_backend_src_features_posts_posts_controller_js",
       "_tgt": "posts_controller_getpost",
@@ -2022,7 +2292,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "C:\\Users\\Michael Maged\\Desktop\\ASU\\term 8\\ip\\Project\\reddit-clone\\backend\\src\\features\\posts\\posts.controller.js",
-      "source_location": "L36",
+      "source_location": "L37",
       "weight": 1.0,
       "_src": "c_users_michael_maged_desktop_asu_term_8_ip_project_reddit_clone_backend_src_features_posts_posts_controller_js",
       "_tgt": "posts_controller_getcommunityposts",
@@ -2034,7 +2304,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "C:\\Users\\Michael Maged\\Desktop\\ASU\\term 8\\ip\\Project\\reddit-clone\\backend\\src\\features\\posts\\posts.controller.js",
-      "source_location": "L48",
+      "source_location": "L49",
       "weight": 1.0,
       "_src": "c_users_michael_maged_desktop_asu_term_8_ip_project_reddit_clone_backend_src_features_posts_posts_controller_js",
       "_tgt": "posts_controller_getfeed",
@@ -2046,7 +2316,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "C:\\Users\\Michael Maged\\Desktop\\ASU\\term 8\\ip\\Project\\reddit-clone\\backend\\src\\features\\posts\\posts.controller.js",
-      "source_location": "L88",
+      "source_location": "L89",
       "weight": 1.0,
       "_src": "c_users_michael_maged_desktop_asu_term_8_ip_project_reddit_clone_backend_src_features_posts_posts_controller_js",
       "_tgt": "posts_controller_deletepost",
@@ -2058,7 +2328,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "C:\\Users\\Michael Maged\\Desktop\\ASU\\term 8\\ip\\Project\\reddit-clone\\backend\\src\\features\\posts\\posts.controller.js",
-      "source_location": "L104",
+      "source_location": "L105",
       "weight": 1.0,
       "_src": "c_users_michael_maged_desktop_asu_term_8_ip_project_reddit_clone_backend_src_features_posts_posts_controller_js",
       "_tgt": "posts_controller_upvotepost",
@@ -2070,7 +2340,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "C:\\Users\\Michael Maged\\Desktop\\ASU\\term 8\\ip\\Project\\reddit-clone\\backend\\src\\features\\posts\\posts.controller.js",
-      "source_location": "L126",
+      "source_location": "L130",
       "weight": 1.0,
       "_src": "c_users_michael_maged_desktop_asu_term_8_ip_project_reddit_clone_backend_src_features_posts_posts_controller_js",
       "_tgt": "posts_controller_downvotepost",
@@ -2466,6 +2736,78 @@
       "relation": "calls",
       "confidence": "INFERRED",
       "confidence_score": 0.8,
+      "source_file": "C:\\Users\\Michael Maged\\Desktop\\ASU\\term 8\\ip\\Project\\reddit-clone\\frontend\\src\\api\\messages.js",
+      "source_location": "L9",
+      "weight": 1.0,
+      "_src": "messages_getthreads",
+      "_tgt": "auth_fetchwithauth",
+      "source": "auth_fetchwithauth",
+      "target": "messages_getthreads"
+    },
+    {
+      "relation": "calls",
+      "confidence": "INFERRED",
+      "confidence_score": 0.8,
+      "source_file": "C:\\Users\\Michael Maged\\Desktop\\ASU\\term 8\\ip\\Project\\reddit-clone\\frontend\\src\\api\\messages.js",
+      "source_location": "L13",
+      "weight": 1.0,
+      "_src": "messages_getmessages",
+      "_tgt": "auth_fetchwithauth",
+      "source": "auth_fetchwithauth",
+      "target": "messages_getmessages"
+    },
+    {
+      "relation": "calls",
+      "confidence": "INFERRED",
+      "confidence_score": 0.8,
+      "source_file": "C:\\Users\\Michael Maged\\Desktop\\ASU\\term 8\\ip\\Project\\reddit-clone\\frontend\\src\\api\\messages.js",
+      "source_location": "L17",
+      "weight": 1.0,
+      "_src": "messages_sendmessage",
+      "_tgt": "auth_fetchwithauth",
+      "source": "auth_fetchwithauth",
+      "target": "messages_sendmessage"
+    },
+    {
+      "relation": "calls",
+      "confidence": "INFERRED",
+      "confidence_score": 0.8,
+      "source_file": "C:\\Users\\Michael Maged\\Desktop\\ASU\\term 8\\ip\\Project\\reddit-clone\\frontend\\src\\api\\messages.js",
+      "source_location": "L21",
+      "weight": 1.0,
+      "_src": "messages_markthreadread",
+      "_tgt": "auth_fetchwithauth",
+      "source": "auth_fetchwithauth",
+      "target": "messages_markthreadread"
+    },
+    {
+      "relation": "calls",
+      "confidence": "INFERRED",
+      "confidence_score": 0.8,
+      "source_file": "C:\\Users\\Michael Maged\\Desktop\\ASU\\term 8\\ip\\Project\\reddit-clone\\frontend\\src\\api\\notifications.js",
+      "source_location": "L4",
+      "weight": 1.0,
+      "_src": "notifications_getnotifications",
+      "_tgt": "auth_fetchwithauth",
+      "source": "auth_fetchwithauth",
+      "target": "notifications_getnotifications"
+    },
+    {
+      "relation": "calls",
+      "confidence": "INFERRED",
+      "confidence_score": 0.8,
+      "source_file": "C:\\Users\\Michael Maged\\Desktop\\ASU\\term 8\\ip\\Project\\reddit-clone\\frontend\\src\\api\\notifications.js",
+      "source_location": "L8",
+      "weight": 1.0,
+      "_src": "notifications_marknotificationsread",
+      "_tgt": "auth_fetchwithauth",
+      "source": "auth_fetchwithauth",
+      "target": "notifications_marknotificationsread"
+    },
+    {
+      "relation": "calls",
+      "confidence": "INFERRED",
+      "confidence_score": 0.8,
       "source_file": "C:\\Users\\Michael Maged\\Desktop\\ASU\\term 8\\ip\\Project\\reddit-clone\\frontend\\src\\api\\posts.js",
       "source_location": "L26",
       "weight": 1.0,
@@ -2652,6 +2994,90 @@
       "_tgt": "communities_parseresponse",
       "source": "communities_parseresponse",
       "target": "communities_getjoinedcommunities",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "C:\\Users\\Michael Maged\\Desktop\\ASU\\term 8\\ip\\Project\\reddit-clone\\frontend\\src\\api\\messages.js",
+      "source_location": "L5",
+      "weight": 1.0,
+      "_src": "c_users_michael_maged_desktop_asu_term_8_ip_project_reddit_clone_frontend_src_api_messages_js",
+      "_tgt": "messages_getthreads",
+      "source": "c_users_michael_maged_desktop_asu_term_8_ip_project_reddit_clone_frontend_src_api_messages_js",
+      "target": "messages_getthreads",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "C:\\Users\\Michael Maged\\Desktop\\ASU\\term 8\\ip\\Project\\reddit-clone\\frontend\\src\\api\\messages.js",
+      "source_location": "L12",
+      "weight": 1.0,
+      "_src": "c_users_michael_maged_desktop_asu_term_8_ip_project_reddit_clone_frontend_src_api_messages_js",
+      "_tgt": "messages_getmessages",
+      "source": "c_users_michael_maged_desktop_asu_term_8_ip_project_reddit_clone_frontend_src_api_messages_js",
+      "target": "messages_getmessages",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "C:\\Users\\Michael Maged\\Desktop\\ASU\\term 8\\ip\\Project\\reddit-clone\\frontend\\src\\api\\messages.js",
+      "source_location": "L16",
+      "weight": 1.0,
+      "_src": "c_users_michael_maged_desktop_asu_term_8_ip_project_reddit_clone_frontend_src_api_messages_js",
+      "_tgt": "messages_sendmessage",
+      "source": "c_users_michael_maged_desktop_asu_term_8_ip_project_reddit_clone_frontend_src_api_messages_js",
+      "target": "messages_sendmessage",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "C:\\Users\\Michael Maged\\Desktop\\ASU\\term 8\\ip\\Project\\reddit-clone\\frontend\\src\\api\\messages.js",
+      "source_location": "L20",
+      "weight": 1.0,
+      "_src": "c_users_michael_maged_desktop_asu_term_8_ip_project_reddit_clone_frontend_src_api_messages_js",
+      "_tgt": "messages_markthreadread",
+      "source": "c_users_michael_maged_desktop_asu_term_8_ip_project_reddit_clone_frontend_src_api_messages_js",
+      "target": "messages_markthreadread",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "C:\\Users\\Michael Maged\\Desktop\\ASU\\term 8\\ip\\Project\\reddit-clone\\frontend\\src\\api\\messages.js",
+      "source_location": "L24",
+      "weight": 1.0,
+      "_src": "c_users_michael_maged_desktop_asu_term_8_ip_project_reddit_clone_frontend_src_api_messages_js",
+      "_tgt": "messages_searchusers",
+      "source": "c_users_michael_maged_desktop_asu_term_8_ip_project_reddit_clone_frontend_src_api_messages_js",
+      "target": "messages_searchusers",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "C:\\Users\\Michael Maged\\Desktop\\ASU\\term 8\\ip\\Project\\reddit-clone\\frontend\\src\\api\\notifications.js",
+      "source_location": "L3",
+      "weight": 1.0,
+      "_src": "c_users_michael_maged_desktop_asu_term_8_ip_project_reddit_clone_frontend_src_api_notifications_js",
+      "_tgt": "notifications_getnotifications",
+      "source": "c_users_michael_maged_desktop_asu_term_8_ip_project_reddit_clone_frontend_src_api_notifications_js",
+      "target": "notifications_getnotifications",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "C:\\Users\\Michael Maged\\Desktop\\ASU\\term 8\\ip\\Project\\reddit-clone\\frontend\\src\\api\\notifications.js",
+      "source_location": "L7",
+      "weight": 1.0,
+      "_src": "c_users_michael_maged_desktop_asu_term_8_ip_project_reddit_clone_frontend_src_api_notifications_js",
+      "_tgt": "notifications_marknotificationsread",
+      "source": "c_users_michael_maged_desktop_asu_term_8_ip_project_reddit_clone_frontend_src_api_notifications_js",
+      "target": "notifications_marknotificationsread",
       "confidence_score": 1.0
     },
     {
@@ -2862,7 +3288,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "C:\\Users\\Michael Maged\\Desktop\\ASU\\term 8\\ip\\Project\\reddit-clone\\frontend\\src\\pages\\HomePage.jsx",
-      "source_location": "L8",
+      "source_location": "L10",
       "weight": 1.0,
       "_src": "c_users_michael_maged_desktop_asu_term_8_ip_project_reddit_clone_frontend_src_pages_homepage_jsx",
       "_tgt": "homepage_icon",
@@ -2874,7 +3300,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "C:\\Users\\Michael Maged\\Desktop\\ASU\\term 8\\ip\\Project\\reddit-clone\\frontend\\src\\pages\\HomePage.jsx",
-      "source_location": "L14",
+      "source_location": "L16",
       "weight": 1.0,
       "_src": "c_users_michael_maged_desktop_asu_term_8_ip_project_reddit_clone_frontend_src_pages_homepage_jsx",
       "_tgt": "homepage_redditlogo",
@@ -2886,7 +3312,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "C:\\Users\\Michael Maged\\Desktop\\ASU\\term 8\\ip\\Project\\reddit-clone\\frontend\\src\\pages\\HomePage.jsx",
-      "source_location": "L21",
+      "source_location": "L23",
       "weight": 1.0,
       "_src": "c_users_michael_maged_desktop_asu_term_8_ip_project_reddit_clone_frontend_src_pages_homepage_jsx",
       "_tgt": "homepage_timeago",
@@ -2898,7 +3324,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "C:\\Users\\Michael Maged\\Desktop\\ASU\\term 8\\ip\\Project\\reddit-clone\\frontend\\src\\pages\\HomePage.jsx",
-      "source_location": "L39",
+      "source_location": "L41",
       "weight": 1.0,
       "_src": "c_users_michael_maged_desktop_asu_term_8_ip_project_reddit_clone_frontend_src_pages_homepage_jsx",
       "_tgt": "homepage_formatscore",
@@ -2910,7 +3336,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "C:\\Users\\Michael Maged\\Desktop\\ASU\\term 8\\ip\\Project\\reddit-clone\\frontend\\src\\pages\\HomePage.jsx",
-      "source_location": "L45",
+      "source_location": "L47",
       "weight": 1.0,
       "_src": "c_users_michael_maged_desktop_asu_term_8_ip_project_reddit_clone_frontend_src_pages_homepage_jsx",
       "_tgt": "homepage_postcard",
@@ -2922,7 +3348,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "C:\\Users\\Michael Maged\\Desktop\\ASU\\term 8\\ip\\Project\\reddit-clone\\frontend\\src\\pages\\HomePage.jsx",
-      "source_location": "L104",
+      "source_location": "L106",
       "weight": 1.0,
       "_src": "c_users_michael_maged_desktop_asu_term_8_ip_project_reddit_clone_frontend_src_pages_homepage_jsx",
       "_tgt": "homepage_sidebarsection",
@@ -2934,7 +3360,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "C:\\Users\\Michael Maged\\Desktop\\ASU\\term 8\\ip\\Project\\reddit-clone\\frontend\\src\\pages\\HomePage.jsx",
-      "source_location": "L128",
+      "source_location": "L130",
       "weight": 1.0,
       "_src": "c_users_michael_maged_desktop_asu_term_8_ip_project_reddit_clone_frontend_src_pages_homepage_jsx",
       "_tgt": "homepage_createpostmodal",
@@ -2946,7 +3372,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "C:\\Users\\Michael Maged\\Desktop\\ASU\\term 8\\ip\\Project\\reddit-clone\\frontend\\src\\pages\\HomePage.jsx",
-      "source_location": "L170",
+      "source_location": "L172",
       "weight": 1.0,
       "_src": "c_users_michael_maged_desktop_asu_term_8_ip_project_reddit_clone_frontend_src_pages_homepage_jsx",
       "_tgt": "homepage_createcommunitymodal",
@@ -2958,7 +3384,19 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "C:\\Users\\Michael Maged\\Desktop\\ASU\\term 8\\ip\\Project\\reddit-clone\\frontend\\src\\pages\\HomePage.jsx",
-      "source_location": "L204",
+      "source_location": "L206",
+      "weight": 1.0,
+      "_src": "c_users_michael_maged_desktop_asu_term_8_ip_project_reddit_clone_frontend_src_pages_homepage_jsx",
+      "_tgt": "homepage_chatpanel",
+      "source": "c_users_michael_maged_desktop_asu_term_8_ip_project_reddit_clone_frontend_src_pages_homepage_jsx",
+      "target": "homepage_chatpanel",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "C:\\Users\\Michael Maged\\Desktop\\ASU\\term 8\\ip\\Project\\reddit-clone\\frontend\\src\\pages\\HomePage.jsx",
+      "source_location": "L441",
       "weight": 1.0,
       "_src": "c_users_michael_maged_desktop_asu_term_8_ip_project_reddit_clone_frontend_src_pages_homepage_jsx",
       "_tgt": "homepage_redditlayout",
@@ -2970,7 +3408,7 @@
       "relation": "calls",
       "confidence": "EXTRACTED",
       "source_file": "C:\\Users\\Michael Maged\\Desktop\\ASU\\term 8\\ip\\Project\\reddit-clone\\frontend\\src\\pages\\HomePage.jsx",
-      "source_location": "L76",
+      "source_location": "L78",
       "weight": 1.0,
       "_src": "homepage_postcard",
       "_tgt": "homepage_timeago",
@@ -2982,7 +3420,7 @@
       "relation": "calls",
       "confidence": "EXTRACTED",
       "source_file": "C:\\Users\\Michael Maged\\Desktop\\ASU\\term 8\\ip\\Project\\reddit-clone\\frontend\\src\\pages\\HomePage.jsx",
-      "source_location": "L65",
+      "source_location": "L67",
       "weight": 1.0,
       "_src": "homepage_postcard",
       "_tgt": "homepage_formatscore",
