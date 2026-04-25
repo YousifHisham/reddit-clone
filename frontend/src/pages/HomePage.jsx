@@ -1,7 +1,9 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { getMe, logout } from '../api/auth';
 import { getFeed, createPost, upvotePost, downvotePost } from '../api/posts';
 import { getCommunities, joinCommunity, leaveCommunity, createCommunity } from '../api/communities';
+import { getNotifications, markNotificationsRead } from '../api/notifications';
+import { getThreads, getMessages, sendMessage, markThreadRead, searchUsers } from '../api/messages';
  
 
 // ── Icons ──
@@ -201,6 +203,241 @@ function CreateCommunityModal({ onClose, onCreated }) {
   );
 }
 
+function ChatPanel({ currentUser, onClose }) {
+  // view: 'threads' | 'create' | 'messages'
+  const [view, setView] = useState('threads');
+  const [threads, setThreads] = useState([]);
+  const [activeThread, setActiveThread] = useState(null);
+  const [messages, setMessages] = useState([]);
+  const [input, setInput] = useState('');
+  const [showFilter, setShowFilter] = useState(false);
+  const [filters, setFilters] = useState({ unread: false });
+  const [pendingFilters, setPendingFilters] = useState({ unread: false });
+  // create chat state
+  const [userQuery, setUserQuery] = useState('');
+  const [userResults, setUserResults] = useState([]);
+  const [selectedUser, setSelectedUser] = useState(null);
+  const [creating, setCreating] = useState(false);
+  const bottomRef = useRef(null);
+  const searchTimeout = useRef(null);
+
+  const loadThreads = (f = filters) => {
+    getThreads(f).then(d => { if (d.success) setThreads(d.threads); });
+  };
+
+  useEffect(() => { loadThreads(); }, []);
+
+  useEffect(() => {
+    if (!activeThread) return;
+    getMessages(activeThread._id).then(d => { if (d.success) setMessages(d.messages); });
+    markThreadRead(activeThread._id);
+    setThreads(prev => prev.map(t =>
+      t._id === activeThread._id ? { ...t, readBy: [...(t.readBy || []), currentUser._id] } : t
+    ));
+  }, [activeThread]);
+
+  useEffect(() => { bottomRef.current?.scrollIntoView({ behavior: 'smooth' }); }, [messages]);
+
+  const otherParticipant = (t) => t.participants?.find(p => p._id !== currentUser._id);
+  const isUnread = (t) => !t.readBy?.map(id => id.toString()).includes(currentUser._id?.toString());
+
+  // user search for create chat
+  const handleUserSearch = (q) => {
+    setUserQuery(q);
+    setSelectedUser(null);
+    clearTimeout(searchTimeout.current);
+    if (!q.trim()) { setUserResults([]); return; }
+    searchTimeout.current = setTimeout(async () => {
+      const d = await searchUsers(q);
+      if (d.success) setUserResults(d.users.filter(u => u._id !== currentUser._id));
+    }, 300);
+  };
+
+  const handleCreate = async () => {
+    if (!selectedUser) return;
+    setCreating(true);
+    const d = await sendMessage({ recipientId: selectedUser._id, content: '' });
+    setCreating(false);
+    if (d.success) {
+      const td = await getThreads();
+      if (td.success) {
+        setThreads(td.threads);
+        const created = td.threads.find(t => t._id.toString() === (d.threadId || d.thread?._id)?.toString());
+        if (created) { setActiveThread(created); setView('messages'); }
+        else setView('threads');
+      }
+      setSelectedUser(null); setUserQuery(''); setUserResults([]);
+    }
+  };
+
+  const handleSend = async (e) => {
+    e.preventDefault();
+    if (!input.trim()) return;
+    const d = await sendMessage({ threadId: activeThread._id, content: input.trim() });
+    if (d.success) {
+      setMessages(prev => [...prev, d.message]);
+      setInput('');
+      setThreads(prev => prev.map(t =>
+        t._id === activeThread._id ? { ...t, lastMessage: input.trim(), lastMessageAt: new Date() } : t
+      ));
+    }
+  };
+
+  const applyFilters = () => {
+    setFilters(pendingFilters);
+    loadThreads(pendingFilters);
+    setShowFilter(false);
+  };
+
+  return (
+    <div className="chat-panel" onClick={e => e.stopPropagation()}>
+
+      {/* ── HEADER ── */}
+      <div className="chat-header">
+        <span className="chat-header-title">
+          {view === 'create' ? 'Create Chat' : view === 'messages' ? `u/${otherParticipant(activeThread)?.username || '...'}` : 'Chats'}
+        </span>
+        <div style={{ display: 'flex', gap: 2 }}>
+          {view === 'threads' && (
+            <>
+              <button className="chat-icon-btn" title="New chat" onClick={() => { setView('create'); setShowFilter(false); }}>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+              </button>
+              <button className="chat-icon-btn" title="Filter" onClick={() => setShowFilter(s => !s)}>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="4" y1="6" x2="20" y2="6"/><line x1="8" y1="12" x2="16" y2="12"/><line x1="11" y1="18" x2="13" y2="18"/></svg>
+              </button>
+            </>
+          )}
+          {(view === 'create' || view === 'messages') && (
+            <button className="chat-icon-btn" onClick={() => { setView('threads'); setActiveThread(null); setMessages([]); setSelectedUser(null); setUserQuery(''); setUserResults([]); }}>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="15 18 9 12 15 6"/></svg>
+            </button>
+          )}
+          <button className="chat-icon-btn" onClick={onClose}>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+          </button>
+        </div>
+      </div>
+
+      {/* ── FILTER DROPDOWN ── */}
+      {showFilter && view === 'threads' && (
+        <div className="chat-filter-dropdown">
+          <div className="chat-filter-title">Filter chat inbox</div>
+          {[['unread', 'Unread'], ['direct', 'Direct chats'], ['group', 'Group chats'], ['modmail', 'Mod mail']].map(([key, label]) => (
+            <label key={key} className="chat-filter-option">
+              <input type="checkbox" checked={!!pendingFilters[key]} onChange={e => setPendingFilters(p => ({ ...p, [key]: e.target.checked }))} />
+              {label}
+            </label>
+          ))}
+          <button className="panel-create-btn" style={{ borderRadius: 8, marginTop: 8 }} onClick={applyFilters}>Apply</button>
+        </div>
+      )}
+
+      {/* ── THREADS VIEW ── */}
+      {view === 'threads' && (
+        <div className="chat-body">
+          <button className="chat-threads-row" onClick={() => {}}>
+            <span style={{ fontWeight: 700, fontSize: 13 }}>Threads</span>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><polyline points="9 18 15 12 9 6"/></svg>
+          </button>
+          {threads.length === 0 ? (
+            <div className="chat-empty">
+              <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#ccc" strokeWidth="1.5"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+              <p className="chat-empty-title">You don't have any threads yet</p>
+              <p className="chat-empty-sub">Start a conversation with someone</p>
+              <button className="orange-btn" style={{ fontSize: 13, padding: '7px 18px' }} onClick={() => setView('create')}>Go to messages</button>
+            </div>
+          ) : (
+            threads.map(t => {
+              const other = otherParticipant(t);
+              return (
+                <button key={t._id} className={`chat-thread-item ${isUnread(t) ? 'unread' : ''}`} onClick={() => { setActiveThread(t); setView('messages'); }}>
+                  <div className="chat-avatar">{other?.username?.[0]?.toUpperCase() || '?'}</div>
+                  <div className="chat-thread-info">
+                    <div className="chat-thread-name">u/{other?.username || 'Unknown'}</div>
+                    <div className="chat-thread-preview">{t.lastMessage || 'No messages yet'}</div>
+                  </div>
+                  <div className="chat-thread-meta">
+                    <div className="chat-thread-time">{t.lastMessageAt ? timeAgo(t.lastMessageAt) : ''}</div>
+                    {isUnread(t) && <span className="chat-unread-dot" />}
+                  </div>
+                </button>
+              );
+            })
+          )}
+        </div>
+      )}
+
+      {/* ── CREATE CHAT VIEW ── */}
+      {view === 'create' && (
+        <div className="chat-body" style={{ padding: '12px 14px', display: 'flex', flexDirection: 'column', gap: 10 }}>
+          <div style={{ position: 'relative' }}>
+            <input
+              className="chat-input" style={{ width: '100%', borderRadius: 8, height: 38, paddingLeft: 12 }}
+              placeholder="Type username(s) *"
+              value={userQuery}
+              onChange={e => handleUserSearch(e.target.value)}
+              autoFocus
+            />
+            {userResults.length > 0 && (
+              <div className="chat-user-results">
+                {userResults.map(u => (
+                  <button key={u._id} className={`chat-user-result-item ${selectedUser?._id === u._id ? 'selected' : ''}`}
+                    onClick={() => { setSelectedUser(u); setUserQuery(u.username); setUserResults([]); }}>
+                    <div className="chat-avatar" style={{ width: 28, height: 28, fontSize: 12 }}>{u.username[0].toUpperCase()}</div>
+                    <span style={{ fontSize: 13 }}>u/{u.username}</span>
+                  </button>
+                ))}
+              </div>
+            )}
+          </div>
+          <p style={{ fontSize: 12, color: 'var(--muted)', lineHeight: 1.5 }}>Search for people by username to chat with them.</p>
+          {selectedUser && (
+            <div className="chat-selected-user">
+              <div className="chat-avatar" style={{ width: 28, height: 28, fontSize: 12 }}>{selectedUser.username[0].toUpperCase()}</div>
+              <span style={{ fontSize: 13, fontWeight: 600 }}>u/{selectedUser.username}</span>
+              <button className="chat-icon-btn" style={{ marginLeft: 'auto' }} onClick={() => { setSelectedUser(null); setUserQuery(''); }}>
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+              </button>
+            </div>
+          )}
+          <div style={{ display: 'flex', gap: 8, marginTop: 'auto' }}>
+            <button className="panel-join-btn" style={{ flex: 1 }} onClick={() => { setView('threads'); setSelectedUser(null); setUserQuery(''); setUserResults([]); }}>Cancel</button>
+            <button className="panel-create-btn" style={{ flex: 1, borderRadius: 8, opacity: selectedUser ? 1 : 0.4, cursor: selectedUser ? 'pointer' : 'not-allowed' }}
+              disabled={!selectedUser || creating} onClick={handleCreate}>
+              {creating ? 'Creating...' : 'Create'}
+            </button>
+          </div>
+        </div>
+      )}
+
+      {/* ── MESSAGES VIEW ── */}
+      {view === 'messages' && activeThread && (
+        <>
+          <div className="chat-messages">
+            {messages.length === 0 && (
+              <div style={{ textAlign: 'center', color: 'var(--muted)', fontSize: 13, padding: '24px 0' }}>No messages yet. Say hello!</div>
+            )}
+            {messages.map(m => (
+              <div key={m._id} className={`chat-msg ${m.sender?._id === currentUser._id ? 'mine' : 'theirs'}`}>
+                <div className="chat-msg-bubble">{m.content}</div>
+                <div className="chat-msg-time">{timeAgo(m.createdAt)}</div>
+              </div>
+            ))}
+            <div ref={bottomRef} />
+          </div>
+          <form className="chat-input-row" onSubmit={handleSend}>
+            <input className="chat-input" placeholder="Message..." value={input} onChange={e => setInput(e.target.value)} />
+            <button type="submit" className="chat-send-btn">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+            </button>
+          </form>
+        </>
+      )}
+    </div>
+  );
+}
+
 export default function RedditLayout() {
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const [activeSort, setActiveSort] = useState("Hot");
@@ -210,10 +447,16 @@ export default function RedditLayout() {
   const [user, setUser] = useState(null);
   const [showCreatePost, setShowCreatePost] = useState(false);
   const [showCreateCommunity, setShowCreateCommunity] = useState(false);
+  const [notifications, setNotifications] = useState([]);
+  const [showNotifs, setShowNotifs] = useState(false);
+  const notifRef = useRef(null);
+  const [showChat, setShowChat] = useState(false);
+  const chatRef = useRef(null);
 
   useEffect(() => {
     getMe().then(data => { if (data.success) setUser(data.user); });
     getCommunities().then(data => { if (data.success) setCommunities(data.communities); });
+    getNotifications().then(data => { if (data.success) setNotifications(data.notifications); });
   }, []);
 
   useEffect(() => {
@@ -243,6 +486,23 @@ export default function RedditLayout() {
     window.location.href = '/Login';
   };
 
+  const handleBellClick = async () => {
+    setShowNotifs(prev => !prev);
+    if (!showNotifs && notifications.some(n => !n.read)) {
+      await markNotificationsRead();
+      setNotifications(prev => prev.map(n => ({ ...n, read: true })));
+    }
+  };
+
+  useEffect(() => {
+    const handleClickOutside = (e) => {
+      if (notifRef.current && !notifRef.current.contains(e.target)) setShowNotifs(false);
+      if (chatRef.current && !chatRef.current.contains(e.target)) setShowChat(false);
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
+
   return (
     <>
       {/* ── Navbar ── */}
@@ -268,12 +528,39 @@ export default function RedditLayout() {
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
             <span>Ask</span>
           </button>
-          <button className="nav-icon-btn" title="Messages">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
-          </button>
-          <button className="nav-icon-btn" title="Notifications" style={{ position: "relative" }}>
+          <div style={{ position:'relative' }} ref={chatRef}>
+            <button className="nav-icon-btn" title="Messages" onClick={() => setShowChat(s => !s)}>
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+            </button>
+            {showChat && user && <ChatPanel currentUser={user} onClose={() => setShowChat(false)} />}
+          </div>
+          <button className="nav-icon-btn" title="Notifications" style={{ position: "relative" }} onClick={handleBellClick} ref={notifRef}>
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
-            <span className="notif-dot" />
+            {notifications.some(n => !n.read) && (
+              <span className="notif-badge">{notifications.filter(n => !n.read).length}</span>
+            )}
+            {showNotifs && (
+              <div className="notif-dropdown" onClick={e => e.stopPropagation()}>
+                <div className="notif-dropdown-header">Notifications</div>
+                {notifications.length === 0 ? (
+                  <div className="notif-empty">No notifications yet</div>
+                ) : (
+                  notifications.map(n => (
+                    <div key={n._id} className={`notif-item ${n.read ? '' : 'unread'}`}>
+                      <span className="notif-icon">
+                        {n.type === 'upvote' && '⬆️'}
+                        {n.type === 'comment' && '💬'}
+                        {n.type === 'join' && '👥'}
+                      </span>
+                      <div>
+                        <div className="notif-message">{n.message}</div>
+                        <div className="notif-time">{timeAgo(n.createdAt)}</div>
+                      </div>
+                    </div>
+                  ))
+                )}
+              </div>
+            )}
           </button>
           <button className="nav-create-btn" onClick={() => setShowCreatePost(true)}>
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>

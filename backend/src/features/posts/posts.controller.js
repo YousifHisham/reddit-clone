@@ -1,6 +1,7 @@
 const Post = require('./post.model');
 const Community = require('../communities/community.model');
 const User = require('../auth/auth.model');
+const Notification = require('../notifications/notification.model');
 const { cloudinary } = require('../../config/cloudinary');
 
 const createPost = async (req, res, next) => {
@@ -117,6 +118,9 @@ const upvotePost = async (req, res, next) => {
       post.upvoters.push(userId);
       post.upvotes += 1;
       await User.findByIdAndUpdate(post.author, { $inc: { postKarma: 1 } });
+      if (post.author.toString() !== userId) {
+        await Notification.create({ recipient: post.author, type: 'upvote', message: 'Someone upvoted your post' });
+      }
     }
     await post.save();
     res.json({ success: true, upvotes: post.upvotes, downvotes: post.downvotes });

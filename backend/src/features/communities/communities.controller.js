@@ -1,5 +1,6 @@
 const { validationResult } = require('express-validator');
 const Community = require('./community.model');
+const Notification = require('../notifications/notification.model');
 
 const escapeRegex = (value = '') => value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 
@@ -124,7 +125,9 @@ const joinCommunity = async (req, res, next) => {
     community.members.push(req.user.id);
     community.memberCount += 1;
     await community.save();
-
+    if (community.creator.toString() !== req.user.id) {
+      await Notification.create({ recipient: community.creator, type: 'join', message: `Someone joined your r/${community.name} community` });
+    }
     return res.json({ success: true, message: 'Joined community' });
   } catch (err) {
     return next(err);
