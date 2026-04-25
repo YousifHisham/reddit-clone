@@ -1,4 +1,9 @@
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
+import { getMe, logout } from '../api/auth';
+import { getFeed, createPost, upvotePost, downvotePost } from '../api/posts';
+import { getCommunities, joinCommunity, leaveCommunity, createCommunity } from '../api/communities';
+import { getNotifications, markNotificationsRead } from '../api/notifications';
+import { getThreads, getMessages, sendMessage, markThreadRead, searchUsers } from '../api/messages';
  
 
 // ── Icons ──
@@ -143,12 +148,123 @@ function SidebarSection({ section }) {
   );
 }
 
+function CreatePostModal({ communities, onClose, onCreated }) {
+  const [title, setTitle] = useState('');
+  const [content, setContent] = useState('');
+  const [community, setCommunity] = useState('');
+  const [image, setImage] = useState(null);
+  const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (!title.trim() || !community) return setError('Title and community are required.');
+    setError('');
+    setLoading(true);
+    const data = await createPost({ title, content, community, image });
+    setLoading(false);
+    if (data.success) { onCreated(data.post); onClose(); }
+    else setError(data.message || 'Failed to create post.');
+  };
+
+  return (
+    <div style={{ position:'fixed', inset:0, background:'rgba(0,0,0,0.5)', display:'flex', alignItems:'center', justifyContent:'center', zIndex:200 }} onClick={onClose}>
+      <div style={{ background:'#fff', borderRadius:12, padding:'28px 32px', width:'100%', maxWidth:480, boxShadow:'0 8px 32px rgba(0,0,0,0.2)' }} onClick={e => e.stopPropagation()}>
+        <h2 style={{ fontSize:18, fontWeight:700, marginBottom:16 }}>Create Post</h2>
+        <form onSubmit={handleSubmit} style={{ display:'flex', flexDirection:'column', gap:12 }}>
+          <select className="auth-input" value={community} onChange={e => setCommunity(e.target.value)} required>
+            <option value="">Select a community</option>
+            {communities.map(c => <option key={c._id} value={c._id}>r/{c.name}</option>)}
+          </select>
+          <input className="auth-input" placeholder="Title" value={title} onChange={e => setTitle(e.target.value)} required maxLength={300} />
+          <textarea className="auth-input" placeholder="Text (optional)" value={content} onChange={e => setContent(e.target.value)} rows={4} style={{ resize:'vertical', borderRadius:8 }} />
+          <input type="file" accept="image/*" onChange={e => setImage(e.target.files[0])} style={{ fontSize:13 }} />
+          {error && <p className="auth-error">{error}</p>}
+          <div style={{ display:'flex', gap:8, justifyContent:'flex-end' }}>
+            <button type="button" className="panel-join-btn" onClick={onClose}>Cancel</button>
+            <button type="submit" className="panel-create-btn" style={{ width:'auto', padding:'8px 20px' }} disabled={loading}>{loading ? 'Posting...' : 'Post'}</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  );
+}
+
+function CreateCommunityModal({ onClose, onCreated }) {
+  const [name, setName] = useState('');
+  const [description, setDescription] = useState('');
+  const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setError('');
+    setLoading(true);
+    const data = await createCommunity({ name, description });
+    setLoading(false);
+    if (data.success) { onCreated(data.community); onClose(); }
+    else setError(data.message || 'Failed to create community.');
+  };
+
+  return (
+    <div style={{ position:'fixed', inset:0, background:'rgba(0,0,0,0.5)', display:'flex', alignItems:'center', justifyContent:'center', zIndex:200 }} onClick={onClose}>
+      <div style={{ background:'#fff', borderRadius:12, padding:'28px 32px', width:'100%', maxWidth:480, boxShadow:'0 8px 32px rgba(0,0,0,0.2)' }} onClick={e => e.stopPropagation()}>
+        <h2 style={{ fontSize:18, fontWeight:700, marginBottom:16 }}>Create Community</h2>
+        <form onSubmit={handleSubmit} style={{ display:'flex', flexDirection:'column', gap:12 }}>
+          <input className="auth-input" placeholder="Community name (3-21 chars)" value={name} onChange={e => setName(e.target.value)} required minLength={3} maxLength={21} />
+          <textarea className="auth-input" placeholder="Description" value={description} onChange={e => setDescription(e.target.value)} rows={3} style={{ resize:'vertical', borderRadius:8 }} required />
+          {error && <p className="auth-error">{error}</p>}
+          <div style={{ display:'flex', gap:8, justifyContent:'flex-end' }}>
+            <button type="button" className="panel-join-btn" onClick={onClose}>Cancel</button>
+            <button type="submit" className="panel-create-btn" style={{ width:'auto', padding:'8px 20px' }} disabled={loading}>{loading ? 'Creating...' : 'Create'}</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  );
+}
+
 export default function RedditLayout() {
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const [activeSort, setActiveSort] = useState("Hot");
   const [joinedMap, setJoinedMap] = useState({});
+  const [posts, setPosts] = useState([]);
+  const [communities, setCommunities] = useState([]);
+  const [user, setUser] = useState(null);
+  const [showCreatePost, setShowCreatePost] = useState(false);
+  const [showCreateCommunity, setShowCreateCommunity] = useState(false);
 
-  const toggleJoin = (id) => setJoinedMap(prev => ({ ...prev, [id]: !prev[id] }));
+  useEffect(() => {
+    getMe().then(data => { if (data.success) setUser(data.user); });
+    getCommunities().then(data => { if (data.success) setCommunities(data.communities); });
+  }, []);
+
+  useEffect(() => {
+    const token = localStorage.getItem('accessToken');
+    getFeed(token).then(data => { if (data.success) setPosts(data.posts); });
+  }, [activeSort]);
+
+  useEffect(() => {
+    if (!user || communities.length === 0) return;
+    const joined = {};
+    communities.forEach(c => {
+      joined[c._id] = c.members?.map(m => m.toString()).includes(user._id.toString());
+    });
+    setJoinedMap(joined);
+  }, [user, communities]);
+
+  const toggleJoin = async (id) => {
+    const isJoined = joinedMap[id];
+    const fn = isJoined ? leaveCommunity : joinCommunity;
+    const data = await fn(id);
+    if (data.success) setJoinedMap(prev => ({ ...prev, [id]: !isJoined }));
+  };
+
+  const handleLogout = async () => {
+    await logout();
+    localStorage.removeItem('accessToken');
+    window.location.href = '/Login';
+  };
 
   return (
     <>
@@ -175,12 +291,39 @@ export default function RedditLayout() {
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
             <span>Ask</span>
           </button>
-          <button className="nav-icon-btn" title="Messages">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
-          </button>
-          <button className="nav-icon-btn" title="Notifications" style={{ position: "relative" }}>
+          <div style={{ position:'relative' }} ref={chatRef}>
+            <button className="nav-icon-btn" title="Messages" onClick={() => setShowChat(s => !s)}>
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+            </button>
+            {showChat && user && <ChatPanel currentUser={user} onClose={() => setShowChat(false)} />}
+          </div>
+          <button className="nav-icon-btn" title="Notifications" style={{ position: "relative" }} onClick={handleBellClick} ref={notifRef}>
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
-            <span className="notif-dot" />
+            {notifications.some(n => !n.read) && (
+              <span className="notif-badge">{notifications.filter(n => !n.read).length}</span>
+            )}
+            {showNotifs && (
+              <div className="notif-dropdown" onClick={e => e.stopPropagation()}>
+                <div className="notif-dropdown-header">Notifications</div>
+                {notifications.length === 0 ? (
+                  <div className="notif-empty">No notifications yet</div>
+                ) : (
+                  notifications.map(n => (
+                    <div key={n._id} className={`notif-item ${n.read ? '' : 'unread'}`}>
+                      <span className="notif-icon">
+                        {n.type === 'upvote' && '⬆️'}
+                        {n.type === 'comment' && '💬'}
+                        {n.type === 'join' && '👥'}
+                      </span>
+                      <div>
+                        <div className="notif-message">{n.message}</div>
+                        <div className="notif-time">{timeAgo(n.createdAt)}</div>
+                      </div>
+                    </div>
+                  ))
+                )}
+              </div>
+            )}
           </button>
           <button className="nav-create-btn">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>

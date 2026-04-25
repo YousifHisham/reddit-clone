@@ -8,6 +8,8 @@ const authRoutes = require('./features/auth/auth.routes');
 const usersRoutes = require('./features/users/users.routes');
 const communitiesRoutes = require('./features/communities/communities.routes');
 const postsRoutes = require('./features/posts/posts.routes');
+const notificationsRoutes = require('./features/notifications/notifications.routes');
+const messagesRoutes = require('./features/messages/messages.routes');
 
 const app = express();
 
@@ -19,6 +21,8 @@ app.use('/api/auth', authRoutes);
 app.use('/api/users', usersRoutes);
 app.use('/api/communities', communitiesRoutes);
 app.use('/api/posts', postsRoutes);
+app.use('/api/notifications', notificationsRoutes);
+app.use('/api/messages', messagesRoutes);
 
 app.use(errorMiddleware);
 
