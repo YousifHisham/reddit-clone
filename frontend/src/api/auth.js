@@ -59,11 +59,13 @@ export async function fetchWithAuth(url, options = {}) {
 
   if (!token) return { success: false, message: 'Not authenticated', code: 'UNAUTHORIZED' };
 
+  const isFormData = options.body instanceof FormData;
+
   const res = await fetch(url, {
     ...options,
     credentials: 'include',
     headers: {
-      'Content-Type': 'application/json',
+      ...(isFormData ? {} : { 'Content-Type': 'application/json' }),
       ...options.headers,
       Authorization: `Bearer ${token}`,
     },
@@ -77,7 +79,7 @@ export async function fetchWithAuth(url, options = {}) {
       ...options,
       credentials: 'include',
       headers: {
-        'Content-Type': 'application/json',
+        ...(isFormData ? {} : { 'Content-Type': 'application/json' }),
         ...options.headers,
         Authorization: `Bearer ${token}`,
       },
@@ -86,6 +88,14 @@ export async function fetchWithAuth(url, options = {}) {
   }
 
   return parseResponse(res);
+}
+
+export async function getMe() {
+  return fetchWithAuth('/api/auth/me');
+}
+
+export async function logout() {
+  return fetchWithAuth('/api/auth/logout', { method: 'POST' });
 }
 
 export async function completeProfile(data, token) {

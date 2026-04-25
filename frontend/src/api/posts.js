@@ -16,10 +16,16 @@ export async function getFeed(token) {
   return parseResponse(res);
 }
 
-export async function createPost(data, token) {
+export async function createPost(data) {
+  const formData = new FormData();
+  formData.append('title', data.title);
+  formData.append('community', data.community);
+  if (data.content) formData.append('content', data.content);
+  if (data.flair) formData.append('flair', data.flair);
+  if (data.image) formData.append('image', data.image);
   return fetchWithAuth(BASE, {
     method: 'POST',
-    body: JSON.stringify(data),
+    body: formData,
   });
 }
 
