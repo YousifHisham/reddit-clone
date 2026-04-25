@@ -1,7 +1,7 @@
 # Graph Report - C:\Users\Michael Maged\Desktop\ASU\term 8\ip\Project\reddit-clone  (2026-04-25)
 
 ## Corpus Check
-- 35 files · ~44,432 words
+- 35 files · ~55,926 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
@@ -56,16 +56,16 @@
 10. `createRefreshToken()` - 4 edges
 
 ## Surprising Connections (you probably didn't know these)
-- `joinCommunity()` --calls--> `fetchWithAuth()`  [INFERRED]
-  C:\Users\Michael Maged\Desktop\ASU\term 8\ip\Project\reddit-clone\frontend\src\api\communities.js → C:\Users\Michael Maged\Desktop\ASU\term 8\ip\Project\reddit-clone\frontend\src\api\auth.js
-- `leaveCommunity()` --calls--> `fetchWithAuth()`  [INFERRED]
-  C:\Users\Michael Maged\Desktop\ASU\term 8\ip\Project\reddit-clone\frontend\src\api\communities.js → C:\Users\Michael Maged\Desktop\ASU\term 8\ip\Project\reddit-clone\frontend\src\api\auth.js
-- `createCommunity()` --calls--> `fetchWithAuth()`  [INFERRED]
-  C:\Users\Michael Maged\Desktop\ASU\term 8\ip\Project\reddit-clone\frontend\src\api\communities.js → C:\Users\Michael Maged\Desktop\ASU\term 8\ip\Project\reddit-clone\frontend\src\api\auth.js
-- `updateProfile()` --calls--> `fetchWithAuth()`  [INFERRED]
-  C:\Users\Michael Maged\Desktop\ASU\term 8\ip\Project\reddit-clone\frontend\src\api\users.js → C:\Users\Michael Maged\Desktop\ASU\term 8\ip\Project\reddit-clone\frontend\src\api\auth.js
-- `getSavedPosts()` --calls--> `fetchWithAuth()`  [INFERRED]
-  C:\Users\Michael Maged\Desktop\ASU\term 8\ip\Project\reddit-clone\frontend\src\api\users.js → C:\Users\Michael Maged\Desktop\ASU\term 8\ip\Project\reddit-clone\frontend\src\api\auth.js
+- `fetchWithAuth()` --calls--> `joinCommunity()`  [INFERRED]
+  C:\Users\Michael Maged\Desktop\ASU\term 8\ip\Project\reddit-clone\frontend\src\api\auth.js → C:\Users\Michael Maged\Desktop\ASU\term 8\ip\Project\reddit-clone\frontend\src\api\communities.js
+- `fetchWithAuth()` --calls--> `leaveCommunity()`  [INFERRED]
+  C:\Users\Michael Maged\Desktop\ASU\term 8\ip\Project\reddit-clone\frontend\src\api\auth.js → C:\Users\Michael Maged\Desktop\ASU\term 8\ip\Project\reddit-clone\frontend\src\api\communities.js
+- `fetchWithAuth()` --calls--> `createCommunity()`  [INFERRED]
+  C:\Users\Michael Maged\Desktop\ASU\term 8\ip\Project\reddit-clone\frontend\src\api\auth.js → C:\Users\Michael Maged\Desktop\ASU\term 8\ip\Project\reddit-clone\frontend\src\api\communities.js
+- `fetchWithAuth()` --calls--> `updateProfile()`  [INFERRED]
+  C:\Users\Michael Maged\Desktop\ASU\term 8\ip\Project\reddit-clone\frontend\src\api\auth.js → C:\Users\Michael Maged\Desktop\ASU\term 8\ip\Project\reddit-clone\frontend\src\api\users.js
+- `fetchWithAuth()` --calls--> `getSavedPosts()`  [INFERRED]
+  C:\Users\Michael Maged\Desktop\ASU\term 8\ip\Project\reddit-clone\frontend\src\api\auth.js → C:\Users\Michael Maged\Desktop\ASU\term 8\ip\Project\reddit-clone\frontend\src\api\users.js
 
 ## Communities
 
