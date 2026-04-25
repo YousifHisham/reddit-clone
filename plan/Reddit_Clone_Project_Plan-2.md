@@ -213,9 +213,9 @@ This is a solo project to build a minimal Reddit clone. This guide breaks down r
 
 ### Week 1-2: Planning & Setup
 
-- [ ] Finalize user stories & database schema
-- [ ] Initialize Node/Express backend repository
-- [ ] Initialize React frontend repository
+- [x] Finalize user stories & database schema
+- [x] Initialize Node/Express backend repository
+- [x] Initialize React frontend repository
 - [ ] Set up MongoDB Atlas (free tier)
 - [ ] Create GitHub repository
 
@@ -223,46 +223,61 @@ This is a solo project to build a minimal Reddit clone. This guide breaks down r
 
 ### Week 2-3: Backend—Authentication
 
-- [ ] Create User model & register endpoint
-- [ ] Implement JWT authentication middleware
-- [ ] Create login endpoint
+- [x] Create User model & register endpoint
+- [x] Implement JWT authentication middleware
+- [x] Create login endpoint (OTP-based)
 - [ ] Test endpoints with Postman
-- [ ] Add password validation & error handling
+- [x] Add input validation & error handling
 
 **Deliverable:** Users can register and login
 
 ### Week 3-4: Backend—Core Models & Endpoints
 
-- [ ] Create Community, Post, Comment models
-- [ ] Implement CRUD endpoints for all models
-- [ ] Add voting logic (prevent double-voting)
+- [x] Create Community model & CRUD endpoints
+- [x] Create Post model & CRUD endpoints
+- [x] Create Notification model & endpoints
+- [x] Create Message/Thread model & endpoints
+- [x] Add voting logic for posts (prevent double-voting)
+- [ ] Create Comment model (`comment.model.js`)
+- [ ] Implement comment endpoints (create, delete, upvote) (`comments.controller.js`, `comments.routes.js`)
 - [ ] Test all endpoints with Postman
 
 **Deliverable:** All API endpoints working
 
 ### Week 4-5: Frontend—Setup & Auth UI
 
-- [ ] Set up React + React Router
-- [ ] Build register page
-- [ ] Build login page
-- [ ] Implement JWT token storage
-- [ ] Create protected routes
+- [x] Set up React + React Router
+- [x] Build register page (EmailPage, OtpPage)
+- [x] Build interests/onboarding page
+- [x] Implement JWT token storage
+- [x] Create protected routes
 
 **Deliverable:** Users can login/register on frontend
 
 ### Week 5-7: Frontend—Core Features
 
-- [ ] Build communities list page
-- [ ] Build community detail page
-- [ ] Build posts feed
-- [ ] Build post detail page with comments
-- [ ] Build create post & comment forms
+- [x] Build posts feed (HomePage with PostCard)
+- [x] Build create post modal
+- [x] Build create community modal
+- [x] Build chat/messages panel
+- [x] Build notifications dropdown
+- [ ] Build post detail page with comments (`PostDetailPage.jsx`) — route: `/post/:id`
+- [ ] Build community detail page (`CommunityPage.jsx`) — route: `/r/:name`
+- [ ] Build user profile page (`ProfilePage.jsx`) — route: `/u/:id`
+- [ ] Build search results page (`SearchPage.jsx`) — route: `/search`
+- [ ] Wire up search bar in navbar to search API
+- [ ] Build comment form & comment list UI
+- [ ] Add routes for new pages in `App.jsx`
 
 **Deliverable:** All pages built, styled (basic styling OK)
 
 ### Week 7-8: Integration & Bug Fixes
 
-- [ ] Connect frontend to backend API
+- [x] Connect frontend to backend API (feed, communities, auth, messages, notifications)
+- [ ] Connect post detail page to backend
+- [ ] Connect comments to backend
+- [ ] Connect community page to backend
+- [ ] Connect profile page to backend
 - [ ] Test end-to-end user flows
 - [ ] Fix bugs
 - [ ] Refine UI styling
@@ -271,12 +286,13 @@ This is a solo project to build a minimal Reddit clone. This guide breaks down r
 
 ### Week 8-9: AI Integration (Bonus)
 
-- [ ] Research Claude API or similar
-- [ ] Build backend endpoint to summarize post
-- [ ] Add "Summarize" button to frontend
+- [ ] Research Claude API or OpenAI API
+- [ ] Build backend endpoint to summarize post + top comments
+- [ ] Add "Summarize" button to post detail page
+- [ ] Display summary in modal or section
 - [ ] Test summarization feature
 
-**Deliverable:** AI summarization working (5% bonus)
+**Deliverable:** AI summarization working (10% bonus)
 
 ### Week 9-10: Documentation & Deployment
 
@@ -463,22 +479,22 @@ Before submitting, ensure you have:
 - [ ] List of all API endpoints with examples
 
 ### Features
-- [ ] Basic Requirement 1: Account creation & login (25%)
-- [ ] Basic Requirement 2: View/Edit profile
-- [ ] Basic Requirement 3: Create communities
-- [ ] Basic Requirement 4: Join/Leave communities
-- [ ] Basic Requirement 5: Create posts
-- [ ] Basic Requirement 6: View posts in community
-- [ ] Basic Requirement 7: Feed page
-- [ ] Basic Requirement 8: Upvote/Downvote posts
-- [ ] Basic Requirement 9: Comment on posts
-- [ ] Basic Requirement 10: Search communities & users
-- [ ] AI Integration: Summarize posts (10%)
+- [x] Basic Requirement 1: Account creation & login (OTP-based, JWT, refresh tokens) ✅
+- [ ] Basic Requirement 2: View/Edit profile — backend done, frontend page missing
+- [x] Basic Requirement 3: Create communities ✅
+- [x] Basic Requirement 4: Join/Leave communities ✅
+- [x] Basic Requirement 5: Create posts (text + image upload) ✅
+- [ ] Basic Requirement 6: View posts in community — backend done (`GET /communities/:id/posts`), frontend community page missing
+- [x] Basic Requirement 7: Feed page (personalized feed with sort) ✅
+- [x] Basic Requirement 8: Upvote/Downvote posts ✅
+- [ ] Basic Requirement 9: Comment on posts — backend missing (no comment model/routes), frontend missing
+- [ ] Basic Requirement 10: Search communities & users — backend done, frontend search bar not wired up
+- [ ] AI Integration: Summarize posts (10% bonus)
 
 ### Quality
-- [ ] UI matches Reddit (15%)
-- [ ] Database design is efficient (5%)
-- [ ] Code is clean & organized (5%)
+- [x] UI matches Reddit layout & color scheme (navbar, sidebar, feed, post cards) ✅
+- [x] Database design is efficient (denormalized counts, indexes, ref population) ✅
+- [x] Code is clean & organized (feature-based folder structure) ✅
 - [ ] No console errors or warnings
 
 ### Deployment
@@ -570,24 +586,57 @@ Before submitting, ensure you have:
 ## 📋 Quick Start Checklist
 
 This week:
-- [ ] Finalize requirements & user stories
-- [ ] Create GitHub repositories (backend & frontend)
-- [ ] Initialize Node.js + Express project
-- [ ] Initialize React project
+- [x] Finalize requirements & user stories
+- [x] Create GitHub repositories (backend & frontend)
+- [x] Initialize Node.js + Express project
+- [x] Initialize React project
 - [ ] Set up MongoDB Atlas
 - [ ] Commit initial setup
 
 Next week:
-- [ ] Build User model & authentication
-- [ ] Build frontend login/register pages
+- [x] Build User model & authentication
+- [x] Build frontend login/register pages
 
 Week after:
-- [ ] Build Post & Community models
-- [ ] Build remaining pages
+- [x] Build Post & Community models
+- [ ] Build remaining pages (comments, post detail, community page, profile page, search)
+
+## 🚧 Remaining Work (What Still Needs to Be Built)
+
+### Backend
+- [ ] `comment.model.js` — Comment schema (content, author, post ref, upvotes, upvoters)
+- [ ] `comments.controller.js` — createComment, getComments, deleteComment, upvoteComment
+- [ ] `comments.routes.js` — wire up routes and register in `server.js`
+- [ ] `GET /api/posts/:id/comments` — fetch comments for a post
+- [ ] Add `comments` API file in frontend (`frontend/src/api/comments.js`)
+
+### Frontend Pages
+- [ ] `PostDetailPage.jsx` — show post + comments list + add comment form + upvote comment
+- [ ] `CommunityPage.jsx` — show community info, member count, rules, posts list, join/leave button
+- [ ] `ProfilePage.jsx` — show user info, karma, bio, profile picture, edit form (own profile), saved posts
+- [ ] `SearchPage.jsx` — show search results for communities and users
+
+### Frontend Routing (`App.jsx`)
+- [ ] Add `/post/:id` → `PostDetailPage`
+- [ ] Add `/r/:name` → `CommunityPage`
+- [ ] Add `/u/:id` → `ProfilePage`
+- [ ] Add `/search` → `SearchPage`
+
+### Frontend Wiring
+- [ ] Make post card title/comments button navigate to `/post/:id`
+- [ ] Make community name in post card navigate to `/r/:name`
+- [ ] Make author username navigate to `/u/:id`
+- [ ] Wire navbar search bar to call search API and navigate to `/search`
+- [ ] Wire sidebar community links to real joined communities
+
+### Bonus
+- [ ] AI summarization endpoint (`POST /api/posts/:id/summarize`)
+- [ ] "Summarize" button on post detail page
+- [ ] Deploy backend + frontend
 
 ---
 
-**Last Updated:** April 7, 2026  
+**Last Updated:** May 2026  
 **Project Timeline:** ~10 weeks  
 **Difficulty:** Intermediate (for beginners, but achievable)
 
