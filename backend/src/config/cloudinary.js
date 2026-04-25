@@ -3,9 +3,9 @@ const multer = require('multer');
 const { Readable } = require('stream');
 
 cloudinary.config({
-  cloud_name: process.env.CLOUDINARY_CLOUD_NAME || 'dgzptwfyz',
-  api_key: process.env.CLOUDINARY_API_KEY || '192694623597297',
-  api_secret: process.env.CLOUDINARY_API_SECRET || 'R8Q15Q0rQ8XIeF9',
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET,
 });
 
 const createCloudinaryStorage = (folder, options = {}) => ({
@@ -24,8 +24,8 @@ const createCloudinaryStorage = (folder, options = {}) => ({
   },
 });
 
-const uploadProfile = multer({ storage: createCloudinaryStorage('reddit-clone/profiles', { width: 256, height: 256, crop: 'fill' }), limits: { fileSize: 5 * 1024 * 1024 } });
-const uploadPost = multer({ storage: createCloudinaryStorage('reddit-clone/posts'), limits: { fileSize: 10 * 1024 * 1024 } });
-const uploadCommunity = multer({ storage: createCloudinaryStorage('reddit-clone/communities'), limits: { fileSize: 5 * 1024 * 1024 } });
+const uploadProfile = multer({ storage: createCloudinaryStorage('reddit-clone/profiles', { width: 256, height: 256, crop: 'fill' }) });
+const uploadPost = multer({ storage: createCloudinaryStorage('reddit-clone/posts') });
+const uploadCommunity = multer({ storage: createCloudinaryStorage('reddit-clone/communities') });
 
 module.exports = { cloudinary, uploadProfile, uploadPost, uploadCommunity };

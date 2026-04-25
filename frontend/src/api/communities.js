@@ -1,5 +1,3 @@
-import { fetchWithAuth } from './auth';
-
 const BASE = '/api/communities';
 
 async function parseResponse(res) {
@@ -20,17 +18,10 @@ export async function getJoinedCommunities(token) {
   return parseResponse(res);
 }
 
-export async function joinCommunity(id) {
-  return fetchWithAuth(`${BASE}/${id}/join`, { method: 'POST' });
-}
-
-export async function leaveCommunity(id) {
-  return fetchWithAuth(`${BASE}/${id}/leave`, { method: 'POST' });
-}
-
-export async function createCommunity(data) {
-  return fetchWithAuth(BASE, {
+export async function joinCommunity(id, token) {
+  const res = await fetch(`${BASE}/${id}/join`, {
     method: 'POST',
-    body: JSON.stringify(data),
+    headers: { Authorization: `Bearer ${token}` },
   });
+  return parseResponse(res);
 }

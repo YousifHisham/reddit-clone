@@ -811,31 +811,3 @@
     .main { padding: 12px 10px; }
     .nav-ask-btn span { display: none; }
   }
-
-/* ── Interests page ── */
-.interests-container { align-items: flex-start; padding: 32px 16px; }
-.interests-card { max-width: 560px; }
-
-.interests-grid {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  justify-content: center;
-}
-
-.interest-chip {
-  padding: 8px 16px;
-  border-radius: 999px;
-  border: 1px solid var(--border);
-  background: var(--pill-bg);
-  font-size: 13px;
-  font-weight: 500;
-  cursor: pointer;
-  font-family: var(--font);
-  color: var(--text);
-  transition: background 0.15s, border-color 0.15s, color 0.15s;
-}
-.interest-chip:hover { border-color: var(--orange); color: var(--orange); }
-.interest-chip.selected { background: var(--orange); color: #fff; border-color: var(--orange); }
-
-.interests-count { font-size: 13px; color: var(--muted); text-align: center; }
