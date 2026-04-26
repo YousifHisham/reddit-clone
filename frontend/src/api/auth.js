@@ -45,7 +45,6 @@ export async function refreshAccessToken() {
 export async function fetchWithAuth(url, options = {}) {
   let token = localStorage.getItem('accessToken');
 
-  // Check if token is expired or about to expire (within 60s)
   if (token) {
     try {
       const payload = JSON.parse(atob(token.split('.')[1]));
@@ -55,15 +54,19 @@ export async function fetchWithAuth(url, options = {}) {
     } catch {
       token = await refreshAccessToken();
     }
+  } else {
+    token = await refreshAccessToken();
   }
 
   if (!token) return { success: false, message: 'Not authenticated', code: 'UNAUTHORIZED' };
+
+  const isFormData = options.body instanceof FormData;
 
   const res = await fetch(url, {
     ...options,
     credentials: 'include',
     headers: {
-      'Content-Type': 'application/json',
+      ...(isFormData ? {} : { 'Content-Type': 'application/json' }),
       ...options.headers,
       Authorization: `Bearer ${token}`,
     },
@@ -77,7 +80,7 @@ export async function fetchWithAuth(url, options = {}) {
       ...options,
       credentials: 'include',
       headers: {
-        'Content-Type': 'application/json',
+        ...(isFormData ? {} : { 'Content-Type': 'application/json' }),
         ...options.headers,
         Authorization: `Bearer ${token}`,
       },
@@ -86,6 +89,14 @@ export async function fetchWithAuth(url, options = {}) {
   }
 
   return parseResponse(res);
+}
+
+export async function getMe() {
+  return fetchWithAuth('/api/auth/me');
+}
+
+export async function logout() {
+  return fetchWithAuth('/api/auth/logout', { method: 'POST' });
 }
 
 export async function completeProfile(data, token) {

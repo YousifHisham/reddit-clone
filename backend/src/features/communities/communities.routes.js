@@ -8,6 +8,9 @@ const {
   searchCommunities,
   joinCommunity,
   leaveCommunity,
+  getFlairs,
+  createFlair,
+  getPendingPosts,
 } = require('./communities.controller');
 const { getCommunityPosts } = require('../posts/posts.controller');
 
@@ -57,5 +60,8 @@ router.post(
 );
 
 router.get('/:id/posts', getCommunityPosts);
+router.get('/:id/flairs', getFlairs);
+router.post('/:id/flairs', verifyToken, createFlair);
+router.get('/:id/pending', verifyToken, getPendingPosts);
 
 module.exports = router;

@@ -15,6 +15,14 @@ const router = express.Router();
 
 router.get('/search', [query('q').optional().trim().isLength({ max: 50 })], searchUsers);
 
+router.get('/me', verifyToken, async (req, res, next) => {
+  try {
+    const user = await require('../auth/auth.model').findById(req.user.id).select('-otp -otpExpiry -fcmToken -refreshTokens');
+    if (!user) return res.status(404).json({ success: false, message: 'User not found' });
+    return res.json({ success: true, user });
+  } catch (err) { return next(err); }
+});
+
 router.get('/:id', [param('id').isMongoId().withMessage('Valid user id required')], getProfile);
 
 router.put(
