@@ -28,3 +28,4 @@ coverage/
 # Project folders to ignore
 .claude/
 
+graphify-out/
