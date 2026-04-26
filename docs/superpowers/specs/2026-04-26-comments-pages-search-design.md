@@ -35,7 +35,7 @@ Comments store a nullable `parent` ObjectId. The backend returns a flat array fo
 | `author` | ObjectId → User | |
 | `post` | ObjectId → Post | |
 | `parent` | ObjectId → Comment (nullable) | null = top-level |
-| `depth` | Number (default 0) | For capping display nesting at 6+ levels like Reddit |
+| `depth` | Number (default 0) | Set at creation: `parent.depth + 1`, or `0` if top-level. Used to cap display nesting at 6+ levels like Reddit |
 | `upvotes` | Number (default 0) | |
 | `downvotes` | Number (default 0) | |
 | `upvoters` | [ObjectId] | Prevents duplicate upvotes |
@@ -89,7 +89,7 @@ Add to `backend/src/features/users/users.controller.js`:
 
 ### E. Community by Name Lookup
 
-Add `GET /api/communities/name/:name` (or extend existing `GET /api/communities/:id` to detect non-ObjectId param and query by name). CommunityPage uses route `/r/:name` so lookup must be by name string.
+Add `GET /api/communities/name/:name` as a new dedicated route. CommunityPage uses `/r/:name` so lookup must be by name string, not ObjectId.
 
 ---
 
