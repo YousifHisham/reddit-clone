@@ -3,6 +3,7 @@ import EmailPage from './pages/EmailPage';
 import OtpPage from './pages/OtpPage';
 import InterestsPage from './pages/InterestsPage';
 import HomePage from './pages/HomePage';
+import SubmitPage from './pages/SubmitPage';
 
 function ProtectedRoute({ children }) {
   const token = localStorage.getItem('accessToken');
@@ -21,6 +22,14 @@ export default function App() {
           element={
             <ProtectedRoute>
               <HomePage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/submit"
+          element={
+            <ProtectedRoute>
+              <SubmitPage />
             </ProtectedRoute>
           }
         />

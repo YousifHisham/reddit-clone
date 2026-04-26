@@ -6,20 +6,35 @@ const { cloudinary } = require('../../config/cloudinary');
 
 const createPost = async (req, res, next) => {
   try {
-    const { title, content, community: communityId, flair, tags } = req.body;
+    const { title, content, community: communityId, flair, flairColor, tags, nsfw } = req.body;
     const community = await Community.findById(communityId);
     if (!community) return res.status(404).json({ success: false, message: 'Community not found', code: 'NOT_FOUND' });
     if (!community.members.map((id) => id.toString()).includes(req.user.id)) {
       return res.status(403).json({ success: false, message: 'You must join this community to post', code: 'NOT_MEMBER' });
     }
+    const status = community.requiresApproval ? 'pending' : 'published';
     const post = await Post.create({
-      title, content, flair, tags: tags || [],
+      title, content, flair, flairColor: flairColor || '', tags: tags || [],
+      nsfw: nsfw === true || nsfw === 'true',
       image: req.file ? req.file.path : '',
       author: req.user.id,
       community: communityId,
+      status,
     });
     await post.populate('author', 'username profilePicture');
     await post.populate('community', 'name');
+    if (status === 'pending') {
+      const author = await User.findById(req.user.id).select('username');
+      await Notification.create({
+        recipient: community.creator,
+        sender: req.user.id,
+        type: 'post_approval',
+        message: `u/${author.username} submitted a post in r/${community.name}: "${title}"`,
+        postId: post._id,
+        authorId: req.user.id,
+        communityId: community._id,
+      });
+    }
     res.status(201).json({ success: true, post });
   } catch (err) { next(err); }
 };
@@ -57,6 +72,7 @@ const getFeed = async (req, res, next) => {
       const joinedCommunities = await Community.find({ members: req.user.id }).select('_id');
       const joinedIds = joinedCommunities.map((c) => c._id);
       posts = await Post.find({
+        status: 'published',
         $or: [{ community: { $in: joinedIds } }, { tags: { $in: user.tags } }],
       })
         .sort({ createdAt: -1 })
@@ -76,13 +92,28 @@ const getFeed = async (req, res, next) => {
         }).sort((a, b) => b._score - a._score);
       }
     } else {
-      posts = await Post.find()
+      posts = await Post.find({ status: 'published' })
         .sort({ upvotes: -1, createdAt: -1 })
         .populate('author', 'username profilePicture')
         .populate('community', 'name icon')
         .limit(limit);
     }
     res.json({ success: true, posts });
+  } catch (err) { next(err); }
+};
+
+const updatePost = async (req, res, next) => {
+  try {
+    const post = await Post.findById(req.params.id);
+    if (!post) return res.status(404).json({ success: false, message: 'Post not found', code: 'NOT_FOUND' });
+    if (post.author.toString() !== req.user.id) {
+      return res.status(403).json({ success: false, message: 'Not your post', code: 'FORBIDDEN' });
+    }
+    post.content = req.body.body ?? post.content;
+    await post.save();
+    await post.populate('author', 'username profilePicture');
+    await post.populate('community', 'name icon');
+    res.json({ success: true, post });
   } catch (err) { next(err); }
 };
 
@@ -150,4 +181,34 @@ const downvotePost = async (req, res, next) => {
   } catch (err) { next(err); }
 };
 
-module.exports = { createPost, getPost, getCommunityPosts, getFeed, deletePost, upvotePost, downvotePost };
+const updatePostStatus = async (req, res, next) => {
+  try {
+    const { status } = req.body;
+    if (!['published', 'rejected'].includes(status)) {
+      return res.status(400).json({ success: false, message: 'Invalid status' });
+    }
+    const post = await Post.findById(req.params.id)
+      .populate('author', 'username')
+      .populate('community', 'name creator');
+    if (!post) return res.status(404).json({ success: false, message: 'Post not found' });
+    if (post.community.creator.toString() !== req.user.id) {
+      return res.status(403).json({ success: false, message: 'Only the moderator can update post status' });
+    }
+    post.status = status;
+    await post.save();
+    const emoji = status === 'published' ? '✅' : '❌';
+    const verb = status === 'published' ? 'approved' : 'rejected';
+    const notifType = status === 'published' ? 'post_approved' : 'post_rejected';
+    await Notification.create({
+      recipient: post.author._id,
+      sender: req.user.id,
+      type: notifType,
+      message: `${emoji} Your post "${post.title}" was ${verb} in r/${post.community.name}`,
+      postId: post._id,
+      communityId: post.community._id,
+    });
+    res.json({ success: true, post });
+  } catch (err) { next(err); }
+};
+
+module.exports = { createPost, getPost, getCommunityPosts, getFeed, deletePost, updatePost, updatePostStatus, upvotePost, downvotePost };

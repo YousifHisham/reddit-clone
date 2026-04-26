@@ -10,7 +10,8 @@ const communitySchema = new mongoose.Schema(
     memberCount: { type: Number, default: 0 },
     banner: { type: String, default: '' },
     icon: { type: String, default: '' },
-    flairs: [{ type: String }],
+    flairs: [{ name: String, color: String }],
+    requiresApproval: { type: Boolean, default: false },
   },
   { timestamps: true }
 );

@@ -167,6 +167,44 @@ const leaveCommunity = async (req, res, next) => {
   }
 };
 
+const getFlairs = async (req, res, next) => {
+  try {
+    const community = await Community.findById(req.params.id).select('flairs name');
+    if (!community) return res.status(404).json({ success: false, message: 'Community not found' });
+    return res.json({ success: true, flairs: community.flairs });
+  } catch (err) { return next(err); }
+};
+
+const createFlair = async (req, res, next) => {
+  try {
+    const community = await Community.findById(req.params.id);
+    if (!community) return res.status(404).json({ success: false, message: 'Community not found' });
+    if (community.creator.toString() !== req.user.id) {
+      return res.status(403).json({ success: false, message: 'Only the moderator can create flairs' });
+    }
+    const { name, color } = req.body;
+    if (!name) return res.status(400).json({ success: false, message: 'Flair name required' });
+    community.flairs.push({ name, color: color || '#0079d3' });
+    await community.save();
+    return res.status(201).json({ success: true, flairs: community.flairs });
+  } catch (err) { return next(err); }
+};
+
+const getPendingPosts = async (req, res, next) => {
+  try {
+    const Post = require('../posts/post.model');
+    const community = await Community.findById(req.params.id);
+    if (!community) return res.status(404).json({ success: false, message: 'Community not found' });
+    if (community.creator.toString() !== req.user.id) {
+      return res.status(403).json({ success: false, message: 'Only the moderator can view pending posts' });
+    }
+    const posts = await Post.find({ community: req.params.id, status: 'pending' })
+      .populate('author', 'username')
+      .sort({ createdAt: -1 });
+    return res.json({ success: true, posts });
+  } catch (err) { return next(err); }
+};
+
 module.exports = {
   createCommunity,
   getCommunity,
@@ -174,4 +212,7 @@ module.exports = {
   searchCommunities,
   joinCommunity,
   leaveCommunity,
+  getFlairs,
+  createFlair,
+  getPendingPosts,
 };
