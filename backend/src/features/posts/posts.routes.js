@@ -4,6 +4,7 @@ const jwt = require('jsonwebtoken');
 const { verifyToken } = require('../../middleware/auth.middleware');
 const { uploadPost } = require('../../config/cloudinary');
 const { createPost, getPost, getCommunityPosts, getFeed, deletePost, updatePost, updatePostStatus, upvotePost, downvotePost } = require('./posts.controller');
+const { getComments } = require('../comments/comments.controller');
 
 const optionalAuth = (req, res, next) => {
   const authHeader = req.headers.authorization;
@@ -23,6 +24,7 @@ router.post('/', verifyToken, uploadPost.single('image'), [
   body('title').trim().notEmpty().withMessage('Title required'),
   body('community').notEmpty().withMessage('Community required'),
 ], createPost);
+router.get('/:id/comments', getComments);
 router.get('/:id', getPost);
 router.patch('/:id/status', verifyToken, updatePostStatus);
 router.patch('/:id', verifyToken, updatePost);
