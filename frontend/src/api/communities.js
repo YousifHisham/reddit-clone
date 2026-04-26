@@ -57,3 +57,15 @@ export async function updateCommunitySettings(id, data) {
     body: JSON.stringify(data),
   });
 }
+
+export async function getCommunityByName(name) {
+  const res = await fetch(`/api/communities/name/${encodeURIComponent(name)}`);
+  const text = await res.text();
+  try { return JSON.parse(text); } catch { return { success: false }; }
+}
+
+export async function getCommunityPosts(id, sort = 'new') {
+  const res = await fetch(`/api/communities/${id}/posts?sort=${sort}`);
+  const text = await res.text();
+  try { return JSON.parse(text); } catch { return { success: false }; }
+}

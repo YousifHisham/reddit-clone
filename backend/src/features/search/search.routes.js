@@ -1,4 +1,7 @@
 const express = require('express');
+const { search } = require('./search.controller');
+
 const router = express.Router();
-router.get('/', (req, res) => res.json({ success: true, posts: [], communities: [], users: [] }));
+router.get('/', search);
+
 module.exports = router;

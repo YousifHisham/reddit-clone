@@ -41,3 +41,18 @@ export async function savePost(userId, postId) {
 export async function unsavePost(userId, postId) {
   return fetchWithAuth(`${BASE}/${userId}/save/${postId}`, { method: 'DELETE' });
 }
+
+export async function getUserByUsername(username) {
+  const res = await fetch(`${BASE}/username/${encodeURIComponent(username)}`);
+  return parseResponse(res);
+}
+
+export async function getUserPosts(username) {
+  const res = await fetch(`${BASE}/${encodeURIComponent(username)}/posts`);
+  return parseResponse(res);
+}
+
+export async function getUserComments(username) {
+  const res = await fetch(`${BASE}/${encodeURIComponent(username)}/comments`);
+  return parseResponse(res);
+}

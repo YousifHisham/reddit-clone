@@ -482,7 +482,7 @@ Before submitting, ensure you have:
 - [x] Basic Requirement 1: Account creation & login (OTP-based, JWT, refresh tokens) ✅
 - [ ] Basic Requirement 2: View/Edit profile — backend done, frontend page missing
 - [x] Basic Requirement 3: Create communities ✅
-- [x] Basic Requirement 4: Join/Leave communities ✅
+- [ ] Basic Requirement 4: Join/Leave communities 
 - [x] Basic Requirement 5: Create posts (text + image upload) ✅
 - [ ] Basic Requirement 6: View posts in community — backend done (`GET /communities/:id/posts`), frontend community page missing
 - [x] Basic Requirement 7: Feed page (personalized feed with sort) ✅

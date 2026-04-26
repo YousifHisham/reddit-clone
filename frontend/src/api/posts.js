@@ -75,3 +75,8 @@ export async function updatePost(id, body) {
 export async function deletePost(id, token) {
   return fetchWithAuth(`${BASE}/${id}`, { method: 'DELETE' });
 }
+
+export async function getPost(id) {
+  const res = await fetch(`${BASE}/${id}`);
+  return parseResponse(res);
+}

@@ -205,6 +205,17 @@ const getPendingPosts = async (req, res, next) => {
   } catch (err) { return next(err); }
 };
 
+const getCommunityByName = async (req, res, next) => {
+  try {
+    const community = await Community.findOne({ name: req.params.name.toLowerCase() })
+      .populate('creator', 'username');
+    if (!community) {
+      return res.status(404).json({ success: false, message: 'Community not found', code: 'NOT_FOUND' });
+    }
+    return res.json({ success: true, community });
+  } catch (err) { return next(err); }
+};
+
 module.exports = {
   createCommunity,
   getCommunity,
@@ -215,4 +226,5 @@ module.exports = {
   getFlairs,
   createFlair,
   getPendingPosts,
+  getCommunityByName,
 };

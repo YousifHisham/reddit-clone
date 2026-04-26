@@ -11,6 +11,7 @@ const {
   getFlairs,
   createFlair,
   getPendingPosts,
+  getCommunityByName,
 } = require('./communities.controller');
 const { getCommunityPosts } = require('../posts/posts.controller');
 
@@ -42,6 +43,8 @@ router.post(
   ],
   createCommunity
 );
+
+router.get('/name/:name', getCommunityByName);
 
 router.get('/:id', [param('id').isMongoId().withMessage('Valid community id required')], getCommunity);
 

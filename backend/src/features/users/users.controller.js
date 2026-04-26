@@ -230,6 +230,48 @@ const unsavePost = async (req, res, next) => {
   }
 };
 
+const getUserByUsername = async (req, res, next) => {
+  try {
+    const user = await User.findOne({ username: req.params.username.toLowerCase() })
+      .select('-otp -otpExpiry -email -fcmToken -refreshTokens');
+    if (!user) {
+      return res.status(404).json({ success: false, message: 'User not found', code: 'NOT_FOUND' });
+    }
+    return res.json({ success: true, user });
+  } catch (err) { return next(err); }
+};
+
+const getUserPosts = async (req, res, next) => {
+  try {
+    const Post = require('../posts/post.model');
+    const user = await User.findOne({ username: req.params.username.toLowerCase() }).select('_id');
+    if (!user) {
+      return res.status(404).json({ success: false, message: 'User not found', code: 'NOT_FOUND' });
+    }
+    const posts = await Post.find({ author: user._id, status: 'published' })
+      .sort({ createdAt: -1 })
+      .populate('author', 'username profilePicture')
+      .populate('community', 'name icon')
+      .limit(20);
+    return res.json({ success: true, posts });
+  } catch (err) { return next(err); }
+};
+
+const getUserComments = async (req, res, next) => {
+  try {
+    const Comment = require('../comments/comment.model');
+    const user = await User.findOne({ username: req.params.username.toLowerCase() }).select('_id');
+    if (!user) {
+      return res.status(404).json({ success: false, message: 'User not found', code: 'NOT_FOUND' });
+    }
+    const comments = await Comment.find({ author: user._id })
+      .sort({ createdAt: -1 })
+      .populate('post', 'title')
+      .limit(20);
+    return res.json({ success: true, comments });
+  } catch (err) { return next(err); }
+};
+
 module.exports = {
   getProfile,
   updateProfile,
@@ -237,4 +279,7 @@ module.exports = {
   getSavedPosts,
   savePost,
   unsavePost,
+  getUserByUsername,
+  getUserPosts,
+  getUserComments,
 };

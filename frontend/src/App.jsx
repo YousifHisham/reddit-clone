@@ -4,6 +4,10 @@ import OtpPage from './pages/OtpPage';
 import InterestsPage from './pages/InterestsPage';
 import HomePage from './pages/HomePage';
 import SubmitPage from './pages/SubmitPage';
+import PostDetailPage from './pages/PostDetailPage';
+import CommunityPage from './pages/CommunityPage';
+import ProfilePage from './pages/ProfilePage';
+import SearchPage from './pages/SearchPage';
 
 function ProtectedRoute({ children }) {
   const token = localStorage.getItem('accessToken');
@@ -33,6 +37,10 @@ export default function App() {
             </ProtectedRoute>
           }
         />
+        <Route path="/post/:id" element={<PostDetailPage />} />
+        <Route path="/r/:name" element={<CommunityPage />} />
+        <Route path="/u/:username" element={<ProfilePage />} />
+        <Route path="/search" element={<SearchPage />} />
         <Route path="*" element={<Navigate to="/Login" replace />} />
       </Routes>
     </BrowserRouter>

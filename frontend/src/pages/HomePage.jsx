@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from "react";
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { getMe, logout } from '../api/auth';
 import { getFeed, createPost, upvotePost, downvotePost, updatePost, deletePost, updatePostStatus } from '../api/posts';
 import { getCommunities, joinCommunity, leaveCommunity, createCommunity } from '../api/communities';
@@ -118,9 +118,11 @@ function PostCard({ post, currentUser, onDelete, onUpdate }) {
       </div>
       <div className="post-body">
         <div className="post-meta">
-          <span className="post-community">r/{post.community?.name}</span>
+          <span className="post-community">
+            <Link to={`/r/${post.community?.name}`} style={{ color: 'inherit', textDecoration: 'none' }}>r/{post.community?.name}</Link>
+          </span>
           <span className="post-dot">•</span>
-          <span>Posted by u/{post.author?.username}</span>
+          <span>Posted by <Link to={`/u/${post.author?.username}`} style={{ color: 'inherit', textDecoration: 'none' }}>u/{post.author?.username}</Link></span>
           <span className="post-dot">•</span>
           <span>{timeAgo(post.createdAt)}</span>
           {isAuthor && (
@@ -150,7 +152,9 @@ function PostCard({ post, currentUser, onDelete, onUpdate }) {
             </div>
           )}
         </div>
-        <h3 className="post-title">{post.title}</h3>
+        <Link to={`/post/${post._id}`} style={{ textDecoration: 'none', color: 'inherit' }}>
+          <h3 className="post-title">{post.title}</h3>
+        </Link>
         {post.flair && <span className="post-flair" style={post.flairColor ? { background: post.flairColor, color: '#fff', border: 'none' } : {}}>{post.flair}</span>}
         {post.status === 'pending' && currentUser && post.author?._id === currentUser._id && (
           <div className="post-pending-banner">
@@ -184,10 +188,12 @@ function PostCard({ post, currentUser, onDelete, onUpdate }) {
         )}
         {post.image && <img className="post-image" src={post.image} alt="" style={{ width:'100%', maxHeight:480, objectFit:'cover', borderRadius:4, marginBottom:8 }} />}
         <div className="post-actions">
-          <button className="post-action-btn">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
-            <span>{formatScore(post.commentCount || 0)} Comments</span>
-          </button>
+          <Link to={`/post/${post._id}`} style={{ textDecoration: 'none' }}>
+            <button className="post-action-btn">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+              <span>{formatScore(post.commentCount || 0)} Comments</span>
+            </button>
+          </Link>
           <button className="post-action-btn">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><polyline points="16 6 12 2 8 6"/><line x1="12" y1="2" x2="12" y2="15"/></svg>
             <span>Share</span>

@@ -9,6 +9,9 @@ const {
   getSavedPosts,
   savePost,
   unsavePost,
+  getUserByUsername,
+  getUserPosts,
+  getUserComments,
 } = require('./users.controller');
 
 const router = express.Router();
@@ -22,6 +25,10 @@ router.get('/me', verifyToken, async (req, res, next) => {
     return res.json({ success: true, user });
   } catch (err) { return next(err); }
 });
+
+router.get('/username/:username', getUserByUsername);
+router.get('/:username/posts', getUserPosts);
+router.get('/:username/comments', getUserComments);
 
 router.get('/:id', [param('id').isMongoId().withMessage('Valid user id required')], getProfile);
 

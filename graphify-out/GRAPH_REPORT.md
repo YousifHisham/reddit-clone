@@ -1,12 +1,12 @@
-# Graph Report - C:\Users\Michael Maged\Desktop\ASU\term 8\ip\Project\reddit-clone  (2026-04-25)
+# Graph Report - C:\Users\Michael Maged\Desktop\ASU\term 8\ip\Project\reddit-clone  (2026-04-26)
 
 ## Corpus Check
-- 43 files · ~58,468 words
+- 49 files · ~75,575 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 151 nodes · 174 edges · 38 communities detected
-- Extraction: 83% EXTRACTED · 17% INFERRED · 0% AMBIGUOUS · INFERRED: 29 edges (avg confidence: 0.8)
+- 182 nodes · 207 edges · 44 communities detected
+- Extraction: 82% EXTRACTED · 18% INFERRED · 0% AMBIGUOUS · INFERRED: 38 edges (avg confidence: 0.8)
 - Token cost: 0 input · 0 output
 
 ## Community Hubs (Navigation)
@@ -48,9 +48,15 @@
 - [[_COMMUNITY_Community 35|Community 35]]
 - [[_COMMUNITY_Community 36|Community 36]]
 - [[_COMMUNITY_Community 37|Community 37]]
+- [[_COMMUNITY_Community 38|Community 38]]
+- [[_COMMUNITY_Community 39|Community 39]]
+- [[_COMMUNITY_Community 40|Community 40]]
+- [[_COMMUNITY_Community 41|Community 41]]
+- [[_COMMUNITY_Community 42|Community 42]]
+- [[_COMMUNITY_Community 43|Community 43]]
 
 ## God Nodes (most connected - your core abstractions)
-1. `fetchWithAuth()` - 22 edges
+1. `fetchWithAuth()` - 31 edges
 2. `issueSessionTokens()` - 8 edges
 3. `refreshSession()` - 6 edges
 4. `validationError()` - 6 edges
@@ -62,22 +68,22 @@
 10. `createRefreshToken()` - 4 edges
 
 ## Surprising Connections (you probably didn't know these)
-- `fetchWithAuth()` --calls--> `createPost()`  [INFERRED]
-  C:\Users\Michael Maged\Desktop\ASU\term 8\ip\Project\reddit-clone\frontend\src\api\auth.js → C:\Users\Michael Maged\Desktop\ASU\term 8\ip\Project\reddit-clone\frontend\src\api\posts.js
-- `fetchWithAuth()` --calls--> `upvotePost()`  [INFERRED]
-  C:\Users\Michael Maged\Desktop\ASU\term 8\ip\Project\reddit-clone\frontend\src\api\auth.js → C:\Users\Michael Maged\Desktop\ASU\term 8\ip\Project\reddit-clone\frontend\src\api\posts.js
-- `fetchWithAuth()` --calls--> `downvotePost()`  [INFERRED]
-  C:\Users\Michael Maged\Desktop\ASU\term 8\ip\Project\reddit-clone\frontend\src\api\auth.js → C:\Users\Michael Maged\Desktop\ASU\term 8\ip\Project\reddit-clone\frontend\src\api\posts.js
-- `fetchWithAuth()` --calls--> `deletePost()`  [INFERRED]
-  C:\Users\Michael Maged\Desktop\ASU\term 8\ip\Project\reddit-clone\frontend\src\api\auth.js → C:\Users\Michael Maged\Desktop\ASU\term 8\ip\Project\reddit-clone\frontend\src\api\posts.js
 - `fetchWithAuth()` --calls--> `updateProfile()`  [INFERRED]
   C:\Users\Michael Maged\Desktop\ASU\term 8\ip\Project\reddit-clone\frontend\src\api\auth.js → C:\Users\Michael Maged\Desktop\ASU\term 8\ip\Project\reddit-clone\frontend\src\api\users.js
+- `fetchWithAuth()` --calls--> `getSavedPosts()`  [INFERRED]
+  C:\Users\Michael Maged\Desktop\ASU\term 8\ip\Project\reddit-clone\frontend\src\api\auth.js → C:\Users\Michael Maged\Desktop\ASU\term 8\ip\Project\reddit-clone\frontend\src\api\users.js
+- `fetchWithAuth()` --calls--> `savePost()`  [INFERRED]
+  C:\Users\Michael Maged\Desktop\ASU\term 8\ip\Project\reddit-clone\frontend\src\api\auth.js → C:\Users\Michael Maged\Desktop\ASU\term 8\ip\Project\reddit-clone\frontend\src\api\users.js
+- `fetchWithAuth()` --calls--> `unsavePost()`  [INFERRED]
+  C:\Users\Michael Maged\Desktop\ASU\term 8\ip\Project\reddit-clone\frontend\src\api\auth.js → C:\Users\Michael Maged\Desktop\ASU\term 8\ip\Project\reddit-clone\frontend\src\api\users.js
+- `getRefreshCookieOptions()` --calls--> `durationToMs()`  [INFERRED]
+  C:\Users\Michael Maged\Desktop\ASU\term 8\ip\Project\reddit-clone\backend\src\features\auth\auth.controller.js → C:\Users\Michael Maged\Desktop\ASU\term 8\ip\Project\reddit-clone\backend\src\features\auth\auth.utils.js
 
 ## Communities
 
 ### Community 0 - "Community 0"
-Cohesion: 0.13
-Nodes (20): completeProfile(), fetchWithAuth(), getMe(), logout(), parseResponse(), refreshAccessToken(), sendOtp(), verifyOtp() (+12 more)
+Cohesion: 0.1
+Nodes (27): fetchWithAuth(), createCommunity(), createFlair(), getCommunities(), getJoinedCommunities(), getPendingPosts(), joinCommunity(), leaveCommunity() (+19 more)
 
 ### Community 1 - "Community 1"
 Cohesion: 0.17
@@ -88,15 +94,15 @@ Cohesion: 0.35
 Nodes (10): checkUsername(), completeProfile(), getRefreshCookieOptions(), issueSessionTokens(), logout(), normalizeUsername(), pruneExpiredRefreshTokens(), refreshSession() (+2 more)
 
 ### Community 3 - "Community 3"
+Cohesion: 0.26
+Nodes (7): createCommunity(), escapeRegex(), getCommunity(), joinCommunity(), leaveCommunity(), searchCommunities(), validationError()
+
+### Community 4 - "Community 4"
 Cohesion: 0.22
 Nodes (3): formatScore(), PostCard(), timeAgo()
 
-### Community 4 - "Community 4"
-Cohesion: 0.39
-Nodes (7): createCommunity(), escapeRegex(), getCommunity(), joinCommunity(), leaveCommunity(), searchCommunities(), validationError()
-
 ### Community 5 - "Community 5"
-Cohesion: 0.25
+Cohesion: 0.2
 Nodes (0): 
 
 ### Community 6 - "Community 6"
@@ -104,31 +110,31 @@ Cohesion: 0.29
 Nodes (2): escapeRegex(), searchUsers()
 
 ### Community 7 - "Community 7"
+Cohesion: 0.39
+Nodes (7): completeProfile(), getMe(), logout(), parseResponse(), refreshAccessToken(), sendOtp(), verifyOtp()
+
+### Community 8 - "Community 8"
 Cohesion: 0.32
 Nodes (7): getProfile(), getSavedPosts(), parseResponse(), savePost(), searchUsers(), unsavePost(), updateProfile()
 
-### Community 8 - "Community 8"
-Cohesion: 0.33
-Nodes (6): createPost(), deletePost(), downvotePost(), getFeed(), parseResponse(), upvotePost()
-
 ### Community 9 - "Community 9"
-Cohesion: 0.4
+Cohesion: 0.33
 Nodes (0): 
 
 ### Community 10 - "Community 10"
-Cohesion: 0.67
+Cohesion: 0.33
 Nodes (0): 
 
 ### Community 11 - "Community 11"
-Cohesion: 0.67
+Cohesion: 0.4
 Nodes (0): 
 
 ### Community 12 - "Community 12"
-Cohesion: 1.0
+Cohesion: 0.67
 Nodes (0): 
 
 ### Community 13 - "Community 13"
-Cohesion: 1.0
+Cohesion: 0.67
 Nodes (0): 
 
 ### Community 14 - "Community 14"
@@ -227,74 +233,106 @@ Nodes (0):
 Cohesion: 1.0
 Nodes (0): 
 
+### Community 38 - "Community 38"
+Cohesion: 1.0
+Nodes (0): 
+
+### Community 39 - "Community 39"
+Cohesion: 1.0
+Nodes (0): 
+
+### Community 40 - "Community 40"
+Cohesion: 1.0
+Nodes (0): 
+
+### Community 41 - "Community 41"
+Cohesion: 1.0
+Nodes (0): 
+
+### Community 42 - "Community 42"
+Cohesion: 1.0
+Nodes (0): 
+
+### Community 43 - "Community 43"
+Cohesion: 1.0
+Nodes (0): 
+
 ## Knowledge Gaps
-- **Thin community `Community 12`** (2 nodes): `cloudinary.js`, `createCloudinaryStorage()`
+- **Thin community `Community 14`** (2 nodes): `cloudinary.js`, `createCloudinaryStorage()`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 13`** (2 nodes): `db.js`, `connectDB()`
+- **Thin community `Community 15`** (2 nodes): `db.js`, `connectDB()`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 14`** (2 nodes): `otpMiddleware()`, `auth.routes.js`
+- **Thin community `Community 16`** (2 nodes): `otpMiddleware()`, `auth.routes.js`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 15`** (2 nodes): `getRefreshCookie()`, `auth.test.js`
+- **Thin community `Community 17`** (2 nodes): `getRefreshCookie()`, `auth.test.js`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 16`** (2 nodes): `communities.routes.js`, `optionalAuth()`
+- **Thin community `Community 18`** (2 nodes): `comments.test.js`, `seed()`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 17`** (2 nodes): `posts.routes.js`, `optionalAuth()`
+- **Thin community `Community 19`** (2 nodes): `communities.routes.js`, `optionalAuth()`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 18`** (2 nodes): `error.middleware.js`, `errorMiddleware()`
+- **Thin community `Community 20`** (2 nodes): `posts.routes.js`, `optionalAuth()`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 19`** (2 nodes): `EmailPage.jsx`, `EmailPage()`
+- **Thin community `Community 21`** (2 nodes): `error.middleware.js`, `errorMiddleware()`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 20`** (2 nodes): `InterestsPage.jsx`, `InterestsPage()`
+- **Thin community `Community 22`** (2 nodes): `EmailPage.jsx`, `EmailPage()`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 21`** (2 nodes): `OtpPage.jsx`, `OtpPage()`
+- **Thin community `Community 23`** (2 nodes): `InterestsPage.jsx`, `InterestsPage()`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 22`** (1 nodes): `jest.config.js`
+- **Thin community `Community 24`** (2 nodes): `OtpPage.jsx`, `OtpPage()`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 23`** (1 nodes): `server.js`
+- **Thin community `Community 25`** (1 nodes): `jest.config.js`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 24`** (1 nodes): `auth.model.js`
+- **Thin community `Community 26`** (1 nodes): `server.js`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 25`** (1 nodes): `community.model.js`
+- **Thin community `Community 27`** (1 nodes): `auth.model.js`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 26`** (1 nodes): `communities.test.js`
+- **Thin community `Community 28`** (1 nodes): `comment.model.js`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 27`** (1 nodes): `message.model.js`
+- **Thin community `Community 29`** (1 nodes): `comments.routes.js`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 28`** (1 nodes): `messages.routes.js`
+- **Thin community `Community 30`** (1 nodes): `community.model.js`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 29`** (1 nodes): `notification.model.js`
+- **Thin community `Community 31`** (1 nodes): `communities.test.js`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 30`** (1 nodes): `notifications.routes.js`
+- **Thin community `Community 32`** (1 nodes): `message.model.js`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 31`** (1 nodes): `post.model.js`
+- **Thin community `Community 33`** (1 nodes): `messages.routes.js`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 32`** (1 nodes): `posts.test.js`
+- **Thin community `Community 34`** (1 nodes): `notification.model.js`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 33`** (1 nodes): `users.routes.js`
+- **Thin community `Community 35`** (1 nodes): `notifications.routes.js`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 34`** (1 nodes): `users.test.js`
+- **Thin community `Community 36`** (1 nodes): `post.model.js`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 35`** (1 nodes): `eslint.config.js`
+- **Thin community `Community 37`** (1 nodes): `posts.test.js`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 36`** (1 nodes): `vite.config.js`
+- **Thin community `Community 38`** (1 nodes): `search.routes.js`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 37`** (1 nodes): `main.jsx`
+- **Thin community `Community 39`** (1 nodes): `users.routes.js`
+  Too small to be a meaningful cluster - may be noise or needs more connections extracted.
+- **Thin community `Community 40`** (1 nodes): `users.test.js`
+  Too small to be a meaningful cluster - may be noise or needs more connections extracted.
+- **Thin community `Community 41`** (1 nodes): `eslint.config.js`
+  Too small to be a meaningful cluster - may be noise or needs more connections extracted.
+- **Thin community `Community 42`** (1 nodes): `vite.config.js`
+  Too small to be a meaningful cluster - may be noise or needs more connections extracted.
+- **Thin community `Community 43`** (1 nodes): `main.jsx`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
 
 ## Suggested Questions
 _Questions this graph is uniquely positioned to answer:_
 
 - **Why does `fetchWithAuth()` connect `Community 0` to `Community 8`, `Community 7`?**
-  _High betweenness centrality (0.135) - this node is a cross-community bridge._
-- **Why does `verifyOtp()` connect `Community 0` to `Community 2`?**
-  _High betweenness centrality (0.098) - this node is a cross-community bridge._
-- **Why does `verifyOtpHandler()` connect `Community 2` to `Community 0`?**
-  _High betweenness centrality (0.097) - this node is a cross-community bridge._
-- **Are the 17 inferred relationships involving `fetchWithAuth()` (e.g. with `joinCommunity()` and `leaveCommunity()`) actually correct?**
-  _`fetchWithAuth()` has 17 INFERRED edges - model-reasoned connections that need verification._
+  _High betweenness centrality (0.129) - this node is a cross-community bridge._
+- **Why does `verifyOtp()` connect `Community 7` to `Community 2`?**
+  _High betweenness centrality (0.083) - this node is a cross-community bridge._
+- **Why does `verifyOtpHandler()` connect `Community 2` to `Community 7`?**
+  _High betweenness centrality (0.081) - this node is a cross-community bridge._
+- **Are the 26 inferred relationships involving `fetchWithAuth()` (e.g. with `getJoinedCommunities()` and `joinCommunity()`) actually correct?**
+  _`fetchWithAuth()` has 26 INFERRED edges - model-reasoned connections that need verification._
 - **Are the 3 inferred relationships involving `issueSessionTokens()` (e.g. with `createAccessToken()` and `createRefreshToken()`) actually correct?**
   _`issueSessionTokens()` has 3 INFERRED edges - model-reasoned connections that need verification._
 - **Are the 2 inferred relationships involving `refreshSession()` (e.g. with `verifyRefreshToken()` and `hashToken()`) actually correct?**
   _`refreshSession()` has 2 INFERRED edges - model-reasoned connections that need verification._
 - **Should `Community 0` be split into smaller, more focused modules?**
-  _Cohesion score 0.13 - nodes in this community are weakly interconnected._
+  _Cohesion score 0.1 - nodes in this community are weakly interconnected._
