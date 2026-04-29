@@ -45,7 +45,10 @@ export async function refreshAccessToken() {
 export async function fetchWithAuth(url, options = {}) {
   let token = localStorage.getItem('accessToken');
 
-  if (token) {
+  // Always try to get a valid token first
+  if (!token) {
+    token = await refreshAccessToken();
+  } else {
     try {
       const payload = JSON.parse(atob(token.split('.')[1]));
       if (payload.exp * 1000 - Date.now() < 60000) {
@@ -54,38 +57,26 @@ export async function fetchWithAuth(url, options = {}) {
     } catch {
       token = await refreshAccessToken();
     }
-  } else {
-    token = await refreshAccessToken();
   }
-
-  if (!token) return { success: false, message: 'Not authenticated', code: 'UNAUTHORIZED' };
 
   const isFormData = options.body instanceof FormData;
 
-  const res = await fetch(url, {
+  const makeRequest = (t) => fetch(url, {
     ...options,
     credentials: 'include',
     headers: {
       ...(isFormData ? {} : { 'Content-Type': 'application/json' }),
       ...options.headers,
-      Authorization: `Bearer ${token}`,
+      ...(t ? { Authorization: `Bearer ${t}` } : {}),
     },
   });
 
-  // If still 401, try one more refresh
+  const res = await makeRequest(token);
+
   if (res.status === 401) {
     token = await refreshAccessToken();
     if (!token) return { success: false, message: 'Session expired. Please log in again.', code: 'UNAUTHORIZED' };
-    const retry = await fetch(url, {
-      ...options,
-      credentials: 'include',
-      headers: {
-        ...(isFormData ? {} : { 'Content-Type': 'application/json' }),
-        ...options.headers,
-        Authorization: `Bearer ${token}`,
-      },
-    });
-    return parseResponse(retry);
+    return parseResponse(await makeRequest(token));
   }
 
   return parseResponse(res);
