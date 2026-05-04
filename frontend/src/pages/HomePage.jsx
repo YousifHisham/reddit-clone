@@ -1172,7 +1172,7 @@ export default function RedditLayout() {
           onClose={() => setShowCreateCommunity(false)}
           onCreated={community => {
             setCommunities(prev => [community, ...prev]);
-            setJoinedMap(prev => ({ ...prev, [community._id]: true }));
+            if (community._id) setJoinedMap(prev => ({ ...prev, [community._id]: true }));
           }}
         />
       )}
