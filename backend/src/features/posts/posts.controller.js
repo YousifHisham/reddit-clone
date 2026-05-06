@@ -63,41 +63,34 @@ const getCommunityPosts = async (req, res, next) => {
 
 const getFeed = async (req, res, next) => {
   try {
-    const { sort = 'best', page = 1 } = req.query;
+    const { sort = 'hot', page = 1 } = req.query;
     const limit = 20;
     const skip = (page - 1) * limit;
-    let posts;
+
+    const filter = { status: 'published' };
+    let sortQuery = { upvotes: -1, createdAt: -1 };
+
+    if (sort === 'new') sortQuery = { createdAt: -1 };
+    else if (sort === 'top') sortQuery = { upvotes: -1 };
+    else if (sort === 'rising') {
+      filter.createdAt = { $gte: new Date(Date.now() - 24 * 60 * 60 * 1000) };
+      sortQuery = { upvotes: -1 };
+    }
+    // hot: default sortQuery (upvotes + recency)
+
     if (req.user) {
-      const user = await User.findById(req.user.id).select('interests tags');
       const joinedCommunities = await Community.find({ members: req.user.id }).select('_id');
       const joinedIds = joinedCommunities.map((c) => c._id);
-      posts = await Post.find({
-        status: 'published',
-        $or: [{ community: { $in: joinedIds } }, { tags: { $in: user.tags } }],
-      })
-        .sort({ createdAt: -1 })
-        .populate('author', 'username profilePicture')
-        .populate('community', 'name icon')
-        .skip(skip)
-        .limit(limit);
-      if (sort === 'best') {
-        posts = posts.map((p) => {
-          const pObj = p.toObject();
-          let score = pObj.upvotes;
-          if (user.interests.some((i) => pObj.tags.includes(i))) score += 20;
-          if (user.tags.some((t) => pObj.tags.includes(t))) score += 30;
-          if (joinedIds.map((id) => id.toString()).includes(pObj.community._id.toString())) score += 50;
-          score -= (Date.now() - new Date(pObj.createdAt)) / 3600000;
-          return { ...pObj, _score: score };
-        }).sort((a, b) => b._score - a._score);
-      }
-    } else {
-      posts = await Post.find({ status: 'published' })
-        .sort({ upvotes: -1, createdAt: -1 })
-        .populate('author', 'username profilePicture')
-        .populate('community', 'name icon')
-        .limit(limit);
+      filter.$or = [{ community: { $in: joinedIds } }, {}];
     }
+
+    const posts = await Post.find(filter)
+      .sort(sortQuery)
+      .populate('author', 'username profilePicture')
+      .populate('community', 'name icon')
+      .skip(skip)
+      .limit(limit);
+
     res.json({ success: true, posts });
   } catch (err) { next(err); }
 };

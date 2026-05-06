@@ -8,8 +8,8 @@ async function parseResponse(res) {
   catch { return { success: false, message: `Server error (${res.status})` }; }
 }
 
-export async function getFeed(token) {
-  const res = await fetch(`${BASE}/feed`, {
+export async function getFeed(token, sort = 'hot') {
+  const res = await fetch(`${BASE}/feed?sort=${sort}`, {
     headers: token ? { Authorization: `Bearer ${token}` } : {},
     credentials: 'include',
   });

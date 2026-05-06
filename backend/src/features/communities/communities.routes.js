@@ -12,6 +12,9 @@ const {
   createFlair,
   getPendingPosts,
   getCommunityByName,
+  createJoinRequest,
+  handleJoinRequest,
+  getJoinRequests,
 } = require('./communities.controller');
 const { getCommunityPosts } = require('../posts/posts.controller');
 
@@ -66,5 +69,8 @@ router.get('/:id/posts', getCommunityPosts);
 router.get('/:id/flairs', getFlairs);
 router.post('/:id/flairs', verifyToken, createFlair);
 router.get('/:id/pending', verifyToken, getPendingPosts);
+router.post('/:id/join-request', verifyToken, createJoinRequest);
+router.patch('/:id/join-request/:requesterId', verifyToken, handleJoinRequest);
+router.get('/:id/join-requests', verifyToken, getJoinRequests);
 
 module.exports = router;

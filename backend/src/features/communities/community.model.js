@@ -12,6 +12,7 @@ const communitySchema = new mongoose.Schema(
     icon: { type: String, default: '' },
     flairs: [{ name: String, color: String }],
     requiresApproval: { type: Boolean, default: false },
+    type: { type: String, enum: ['public', 'restricted', 'private'], default: 'public' },
   },
   { timestamps: true }
 );

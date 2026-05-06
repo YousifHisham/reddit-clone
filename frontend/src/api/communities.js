@@ -50,6 +50,18 @@ export async function getPendingPosts(id) {
   return fetchWithAuth(`/api/communities/${id}/pending`);
 }
 
+export async function createJoinRequest(id) {
+  return fetchWithAuth(`/api/communities/${id}/join-request`, { method: 'POST' });
+}
+
+export async function handleJoinRequest(communityId, requesterId, status) {
+  return fetchWithAuth(`/api/communities/${communityId}/join-request/${requesterId}`, {
+    method: 'PATCH',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ status }),
+  });
+}
+
 export async function updateCommunitySettings(id, data) {
   return fetchWithAuth(`/api/communities/${id}`, {
     method: 'PATCH',

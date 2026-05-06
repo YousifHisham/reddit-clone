@@ -1,6 +1,8 @@
 const { validationResult } = require('express-validator');
 const Community = require('./community.model');
+const JoinRequest = require('./joinRequest.model');
 const Notification = require('../notifications/notification.model');
+const User = require('../auth/auth.model');
 
 const escapeRegex = (value = '') => value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 
@@ -216,6 +218,98 @@ const getCommunityByName = async (req, res, next) => {
   } catch (err) { return next(err); }
 };
 
+const createJoinRequest = async (req, res, next) => {
+  try {
+    const community = await Community.findById(req.params.id);
+    if (!community) return res.status(404).json({ success: false, message: 'Community not found' });
+
+    const isMember = community.members.some(id => id.toString() === req.user.id);
+    if (isMember) return res.status(400).json({ success: false, message: 'Already a member' });
+
+    const existing = await JoinRequest.findOne({ community: req.params.id, requester: req.user.id });
+    if (existing && existing.status === 'pending') {
+      return res.json({ success: true, status: 'pending' });
+    }
+    if (existing) {
+      existing.status = 'pending';
+      await existing.save();
+    } else {
+      await JoinRequest.create({ community: req.params.id, requester: req.user.id });
+    }
+
+    const requester = await User.findById(req.user.id).select('username');
+    await Notification.create({
+      recipient: community.creator,
+      sender: req.user.id,
+      type: 'join_request',
+      message: `u/${requester.username} wants to join r/${community.name}`,
+      communityId: community._id,
+      requesterId: req.user.id,
+    });
+
+    return res.json({ success: true, status: 'pending' });
+  } catch (err) { return next(err); }
+};
+
+const handleJoinRequest = async (req, res, next) => {
+  try {
+    const { status } = req.body;
+    if (!['approved', 'rejected'].includes(status)) {
+      return res.status(400).json({ success: false, message: 'Invalid status' });
+    }
+    const community = await Community.findById(req.params.id);
+    if (!community) return res.status(404).json({ success: false, message: 'Community not found' });
+    if (community.creator.toString() !== req.user.id) {
+      return res.status(403).json({ success: false, message: 'Only the moderator can handle join requests' });
+    }
+
+    const joinReq = await JoinRequest.findOne({ community: req.params.id, requester: req.params.requesterId });
+    if (!joinReq) return res.status(404).json({ success: false, message: 'Join request not found' });
+
+    joinReq.status = status;
+    await joinReq.save();
+
+    if (status === 'approved') {
+      if (!community.members.some(id => id.toString() === req.params.requesterId)) {
+        community.members.push(req.params.requesterId);
+        community.memberCount += 1;
+        await community.save();
+      }
+      await Notification.create({
+        recipient: req.params.requesterId,
+        sender: req.user.id,
+        type: 'join_approved',
+        message: `✅ Your request to join r/${community.name} has been approved! You are now a member.`,
+        communityId: community._id,
+      });
+    } else {
+      await Notification.create({
+        recipient: req.params.requesterId,
+        sender: req.user.id,
+        type: 'join_rejected',
+        message: `❌ Your request to join r/${community.name} has been rejected.`,
+        communityId: community._id,
+      });
+    }
+
+    return res.json({ success: true, status });
+  } catch (err) { return next(err); }
+};
+
+const getJoinRequests = async (req, res, next) => {
+  try {
+    const community = await Community.findById(req.params.id);
+    if (!community) return res.status(404).json({ success: false, message: 'Community not found' });
+    if (community.creator.toString() !== req.user.id) {
+      return res.status(403).json({ success: false, message: 'Only the moderator can view join requests' });
+    }
+    const requests = await JoinRequest.find({ community: req.params.id, status: 'pending' })
+      .populate('requester', 'username')
+      .sort({ createdAt: -1 });
+    return res.json({ success: true, requests });
+  } catch (err) { return next(err); }
+};
+
 module.exports = {
   createCommunity,
   getCommunity,
@@ -227,4 +321,7 @@ module.exports = {
   createFlair,
   getPendingPosts,
   getCommunityByName,
+  createJoinRequest,
+  handleJoinRequest,
+  getJoinRequests,
 };
