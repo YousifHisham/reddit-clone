@@ -9,6 +9,8 @@ import CommunityPage from './pages/CommunityPage';
 import ProfilePage from './pages/ProfilePage';
 import SearchPage from './pages/SearchPage';
 import AvatarEditPage from './pages/AvatarEditPage';
+import PopularPage from './pages/PopularPage';
+import ExplorePage from './pages/ExplorePage';
 
 function ProtectedRoute({ children }) {
   const token = localStorage.getItem('accessToken');
@@ -45,6 +47,8 @@ export default function App() {
         <Route path="/r/:name" element={<CommunityPage />} />
         <Route path="/u/:username" element={<ProfilePage />} />
         <Route path="/search" element={<SearchPage />} />
+        <Route path="/popular" element={<PopularPage />} />
+        <Route path="/explore" element={<ExplorePage />} />
         <Route
           path="/avatar/edit"
           element={

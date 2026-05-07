@@ -70,12 +70,10 @@ const getCommunity = async (req, res, next) => {
 
 const listCommunities = async (req, res, next) => {
   try {
-    let communities;
-    if (req.query.joined === 'true' && req.user) {
-      communities = await Community.find({ members: req.user.id }).sort({ memberCount: -1 }).limit(50);
-    } else {
-      communities = await Community.find().sort({ memberCount: -1 }).limit(50);
-    }
+    const filter = {};
+    if (req.query.joined === 'true' && req.user) filter.members = req.user.id;
+    if (req.query.category && req.query.category !== 'All') filter.category = req.query.category;
+    const communities = await Community.find(filter).sort({ memberCount: -1 }).limit(50);
     return res.json({ success: true, communities });
   } catch (err) {
     return next(err);

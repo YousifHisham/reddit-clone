@@ -52,7 +52,7 @@ export default function Layout({ children }) {
   const navItems = [
     { label: 'Home', path: '/home', icon: <><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></> },
     { label: 'Popular', path: '/popular', icon: <><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></> },
-    { label: 'Explore', path: '/search', icon: <><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></> },
+    { label: 'Explore', path: '/explore', icon: <><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></> },
   ];
 
   return (

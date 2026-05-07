@@ -8,8 +8,9 @@ async function parseResponse(res) {
   catch { return { success: false, message: `Server error (${res.status})` }; }
 }
 
-export async function getCommunities() {
-  const res = await fetch(BASE);
+export async function getCommunities(category) {
+  const url = category && category !== 'All' ? `${BASE}?category=${encodeURIComponent(category)}` : BASE;
+  const res = await fetch(url);
   return parseResponse(res);
 }
 

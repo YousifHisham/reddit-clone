@@ -13,6 +13,7 @@ const communitySchema = new mongoose.Schema(
     flairs: [{ name: String, color: String }],
     requiresApproval: { type: Boolean, default: false },
     type: { type: String, enum: ['public', 'restricted', 'private'], default: 'public' },
+    category: { type: String, default: 'General' },
   },
   { timestamps: true }
 );
