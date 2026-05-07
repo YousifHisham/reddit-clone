@@ -1266,7 +1266,7 @@ export default function RedditLayout() {
           </div>
 
           {/* Right panel */}
-          <div className="right-panel">
+          <div className="right-panel" style={{ display: 'flex', flexDirection: 'column' }}>
             {/* Top Communities */}
             <div className="panel-card">
               <div className="panel-body">
@@ -1295,7 +1295,7 @@ export default function RedditLayout() {
               </div>
             </div>
 
-            <div className="panel-card">
+            <div className="panel-card" style={{ marginTop: 'auto' }}>
               <div className="panel-body">
                 <div className="panel-footer">
                   <a href="#">Help</a><a href="#">About</a><a href="#">Careers</a>

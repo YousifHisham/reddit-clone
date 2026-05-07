@@ -68,21 +68,37 @@ export default function Layout({ children }) {
 
         <div className="nav-center">
           <form onSubmit={handleSearch} className="search-wrap">
-            <span style={{ display: 'flex', alignItems: 'center', padding: '0 8px 0 12px', color: 'var(--muted)' }}>
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+            <div className="search-snoo">
+              <svg viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" width="28" height="28">
+                <circle cx="10" cy="10" r="10" fill="#FF4500" />
+                <path d="M16.67 10a1.46 1.46 0 0 0-2.47-1 7.12 7.12 0 0 0-3.85-1.23l.65-3.08 2.13.45a1 1 0 1 0 .14-.53l-2.38-.5a.27.27 0 0 0-.32.2l-.73 3.44a7.14 7.14 0 0 0-3.89 1.23 1.46 1.46 0 1 0-1.61 2.39 2.87 2.87 0 0 0 0 .44c0 2.24 2.61 4.06 5.83 4.06s5.83-1.82 5.83-4.06a2.87 2.87 0 0 0 0-.44 1.46 1.46 0 0 0 .57-1.37zM7.27 11a1 1 0 1 1 1 1 1 1 0 0 1-1-1zm5.58 2.71a3.58 3.58 0 0 1-2.85.79 3.58 3.58 0 0 1-2.85-.79.19.19 0 0 1 .27-.27 3.23 3.23 0 0 0 2.58.65 3.23 3.23 0 0 0 2.58-.65.19.19 0 0 1 .27.27zm-.17-1.71a1 1 0 1 1 1-1 1 1 0 0 1-1 1z" fill="white" />
               </svg>
-            </span>
+            </div>
             <input
               className="search-input"
-              placeholder="Search Reddit"
+              placeholder="Find anything"
               value={searchQuery}
               onChange={e => setSearchQuery(e.target.value)}
             />
+            <div className="search-divider" />
+            <button type="button" className="search-ask-btn">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+              Ask
+            </button>
           </form>
         </div>
 
         <div className="nav-right">
+          <button className="nav-icon-btn" title="Chat">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+          </button>
+          <button className="nav-icon-btn" title="Notifications">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+          </button>
+          <button className="nav-create-btn" onClick={() => navigate('/submit')}>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            <span>Create</span>
+          </button>
           {currentUser ? (
             <div style={{ position: 'relative' }} ref={menuRef}>
               <button className="nav-avatar" onClick={() => setUserMenuOpen(o => !o)} title={currentUser.username}>

@@ -203,16 +203,16 @@
     max-width: 500px;
     display: flex;
     align-items: center;
-    border: 1.5px solid var(--border);
+    border: 1.5px solid var(--orange);
     border-radius: 999px;
-    background: var(--pill-bg);
+    background: var(--bg-page);
     height: 44px;
-    transition: border-color 0.2s, box-shadow 0.2s, background 0.2s;
+    transition: border-color 0.2s, box-shadow 0.2s;
     overflow: hidden;
   }
   .search-wrap:focus-within {
     border-color: var(--orange);
-    background: var(--bg);
+    background: var(--bg-page);
     box-shadow: 0 0 0 1px var(--orange);
   }
 
@@ -355,7 +355,7 @@
     left: 0;
     width: 270px;
     height: calc(100vh - var(--nav-h));
-    background: var(--bg);
+    background: var(--bg-page);
     border-right: none;
     overflow-y: auto;
     overflow-x: hidden;
@@ -551,18 +551,19 @@
 
   /* ── Post Card ── */
   .post-card {
-    background: var(--bg);
-    border: 1px solid var(--border);
-    border-radius: 12px;
+    background: var(--bg-page);
+    border: none;
+    border-bottom: 1px solid var(--border);
+    border-radius: 0;
     display: flex;
     flex-direction: column;
-    margin-bottom: 10px;
+    margin-bottom: 0;
     cursor: pointer;
-    transition: border-color 0.15s;
+    transition: background 0.15s;
     position: relative;
     overflow: hidden;
   }
-  .post-card:hover { border-color: #898989; }
+  .post-card:hover { background: var(--hover-bg); }
 
   .post-body {
     flex: 1;
@@ -575,7 +576,6 @@
     align-items: center;
     gap: 8px;
     padding: 10px 14px 12px;
-    border-top: 1px solid var(--border);
   }
 
   /* ── Pill buttons ── */
@@ -757,12 +757,16 @@
     display: flex;
     flex-direction: column;
     gap: 12px;
+    position: sticky;
+    top: calc(var(--nav-h) + 20px);
+    height: calc(100vh - var(--nav-h) - 40px);
+    overflow-y: auto;
   }
 
   .panel-card {
-    background: var(--bg);
-    border: 1px solid var(--border);
-    border-radius: 4px;
+    background: var(--bg-page);
+    border: 1px solid var(--bg-page);
+    border-radius: 12px;
     overflow: hidden;
   }
 
