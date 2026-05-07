@@ -21,7 +21,7 @@ const createCommunity = async (req, res, next) => {
     const validationResponse = validationError(req, res);
     if (validationResponse) return validationResponse;
 
-    const { name, description, rules } = req.body;
+    const { name, description, rules, category } = req.body;
     const normalizedName = name.trim().toLowerCase();
 
     const existing = await Community.exists({ name: normalizedName });
@@ -37,6 +37,7 @@ const createCommunity = async (req, res, next) => {
       name: normalizedName,
       description: description.trim(),
       rules: rules || '',
+      category: category || 'General',
       creator: req.user.id,
       members: [req.user.id],
       memberCount: 1,
@@ -72,7 +73,13 @@ const listCommunities = async (req, res, next) => {
   try {
     const filter = {};
     if (req.query.joined === 'true' && req.user) filter.members = req.user.id;
-    if (req.query.category && req.query.category !== 'All') filter.category = req.query.category;
+    if (req.query.category && req.query.category !== 'All') {
+      if (req.query.category === 'General') {
+        filter.$or = [{ category: 'General' }, { category: { $exists: false } }, { category: null }];
+      } else {
+        filter.category = req.query.category;
+      }
+    }
     const communities = await Community.find(filter).sort({ memberCount: -1 }).limit(50);
     return res.json({ success: true, communities });
   } catch (err) {

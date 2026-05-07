@@ -350,7 +350,7 @@ function CreateCommunityModal({ onClose, onCreated }) {
   const handleSubmit = async () => {
     setError('');
     setLoading(true);
-    const data = await createCommunity({ name, description });
+    const data = await createCommunity({ name, description, category: selectedTopic || 'General' });
     setLoading(false);
     if (data.success) {
       setCreatedCommunity(data.community);

@@ -32,7 +32,9 @@ app.use('/api/search', searchRoutes);
 app.use(errorMiddleware);
 
 if (process.env.NODE_ENV !== 'test') {
-  connectDB().then(() => {
+  connectDB().then(async () => {
+    const Community = require('./features/communities/community.model');
+    await Community.updateMany({ category: { $exists: false } }, { $set: { category: 'General' } });
     app.listen(process.env.PORT, () => {
       console.log(`Server running on port ${process.env.PORT}`);
     });
