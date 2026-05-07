@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { getMe, logout } from '../api/auth';
+import { getCommunities } from '../api/communities';
 
 const RedditLogo = () => (
   <svg width="32" height="32" viewBox="0 0 20 20">
@@ -9,16 +10,23 @@ const RedditLogo = () => (
   </svg>
 );
 
+const COMMUNITY_COLORS = ['#ff4500','#0079d3','#46d160','#9b59b6','#e74c3c','#f39c12'];
+
 export default function Layout({ children }) {
   const navigate = useNavigate();
+  const location = useLocation();
   const [currentUser, setCurrentUser] = useState(null);
   const [searchQuery, setSearchQuery] = useState('');
   const [userMenuOpen, setUserMenuOpen] = useState(false);
+  const [sidebarOpen, setSidebarOpen] = useState(true);
+  const [communities, setCommunities] = useState([]);
+  const [communitiesOpen, setCommunitiesOpen] = useState(true);
   const menuRef = useRef(null);
 
   useEffect(() => {
     const token = localStorage.getItem('accessToken');
     if (token) getMe().then(d => { if (d.success) setCurrentUser(d.user); });
+    getCommunities().then(d => { if (d.success) setCommunities(d.communities.slice(0, 5)); });
   }, []);
 
   useEffect(() => {
@@ -41,8 +49,15 @@ export default function Layout({ children }) {
     navigate('/Login');
   };
 
+  const navItems = [
+    { label: 'Home', path: '/home', icon: <><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></> },
+    { label: 'Popular', path: '/popular', icon: <><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></> },
+    { label: 'Explore', path: '/search', icon: <><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></> },
+  ];
+
   return (
     <>
+      {/* Navbar */}
       <header className="nav">
         <div className="nav-left">
           <div className="nav-logo" onClick={() => navigate('/home')}>
@@ -53,7 +68,7 @@ export default function Layout({ children }) {
 
         <div className="nav-center">
           <form onSubmit={handleSearch} className="search-wrap">
-            <span className="search-icon">
+            <span style={{ display: 'flex', alignItems: 'center', padding: '0 8px 0 12px', color: 'var(--muted)' }}>
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                 <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
               </svg>
@@ -76,13 +91,10 @@ export default function Layout({ children }) {
               {userMenuOpen && (
                 <div style={{
                   position: 'absolute', top: 'calc(100% + 8px)', right: 0,
-                  background: '#fff', border: '1px solid var(--border)', borderRadius: 4,
-                  boxShadow: '0 4px 20px rgba(0,0,0,0.15)', zIndex: 150, minWidth: 200, overflow: 'hidden',
+                  background: 'var(--bg)', border: '1px solid var(--border)', borderRadius: 4,
+                  boxShadow: '0 4px 20px rgba(0,0,0,0.3)', zIndex: 150, minWidth: 200, overflow: 'hidden',
                 }}>
-                  <button
-                    onClick={() => { setUserMenuOpen(false); navigate(`/u/${currentUser.username}`); }}
-                    className="post-dropdown-item"
-                  >
+                  <button onClick={() => { setUserMenuOpen(false); navigate(`/u/${currentUser.username}`); }} className="post-dropdown-item">
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                       <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/>
                     </svg>
@@ -104,7 +116,79 @@ export default function Layout({ children }) {
         </div>
       </header>
 
-      <div style={{ paddingTop: 'var(--nav-h)', minHeight: '100vh', background: '#dae0e6' }}>
+      {/* Sidebar toggle bubble */}
+      <button
+        className={`sidebar-bubble ${sidebarOpen ? '' : 'closed'}`}
+        onClick={() => setSidebarOpen(o => !o)}
+        title="Toggle sidebar"
+      >
+        <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
+          {sidebarOpen ? <polyline points="15 18 9 12 15 6" /> : <polyline points="9 18 15 12 9 6" />}
+        </svg>
+      </button>
+
+      {/* Sidebar */}
+      <nav className={`sidebar ${sidebarOpen ? '' : 'closed'}`}>
+        <div className="sidebar-inner">
+          {navItems.map(({ label, path, icon }) => (
+            <button
+              key={label}
+              className={`sidebar-nav-item ${location.pathname === path ? 'active' : ''}`}
+              onClick={() => navigate(path)}
+            >
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">{icon}</svg>
+              <span>{label}</span>
+            </button>
+          ))}
+
+          <hr className="sidebar-divider" />
+
+          {/* Communities section */}
+          <button className="sidebar-section-header" onClick={() => setCommunitiesOpen(o => !o)}>
+            <span>COMMUNITIES</span>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" style={{ transform: communitiesOpen ? 'rotate(180deg)' : 'none', transition: 'transform 0.2s' }}>
+              <polyline points="6 9 12 15 18 9"/>
+            </svg>
+          </button>
+          <div className="sidebar-section-items" style={{ maxHeight: communitiesOpen ? '500px' : '0' }}>
+            <button className="sidebar-sub-item" onClick={() => navigate('/home')}>
+              <span className="community-dot" style={{ background: '#ff4500', fontSize: 14 }}>+</span>
+              <span>Create Community</span>
+            </button>
+            {communities.map((c, i) => (
+              <button key={c._id} className="sidebar-sub-item" onClick={() => navigate(`/r/${c.name}`)}>
+                <span className="community-dot" style={{ background: COMMUNITY_COLORS[i % COMMUNITY_COLORS.length] }}>
+                  {c.name[0].toUpperCase()}
+                </span>
+                <span>r/{c.name}</span>
+              </button>
+            ))}
+          </div>
+
+          <hr className="sidebar-divider" />
+
+          {/* Resources */}
+          <button className="sidebar-section-header">
+            <span>RESOURCES</span>
+          </button>
+          {['Help', 'About Reddit'].map(item => (
+            <button key={item} className="sidebar-sub-item">
+              <span>{item}</span>
+            </button>
+          ))}
+        </div>
+      </nav>
+
+      {/* Main content */}
+      <div
+        style={{
+          paddingTop: 'var(--nav-h)',
+          minHeight: '100vh',
+          background: 'var(--bg-page)',
+          marginLeft: sidebarOpen ? '270px' : '0',
+          transition: 'margin-left 0.25s cubic-bezier(0.4,0,0.2,1)',
+        }}
+      >
         {children}
       </div>
     </>

@@ -504,7 +504,7 @@
     gap: 24px;
     padding: 20px 24px;
     max-width: calc(100vw - 270px);
-    background: var(--bg);
+    background: var(--bg-page);
   }
   .main.sidebar-closed {
     margin-left: 0;
@@ -711,7 +711,7 @@
 
   /* ── Skeleton ── */
   .skeleton {
-    background: linear-gradient(90deg, #f0f0f0 25%, #e8e8e8 50%, #f0f0f0 75%);
+    background: linear-gradient(90deg, var(--hover-bg) 25%, var(--active-bg) 50%, var(--hover-bg) 75%);
     background-size: 400% 100%;
     animation: shimmer 1.5s infinite;
     border-radius: 4px;
@@ -2260,11 +2260,11 @@
 
 /* ══ POST DETAIL PAGE ══ */
 .post-detail-card {
-  background: var(--bg);
+  background: var(--bg-page);
   border: 1px solid var(--border);
-  border-radius: 4px;
+  border-radius: 16px;
   padding: 16px;
-  margin-bottom: 10px;
+  margin-bottom: 0;
 }
 
 .post-detail-title {
@@ -2311,12 +2311,17 @@
 }
 
 /* ══ COMMENT FORM ══ */
-.comment-form-wrap { margin-bottom: 4px; }
+.comment-form-wrap { margin-bottom: 16px; margin-top: 0; }
 
 .comment-as-label {
   font-size: 13px;
   color: var(--muted);
-  margin-bottom: 4px;
+  margin-bottom: 0;
+  padding: 8px 12px;
+  background: var(--bg-page);
+  border: 1px solid var(--border);
+  border-bottom: none;
+  border-radius: 16px 16px 0 0;
 }
 .comment-as-label a {
   color: var(--blue);
@@ -2328,8 +2333,8 @@
 /* Unified comment input box */
 .ci-box {
   border: 1px solid var(--border);
-  border-radius: 4px;
-  background: var(--bg);
+  border-radius: 0 0 16px 16px;
+  background: var(--bg-page);
   overflow: hidden;
   transition: border-color 0.2s;
 }
@@ -2345,7 +2350,7 @@
   font-family: var(--font);
   color: var(--text);
   resize: none;
-  background: transparent;
+  background: var(--bg-page);
   box-sizing: border-box;
   line-height: 1.5;
   display: block;
@@ -2358,7 +2363,7 @@
   justify-content: space-between;
   padding: 8px 12px;
   border-top: 1px solid var(--border);
-  background: var(--pill-bg);
+  background: var(--bg-page);
 }
 
 .ci-format-btn {
@@ -2407,10 +2412,10 @@
   transition: background 0.15s, opacity 0.15s;
 }
 .ci-submit-btn:not(:disabled) {
-  background: #1a1a1b;
+  background: var(--orange);
   cursor: pointer;
 }
-.ci-submit-btn:not(:disabled):hover { opacity: 0.85; }
+.ci-submit-btn:not(:disabled):hover { background: var(--orange-hover); }
 .ci-submit-btn:disabled { opacity: 0.6; }
 
 .login-to-comment {
@@ -2463,7 +2468,7 @@
   pointer-events: none;
 }
 .comments-search-input {
-  background: var(--pill-bg);
+  background: var(--bg-page);
   border: 1px solid var(--border);
   border-radius: 999px;
   padding: 6px 14px 6px 32px;
@@ -2477,81 +2482,99 @@
 .comments-search-input:focus { border-color: var(--blue); }
 
 /* ══ COMMENT TREE ══ */
-.comment-root { margin-bottom: 8px; }
+.comment-root { margin-bottom: 0; }
 
 .comment-card {
-  background: var(--bg);
-  border: 1px solid var(--border);
-  border-radius: 8px;
-  padding: 12px 16px;
-}
-
-.comment-replies {
-  margin-left: 20px;
-  margin-top: 6px;
-}
-.comment-reply { margin-bottom: 6px; }
-
-.comment-header {
+  background: transparent;
+  border: none;
+  padding: 8px 0 4px 0;
   display: flex;
+  gap: 10px;
+}
+
+.comment-left {
+  display: flex;
+  flex-direction: column;
   align-items: center;
-  gap: 6px;
-  margin-bottom: 6px;
-  flex-wrap: wrap;
+  flex-shrink: 0;
+  width: 32px;
 }
 
 .comment-avatar {
-  width: 28px;
-  height: 28px;
+  width: 32px;
+  height: 32px;
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 12px;
+  font-size: 13px;
   font-weight: 700;
   color: #fff;
   flex-shrink: 0;
 }
 
+.comment-thread-line {
+  width: 2px;
+  flex: 1;
+  background: var(--border);
+  margin-top: 4px;
+  border-radius: 2px;
+  min-height: 20px;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+.comment-thread-line:hover { background: var(--orange); }
+
+.comment-right { flex: 1; min-width: 0; }
+
+.comment-header {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 4px;
+  flex-wrap: wrap;
+}
+
 .comment-username {
-  color: var(--blue);
+  color: var(--text);
   font-weight: 700;
   font-size: 14px;
   text-decoration: none;
 }
 .comment-username:hover { text-decoration: underline; }
 
-.comment-meta { font-size: 13px; color: var(--muted); }
-.comment-dot  { font-size: 13px; color: var(--muted); }
+.comment-meta { font-size: 12px; color: var(--muted); }
+.comment-dot  { font-size: 12px; color: var(--muted); }
 
 .comment-body {
   font-size: 14px;
   color: var(--text);
   line-height: 1.5;
-  margin: 6px 0 10px;
+  margin: 4px 0 8px;
   white-space: pre-wrap;
 }
 
 .comment-actions {
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: 2px;
   flex-wrap: wrap;
+  margin-bottom: 4px;
 }
 
 /* Vote pill */
 .comment-vote-pill {
   display: inline-flex;
   align-items: center;
-  gap: 4px;
-  border: 1px solid var(--border);
+  gap: 2px;
+  border: none;
   border-radius: 999px;
-  padding: 3px 10px;
-  background: var(--pill-bg);
+  padding: 4px 6px;
+  background: transparent;
   color: var(--muted);
 }
-.comment-vote-pill.cv-up   { border-color: var(--orange); color: var(--orange); }
-.comment-vote-pill.cv-down { border-color: #7193ff;       color: #7193ff; }
+.comment-vote-pill.cv-up   { color: var(--orange); }
+.comment-vote-pill.cv-down { color: #7193ff; }
 
 .cv-btn {
   background: none;
@@ -2560,11 +2583,11 @@
   color: inherit;
   display: flex;
   align-items: center;
-  padding: 2px;
+  padding: 3px;
   border-radius: 999px;
-  transition: color 0.1s;
+  transition: background 0.1s, color 0.1s;
 }
-.cv-btn:hover { color: var(--orange); }
+.cv-btn:hover { background: var(--hover-bg); color: var(--orange); }
 
 .cv-score {
   font-size: 13px;
@@ -2595,7 +2618,13 @@
 .comment-action-btn:hover { background: var(--hover-bg); color: var(--text); }
 .comment-action-delete:hover { color: var(--orange); }
 
-.comment-reply-box { margin-top: 10px; }
+.comment-replies {
+  margin-left: 16px;
+  padding-left: 0;
+}
+.comment-reply { margin-bottom: 0; }
+
+.comment-reply-box { margin-top: 8px; }
 
 /* ══ PROFILE PAGE ══ */
 .profile-avatar {
