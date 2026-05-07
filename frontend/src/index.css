@@ -37,17 +37,17 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background: #ffffff;
+  background: var(--bg-page);
   padding: 16px;
 }
 
 .auth-card {
-  background: #fff;
+  background: var(--bg);
   border-radius: 12px;
   padding: 32px 40px;
   width: 100%;
   max-width: 400px;
-  box-shadow: 0 2px 12px rgba(0,0,0,0.12);
+  box-shadow: 0 2px 12px rgba(0,0,0,0.3);
   text-align: center;
 }
 
@@ -56,14 +56,14 @@
 .auth-title {
   font-size: 22px;
   font-weight: 700;
-  color: #1c1c1c;
+  color: var(--text);
   margin: 0 0 8px;
   letter-spacing: -0.3px;
 }
 
 .auth-subtitle {
   font-size: 13px;
-  color: #7c7c7c;
+  color: var(--muted);
   margin: 0 0 24px;
   line-height: 1.5;
 }
@@ -77,19 +77,19 @@
 .input-group { display: flex; flex-direction: column; }
 
 .auth-input {
-  border: 1px solid #edeff1;
+  border: 1px solid var(--border);
   border-radius: 20px;
   padding: 12px 16px;
   font-size: 14px;
   outline: none;
   transition: border-color 0.2s;
-  background: #f6f7f8;
-  color: #1c1c1c;
+  background: var(--pill-bg);
+  color: var(--text);
 }
 
 .auth-input:focus {
   border-color: #0079d3;
-  background: #fff;
+  background: var(--bg);
 }
 
 .auth-btn {
@@ -135,17 +135,17 @@
 .otp-box {
   width: 48px;
   height: 56px;
-  border: 2px solid #edeff1;
+  border: 2px solid var(--border);
   border-radius: 8px;
   text-align: center;
   font-size: 22px;
   font-weight: 700;
-  color: #1c1c1c;
-  background: #f6f7f8;
+  color: var(--text);
+  background: var(--pill-bg);
   outline: none;
   transition: border-color 0.2s, background 0.2s;
 }
-.otp-box:focus { border-color: #0079d3; background: #fff; }
+.otp-box:focus { border-color: #0079d3; background: var(--bg); }
 .otp-box.filled { border-color: #ff4500; background: #fff5f2; }
 
   /* ── Scrollbar ── */
@@ -1264,6 +1264,7 @@
   font-family: var(--font);
   transition: border-color 0.15s;
 }
+
 .sp-community-btn:hover { border-color: var(--blue); }
 
 .sp-community-btn-name {
@@ -1293,7 +1294,7 @@
   background: var(--bg);
   border: 1px solid var(--border);
   border-radius: 4px;
-  box-shadow: 0 4px 16px rgba(0,0,0,0.12);
+  box-shadow: 0 4px 16px rgba(0,0,0,0.3);
   z-index: 100;
   max-height: 280px;
   overflow-y: auto;
@@ -1337,7 +1338,7 @@
 /* Post card */
 .sp-card {
   width: 100%;
-  background: #ffffff;
+  background: var(--bg);
   border: 1px solid var(--border);
   border-radius: 4px;
   overflow: hidden;
@@ -1391,7 +1392,7 @@
   font-size: 14px;
   font-family: var(--font);
   outline: none;
-  background: #ffffff;
+  background: var(--bg);
   color: var(--text);
   transition: border-color 0.2s;
 }
@@ -1481,7 +1482,7 @@
   outline: none;
   line-height: 1.6;
   width: 100%;
-  background: #ffffff;
+  background: var(--bg);
 }
 .sp-editor:empty::before {
   content: attr(data-placeholder);
@@ -1569,7 +1570,7 @@
   top: 100%;
   right: 0;
   min-width: 180px;
-  background: #ffffff;
+  background: var(--bg);
   border: 1px solid var(--border);
   border-radius: 4px;
   box-shadow: 0 2px 8px rgba(0,0,0,0.1);
@@ -1651,7 +1652,7 @@
 .post-confirm-overlay {
   position: absolute;
   inset: 0;
-  background: rgba(255,255,255,0.85);
+  background: rgba(0,0,0,0.5);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -1660,11 +1661,11 @@
 }
 
 .post-confirm-dialog {
-  background: #ffffff;
+  background: var(--bg);
   border: 1px solid var(--border);
   border-radius: 4px;
   padding: 20px 24px;
-  box-shadow: 0 4px 16px rgba(0,0,0,0.12);
+  box-shadow: 0 4px 16px rgba(0,0,0,0.3);
   max-width: 320px;
   width: 100%;
 }
@@ -1747,7 +1748,7 @@
 }
 
 .fm-modal {
-  background: #ffffff;
+  background: var(--bg);
   border-radius: 8px;
   width: 100%;
   max-width: 480px;
@@ -1755,7 +1756,7 @@
   display: flex;
   flex-direction: column;
   overflow: hidden;
-  box-shadow: 0 8px 32px rgba(0,0,0,0.2);
+  box-shadow: 0 8px 32px rgba(0,0,0,0.4);
 }
 
 .fm-header {
@@ -2759,7 +2760,7 @@
 }
 
 .ccm-modal {
-  background: #ffffff;
+  background: var(--bg);
   border-radius: 16px;
   width: 100%;
   max-width: 760px;
@@ -2767,7 +2768,7 @@
   display: flex;
   flex-direction: column;
   overflow: hidden;
-  box-shadow: 0 8px 40px rgba(0,0,0,0.22);
+  box-shadow: 0 8px 40px rgba(0,0,0,0.4);
 }
 
 .ccm-body {
@@ -2807,7 +2808,7 @@
   padding: 8px 14px;
   border: 1.5px solid var(--border);
   border-radius: 999px;
-  background: #ffffff;
+  background: var(--bg);
   cursor: pointer;
   font-family: var(--font);
   transition: border-color 0.15s, background 0.15s;
@@ -2894,7 +2895,7 @@
   padding: 14px 16px;
   border: 1.5px solid var(--border);
   border-radius: 8px;
-  background: #ffffff;
+  background: var(--bg);
   cursor: pointer;
   font-family: var(--font);
   text-align: left;
@@ -3011,7 +3012,7 @@
 }
 
 .ccm-preview-card {
-  background: #ffffff;
+  background: var(--bg);
   border: 1px solid var(--border);
   border-radius: 12px;
   overflow: hidden;
@@ -3068,7 +3069,7 @@
   padding: 12px 20px;
   border: 1.5px solid var(--border);
   border-radius: 8px;
-  background: #ffffff;
+  background: var(--bg);
   font-size: 14px;
   font-weight: 700;
   color: var(--text);
@@ -3092,7 +3093,7 @@
 }
 
 .ccm-success-card {
-  background: #ffffff;
+  background: var(--bg);
   border: 1px solid var(--border);
   border-radius: 12px;
   overflow: visible;
@@ -3256,10 +3257,10 @@
   top: calc(100% + 8px);
   right: 0;
   width: 280px;
-  background: #ffffff;
+  background: var(--bg);
   border: 1px solid var(--border);
   border-radius: 8px;
-  box-shadow: 0 4px 24px rgba(0,0,0,0.13);
+  box-shadow: 0 4px 24px rgba(0,0,0,0.3);
   z-index: 200;
   overflow: hidden;
 }

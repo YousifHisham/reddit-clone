@@ -16,6 +16,9 @@ function ProtectedRoute({ children }) {
 }
 
 export default function App() {
+  if (!document.documentElement.getAttribute('data-theme')) {
+    document.documentElement.setAttribute('data-theme', 'dark');
+  }
   return (
     <BrowserRouter>
       <Routes>
