@@ -4,6 +4,8 @@ import Layout from '../components/Layout';
 import { getCommunityByName, getCommunityPosts, joinCommunity, leaveCommunity, createJoinRequest } from '../api/communities';
 import { getMe } from '../api/auth';
 import { upvotePost, downvotePost, deletePost, updatePost } from '../api/posts';
+import { savePost, unsavePost, getSavedPosts } from '../api/users';
+import ShareModal from '../components/ShareModal';
 
 function timeAgo(date) {
   const diff = (Date.now() - new Date(date)) / 1000;
@@ -17,7 +19,7 @@ function formatScore(n) {
   return n >= 1000 ? `${(n / 1000).toFixed(1)}k` : n;
 }
 
-function PostCard({ post, currentUser, onDelete, onUpdate }) {
+function PostCard({ post, currentUser, isSaved = false, onSaveToggle, onDelete, onUpdate }) {
   const [votes, setVotes] = useState({ up: post.upvotes, down: post.downvotes });
   const [vote, setVote] = useState(0);
   const score = votes.up - votes.down;
@@ -30,8 +32,20 @@ function PostCard({ post, currentUser, onDelete, onUpdate }) {
   const [confirmDelete, setConfirmDelete] = useState(false);
   const [deleteLoading, setDeleteLoading] = useState(false);
   const [deleteError, setDeleteError] = useState('');
+  const [saved, setSaved] = useState(isSaved);
+  const [showShare, setShowShare] = useState(false);
 
   const isAuthor = currentUser && post.author?._id === currentUser._id;
+
+  const handleSave = async e => {
+    e.stopPropagation();
+    if (!currentUser) return;
+    const next = !saved;
+    setSaved(next);
+    if (next) await savePost(currentUser._id, post._id);
+    else await unsavePost(currentUser._id, post._id);
+    onSaveToggle?.(post._id, next);
+  };
 
   useEffect(() => {
     if (!menuOpen) return;
@@ -147,7 +161,11 @@ function PostCard({ post, currentUser, onDelete, onUpdate }) {
               <span>{formatScore(post.commentCount || 0)}</span>
             </div>
           </Link>
-          <div className="post-pill">
+          <div className={`post-pill${saved ? ' post-pill-saved' : ''}`} onClick={handleSave} style={{ cursor: currentUser ? 'pointer' : 'default' }}>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill={saved ? 'currentColor' : 'none'} stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
+            <span>{saved ? 'Saved' : 'Save'}</span>
+          </div>
+          <div className="post-pill" onClick={e => { e.stopPropagation(); setShowShare(true); }} style={{ cursor: 'pointer' }}>
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
             <span>Share</span>
           </div>
@@ -166,6 +184,7 @@ function PostCard({ post, currentUser, onDelete, onUpdate }) {
           </div>
         </div>
       )}
+      {showShare && <ShareModal post={post} currentUser={currentUser} onClose={() => setShowShare(false)} />}
     </div>
   );
 }
@@ -180,6 +199,7 @@ export default function CommunityPage() {
   const [joined, setJoined] = useState(false);
   const [joinPending, setJoinPending] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [savedPostIds, setSavedPostIds] = useState(new Set());
 
   useEffect(() => {
     getMe().then(d => { if (d.success) setCurrentUser(d.user); });
@@ -197,6 +217,8 @@ export default function CommunityPage() {
       if (meData.success) {
         const uid = meData.user._id;
         setJoined(data.community.members?.some(m => m === uid || m?._id === uid) ?? false);
+        const savedData = await getSavedPosts(uid);
+        if (savedData.success) setSavedPostIds(new Set(savedData.posts.map(p => p._id?.toString())));
       }
     }
     setLoading(false);
@@ -279,6 +301,8 @@ export default function CommunityPage() {
                 key={post._id}
                 post={post}
                 currentUser={currentUser}
+                isSaved={savedPostIds.has(post._id?.toString())}
+                onSaveToggle={(id, next) => setSavedPostIds(prev => { const s = new Set(prev); next ? s.add(id.toString()) : s.delete(id.toString()); return s; })}
                 onDelete={id => setPosts(prev => prev.filter(p => p._id !== id))}
                 onUpdate={(id, body) => setPosts(prev => prev.map(p => p._id === id ? { ...p, content: body } : p))}
               />

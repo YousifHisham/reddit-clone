@@ -6,6 +6,8 @@ import { getCommunities, joinCommunity, leaveCommunity, createCommunity, createJ
 import { getNotifications, markNotificationsRead, approvePost, rejectPost } from '../api/notifications';
 import { getThreads, getMessages, sendMessage, markThreadRead, searchUsers } from '../api/messages';
 import { search } from '../api/search';
+import { savePost, unsavePost, getSavedPosts } from '../api/users';
+import ShareModal from '../components/ShareModal';
 
 // ── Icons ──
 const Icon = ({ d, size = 18, ...p }) => (
@@ -45,26 +47,33 @@ function formatScore(n) {
 
 // ── Components ──
 
-function PostCard({ post, currentUser, onDelete, onUpdate }) {
+function PostCard({ post, currentUser, isSaved = false, onSaveToggle, onDelete, onUpdate }) {
   const [votes, setVotes] = useState({ up: post.upvotes, down: post.downvotes });
   const [vote, setVote] = useState(0);
   const score = votes.up - votes.down;
 
-  // ··· menu state
   const [menuOpen, setMenuOpen] = useState(false);
   const menuRef = useRef(null);
-
-  // inline edit state
   const [editing, setEditing] = useState(false);
   const [editBody, setEditBody] = useState(post.content || '');
   const [editLoading, setEditLoading] = useState(false);
-
-  // delete confirm state
   const [confirmDelete, setConfirmDelete] = useState(false);
   const [deleteLoading, setDeleteLoading] = useState(false);
   const [deleteError, setDeleteError] = useState('');
+  const [saved, setSaved] = useState(isSaved);
+  const [showShare, setShowShare] = useState(false);
 
   const isAuthor = currentUser && post.author?._id === currentUser._id;
+
+  const handleSave = async e => {
+    e.stopPropagation();
+    if (!currentUser) return;
+    const next = !saved;
+    setSaved(next);
+    if (next) await savePost(currentUser._id, post._id);
+    else await unsavePost(currentUser._id, post._id);
+    onSaveToggle?.(post._id, next);
+  };
 
   useEffect(() => {
     if (!menuOpen) return;
@@ -197,11 +206,12 @@ function PostCard({ post, currentUser, onDelete, onUpdate }) {
             </div>
           </Link>
           {/* Save pill */}
-          <div className="post-pill">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
+          <div className={`post-pill${saved ? ' post-pill-saved' : ''}`} onClick={handleSave} style={{ cursor: currentUser ? 'pointer' : 'default' }}>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill={saved ? 'currentColor' : 'none'} stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
+            <span>{saved ? 'Saved' : 'Save'}</span>
           </div>
           {/* Share pill */}
-          <div className="post-pill">
+          <div className="post-pill" onClick={e => { e.stopPropagation(); setShowShare(true); }} style={{ cursor: 'pointer' }}>
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
             <span>Share</span>
           </div>
@@ -223,6 +233,7 @@ function PostCard({ post, currentUser, onDelete, onUpdate }) {
           </div>
         </div>
       )}
+      {showShare && <ShareModal post={post} currentUser={currentUser} onClose={() => setShowShare(false)} />}
     </div>
   );
 }
@@ -882,9 +893,17 @@ export default function RedditLayout() {
   const [showSearchDropdown, setShowSearchDropdown] = useState(false);
   const searchTimeoutRef = useRef(null);
   const searchContainerRef = useRef(null);
+  const [savedPostIds, setSavedPostIds] = useState(new Set());
 
   useEffect(() => {
-    getMe().then(data => { if (data.success) setUser(data.user); });
+    getMe().then(data => {
+      if (data.success) {
+        setUser(data.user);
+        getSavedPosts(data.user._id).then(d => {
+          if (d.success) setSavedPostIds(new Set(d.savedPosts.map(p => (p._id || p).toString())));
+        });
+      }
+    });
     getCommunities().then(data => { if (data.success) setCommunities(data.communities); });
     getNotifications().then(data => { if (data.success) setNotifications(data.notifications); });
   }, []);
@@ -1333,6 +1352,8 @@ export default function RedditLayout() {
                   key={post._id}
                   post={post}
                   currentUser={user}
+                  isSaved={savedPostIds.has(post._id?.toString())}
+                  onSaveToggle={(id, next) => setSavedPostIds(prev => { const s = new Set(prev); next ? s.add(id.toString()) : s.delete(id.toString()); return s; })}
                   onDelete={(id) => setPosts(prev => prev.filter(p => p._id !== id))}
                   onUpdate={(id, body) => setPosts(prev => prev.map(p => p._id === id ? { ...p, content: body } : p))}
                 />

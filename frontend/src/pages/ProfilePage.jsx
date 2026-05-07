@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import Layout from '../components/Layout';
-import { getUserByUsername, getUserPosts, getUserComments, updateProfile } from '../api/users';
+import { getUserByUsername, getUserPosts, getUserComments, updateProfile, getSavedPosts } from '../api/users';
 import { getMe } from '../api/auth';
 
 function timeAgo(date) {
@@ -30,6 +30,7 @@ export default function ProfilePage() {
   const [tab, setTab] = useState('Overview');
   const [posts, setPosts] = useState(null);
   const [comments, setComments] = useState(null);
+  const [savedPosts, setSavedPosts] = useState(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -40,6 +41,7 @@ export default function ProfilePage() {
     setLoading(true);
     setPosts(null);
     setComments(null);
+    setSavedPosts(null);
     setTab('Overview');
     getUserByUsername(username).then(d => {
       if (d.success) setUser(d.user);
@@ -55,7 +57,10 @@ export default function ProfilePage() {
     if ((tab === 'Overview' || tab === 'Comments') && comments === null) {
       getUserComments(username).then(d => { if (d.success) setComments(d.comments); });
     }
-  }, [tab, user]);
+    if (tab === 'Saved' && savedPosts === null && currentUser && currentUser.username === user.username) {
+      getSavedPosts(currentUser._id).then(d => { if (d.success) setSavedPosts(d.savedPosts); });
+    }
+  }, [tab, user, currentUser]);
 
   if (loading) return <Layout><div className="page-loading">Loading…</div></Layout>;
   if (!user) return <Layout><div className="page-loading">User not found.</div></Layout>;
@@ -198,7 +203,38 @@ export default function ProfilePage() {
                 ))
           )}
 
-          {(tab === 'Saved' || tab === 'Upvoted' || tab === 'Downvoted' || tab === 'History' || tab === 'Hidden') && (
+          {tab === 'Saved' && (
+            !isOwnProfile
+              ? <div className="page-empty">Saved posts are private.</div>
+              : savedPosts === null
+                ? <div className="page-loading">Loading…</div>
+                : savedPosts.length === 0
+                  ? <div className="page-empty">No saved posts yet.</div>
+                  : savedPosts.map(post => (
+                    <div key={post._id} className="content-card" style={{ background: 'var(--bg-page)', borderRadius: 8, marginBottom: 8 }}>
+                      <div className="content-card-body">
+                        <div className="card-meta">
+                          <Link to={`/r/${post.community?.name}`} style={{ color: 'var(--text)', fontWeight: 700, textDecoration: 'none', fontSize: 12 }}>
+                            r/{post.community?.name}
+                          </Link>
+                          <span className="post-dot">•</span>
+                          <span>Posted by <Link to={`/u/${post.author?.username}`} style={{ color: 'var(--muted)', textDecoration: 'none' }}>u/{post.author?.username}</Link></span>
+                          <span className="post-dot">•</span>
+                          <span>{timeAgo(post.createdAt)}</span>
+                        </div>
+                        <Link to={`/post/${post._id}`} className="card-title">{post.title}</Link>
+                        {post.content && <p className="card-excerpt">{post.content}</p>}
+                        <div className="card-stats">
+                          <span>{formatScore(post.upvotes - post.downvotes)} points</span>
+                          <span>•</span>
+                          <Link to={`/post/${post._id}`} style={{ color: 'var(--muted)', textDecoration: 'none' }}>{post.commentCount} comments</Link>
+                        </div>
+                      </div>
+                    </div>
+                  ))
+          )}
+
+          {(tab === 'Upvoted' || tab === 'Downvoted') && (
             <div className="page-empty">Nothing here yet.</div>
           )}
         </div>
