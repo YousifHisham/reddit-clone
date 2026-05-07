@@ -182,12 +182,9 @@ function PostCard({ post, currentUser, isSaved = false, onSaveToggle, onDelete, 
   );
 }
 
-const SORT_TABS = ['Hot', 'New', 'Top', 'Rising'];
-
 export default function PopularPage() {
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [sort, setSort] = useState('hot');
   const [currentUser, setCurrentUser] = useState(null);
   const [savedPostIds, setSavedPostIds] = useState(new Set());
 
@@ -196,7 +193,7 @@ export default function PopularPage() {
       if (d.success) {
         setCurrentUser(d.user);
         const savedData = await getSavedPosts(d.user._id);
-        if (savedData.success) setSavedPostIds(new Set(savedData.posts.map(p => p._id?.toString())));
+        if (savedData.success) setSavedPostIds(new Set((savedData.posts || []).map(p => p._id?.toString())));
       }
     });
   }, []);
@@ -204,38 +201,20 @@ export default function PopularPage() {
   useEffect(() => {
     setLoading(true);
     const token = localStorage.getItem('accessToken');
-    getFeed(token, sort).then(d => {
+    getFeed(token, 'popular').then(d => {
       if (d.success) setPosts(d.posts);
       setLoading(false);
     });
-  }, [sort]);
+  }, []);
 
   return (
     <Layout>
-      <div className="home-layout" style={{ maxWidth: 1200, margin: '0 auto', padding: '20px 24px', display: 'flex', gap: 24 }}>
+      <div style={{ maxWidth: 1200, margin: '0 auto', padding: '20px 24px', display: 'flex', gap: 24 }}>
         <div style={{ flex: 1, minWidth: 0 }}>
-          <div className="sort-tabs">
-            {SORT_TABS.map(t => (
-              <button
-                key={t}
-                className={`sort-tab${sort === t.toLowerCase() ? ' active' : ''}`}
-                onClick={() => setSort(t.toLowerCase())}
-              >
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" style={{ marginRight: 6, verticalAlign: 'middle' }}>
-                  {t === 'Hot' && <><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></>}
-                  {t === 'New' && <><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></>}
-                  {t === 'Top' && <><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></>}
-                  {t === 'Rising' && <><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></>}
-                </svg>
-                {t}
-              </button>
-            ))}
-          </div>
-
           {loading ? (
             <div className="page-loading">Loading…</div>
           ) : posts.length === 0 ? (
-            <div className="page-empty">No posts yet.</div>
+            <div className="page-empty">No popular posts this month.</div>
           ) : (
             posts.map(post => (
               <PostCard
@@ -253,13 +232,10 @@ export default function PopularPage() {
 
         <div style={{ width: 312, flexShrink: 0 }}>
           <div className="panel-card" style={{ padding: 16 }}>
-            <p className="panel-title" style={{ margin: '0 0 8px' }}>Popular Posts</p>
-            <p style={{ fontSize: 14, color: 'var(--muted)', margin: '0 0 12px', lineHeight: 1.5 }}>
-              The most upvoted posts across all communities on Reddit.
+            <p className="panel-title" style={{ margin: '0 0 8px' }}>Popular</p>
+            <p style={{ fontSize: 14, color: 'var(--muted)', margin: 0, lineHeight: 1.5 }}>
+              Most upvoted posts across all communities in the last 30 days.
             </p>
-            <div style={{ borderTop: '1px solid var(--border)', paddingTop: 12, fontSize: 13, color: 'var(--muted)' }}>
-              Sorted by: <strong style={{ color: 'var(--text)', textTransform: 'capitalize' }}>{sort}</strong>
-            </div>
           </div>
         </div>
       </div>

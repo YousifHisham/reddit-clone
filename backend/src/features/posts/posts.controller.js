@@ -75,6 +75,9 @@ const getFeed = async (req, res, next) => {
     else if (sort === 'rising') {
       filter.createdAt = { $gte: new Date(Date.now() - 24 * 60 * 60 * 1000) };
       sortQuery = { upvotes: -1 };
+    } else if (sort === 'popular') {
+      filter.createdAt = { $gte: new Date(Date.now() - 30 * 24 * 60 * 60 * 1000) };
+      sortQuery = { upvotes: -1 };
     }
     // hot: default sortQuery (upvotes + recency)
 

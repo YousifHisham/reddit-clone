@@ -218,7 +218,7 @@ export default function CommunityPage() {
         const uid = meData.user._id;
         setJoined(data.community.members?.some(m => m === uid || m?._id === uid) ?? false);
         const savedData = await getSavedPosts(uid);
-        if (savedData.success) setSavedPostIds(new Set(savedData.posts.map(p => p._id?.toString())));
+        if (savedData.success) setSavedPostIds(new Set((savedData.posts || []).map(p => p._id?.toString())));
       }
     }
     setLoading(false);
