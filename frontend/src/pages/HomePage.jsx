@@ -5,7 +5,7 @@ import { getFeed, createPost, upvotePost, downvotePost, updatePost, deletePost, 
 import { getCommunities, joinCommunity, leaveCommunity, createCommunity, createJoinRequest, handleJoinRequest } from '../api/communities';
 import { getNotifications, markNotificationsRead, approvePost, rejectPost } from '../api/notifications';
 import { getThreads, getMessages, sendMessage, markThreadRead, searchUsers } from '../api/messages';
- 
+import { search } from '../api/search';
 
 // ── Icons ──
 const Icon = ({ d, size = 18, ...p }) => (
@@ -227,7 +227,7 @@ function PostCard({ post, currentUser, onDelete, onUpdate }) {
   );
 }
 
-function SidebarSection({ section }) {
+function SidebarSection({ section, onItemClick }) {
   const [open, setOpen] = useState(false);
   return (
     <div>
@@ -239,7 +239,7 @@ function SidebarSection({ section }) {
       </button>
       <div className="sidebar-section-items" style={{ maxHeight: open ? "500px" : "0" }}>
         {section.items.map((item, i) => (
-          <button key={i} className="sidebar-sub-item">
+          <button key={i} className="sidebar-sub-item" onClick={() => onItemClick?.(item)}>
             <span className="community-dot" style={{ background: COMMUNITY_COLORS[i % COMMUNITY_COLORS.length] }}>
               {item[0] === "r" ? item[2]?.toUpperCase() : "+"}
             </span>
@@ -877,6 +877,11 @@ export default function RedditLayout() {
   const [showDisplayMode, setShowDisplayMode] = useState(false);
   const [displayMode, setDisplayMode] = useState('dark');
   const [toast, setToast] = useState('');
+  const [searchQuery, setSearchQuery] = useState('');
+  const [searchResults, setSearchResults] = useState({ communities: [], users: [] });
+  const [showSearchDropdown, setShowSearchDropdown] = useState(false);
+  const searchTimeoutRef = useRef(null);
+  const searchContainerRef = useRef(null);
 
   useEffect(() => {
     getMe().then(data => { if (data.success) setUser(data.user); });
@@ -933,10 +938,29 @@ export default function RedditLayout() {
   };
 
   useEffect(() => {
+    if (!searchQuery.trim()) {
+      setSearchResults({ communities: [], users: [] });
+      setShowSearchDropdown(false);
+      clearTimeout(searchTimeoutRef.current);
+      return;
+    }
+    clearTimeout(searchTimeoutRef.current);
+    searchTimeoutRef.current = setTimeout(async () => {
+      const data = await search(searchQuery.trim());
+      if (data.success) {
+        setSearchResults({ communities: data.communities || [], users: data.users || [] });
+        setShowSearchDropdown(true);
+      }
+    }, 300);
+    return () => clearTimeout(searchTimeoutRef.current);
+  }, [searchQuery]);
+
+  useEffect(() => {
     const handleClickOutside = (e) => {
       if (notifRef.current && !notifRef.current.contains(e.target)) setShowNotifs(false);
       if (chatRef.current && !chatRef.current.contains(e.target)) setShowChat(false);
       if (profileRef.current && !profileRef.current.contains(e.target)) setShowProfile(false);
+      if (searchContainerRef.current && !searchContainerRef.current.contains(e.target)) setShowSearchDropdown(false);
     };
     document.addEventListener('mousedown', handleClickOutside);
     return () => document.removeEventListener('mousedown', handleClickOutside);
@@ -954,14 +978,65 @@ export default function RedditLayout() {
         </div>
 
         <div className="nav-center">
-          <div className="search-wrap">
-            <div className="search-snoo"><RedditLogo /></div>
-            <input className="search-input" placeholder="Find anything" />
-            <div className="search-divider" />
-            <button className="search-ask-btn">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
-              Ask
-            </button>
+          <div className="search-container" ref={searchContainerRef}>
+            <form className="search-wrap" onSubmit={e => { e.preventDefault(); const q = searchQuery.trim(); if (q) { navigate(`/search?q=${encodeURIComponent(q)}`); setShowSearchDropdown(false); } }}>
+              <div className="search-snoo"><RedditLogo /></div>
+              <input
+                className="search-input"
+                placeholder="Find anything"
+                value={searchQuery}
+                onChange={e => setSearchQuery(e.target.value)}
+                onFocus={() => { if (searchQuery.trim() && (searchResults.communities.length > 0 || searchResults.users.length > 0)) setShowSearchDropdown(true); }}
+              />
+              <div className="search-divider" />
+              <button type="submit" className="search-ask-btn">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+                Ask
+              </button>
+            </form>
+
+            {showSearchDropdown && (searchResults.communities.length > 0 || searchResults.users.length > 0) && (
+              <div className="search-dropdown">
+                {searchResults.communities.length > 0 && (
+                  <div className="search-dropdown-section">
+                    <div className="search-dropdown-label">Communities</div>
+                    {searchResults.communities.slice(0, 4).map(c => (
+                      <div key={c._id} className="search-dropdown-item" onClick={() => { navigate(`/r/${c.name}`); setShowSearchDropdown(false); setSearchQuery(''); }}>
+                        <div className="search-dd-icon" style={c.icon ? { backgroundImage: `url(${c.icon})`, background: 'none' } : { background: '#ff4500' }}>
+                          {!c.icon && c.name[0].toUpperCase()}
+                        </div>
+                        <div>
+                          <div className="search-dd-name">r/{c.name}</div>
+                          <div className="search-dd-sub">{c.memberCount?.toLocaleString()} members</div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                )}
+                {searchResults.communities.length > 0 && searchResults.users.length > 0 && (
+                  <div className="search-dropdown-divider" />
+                )}
+                {searchResults.users.length > 0 && (
+                  <div className="search-dropdown-section">
+                    <div className="search-dropdown-label">People</div>
+                    {searchResults.users.slice(0, 4).map(u => (
+                      <div key={u._id} className="search-dropdown-item" onClick={() => { navigate(`/u/${u.username}`); setShowSearchDropdown(false); setSearchQuery(''); }}>
+                        <div className="search-dd-icon" style={u.profilePicture ? { backgroundImage: `url(${u.profilePicture})`, background: 'none' } : { background: '#0079d3' }}>
+                          {!u.profilePicture && u.username[0].toUpperCase()}
+                        </div>
+                        <div>
+                          <div className="search-dd-name">u/{u.username}</div>
+                          <div className="search-dd-sub">{((u.postKarma || 0) + (u.commentKarma || 0)).toLocaleString()} karma</div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                )}
+                <div className="search-dropdown-footer" onClick={() => { navigate(`/search?q=${encodeURIComponent(searchQuery)}`); setShowSearchDropdown(false); }}>
+                  View all results for "{searchQuery}"
+                </div>
+              </div>
+            )}
           </div>
         </div>
 
@@ -1212,7 +1287,17 @@ export default function RedditLayout() {
 
           <hr className="sidebar-divider" />
 
-          {SIDEBAR_SECTIONS.map((section) => (
+          {communities.length > 0 && (
+            <SidebarSection
+              section={{
+                label: 'COMMUNITIES',
+                items: communities.slice(0, 10).map(c => `r/${c.name}`),
+              }}
+              onItemClick={item => navigate(`/${item}`)}
+            />
+          )}
+
+          {SIDEBAR_SECTIONS.filter(s => s.label !== 'COMMUNITIES').map((section) => (
             <SidebarSection key={section.label} section={section} />
           ))}
         </div>
@@ -1265,12 +1350,17 @@ export default function RedditLayout() {
                   {communities.slice(0, 5).map((c, i) => (
                     <li key={c._id} className="panel-community-item">
                       <span className="panel-rank">{i + 1}</span>
-                      <div className="panel-community-icon" style={{ background: COMMUNITY_COLORS[i % COMMUNITY_COLORS.length] }}>
-                        {c.name[0].toUpperCase()}
-                      </div>
-                      <div className="panel-community-info">
-                        <div className="panel-community-name">r/{c.name}</div>
-                        <div className="panel-community-members">{c.memberCount?.toLocaleString()} members</div>
+                      <div
+                        style={{ display: 'flex', alignItems: 'center', gap: 8, flex: 1, cursor: 'pointer', minWidth: 0 }}
+                        onClick={() => navigate(`/r/${c.name}`)}
+                      >
+                        <div className="panel-community-icon" style={{ background: COMMUNITY_COLORS[i % COMMUNITY_COLORS.length] }}>
+                          {c.name[0].toUpperCase()}
+                        </div>
+                        <div className="panel-community-info">
+                          <div className="panel-community-name">r/{c.name}</div>
+                          <div className="panel-community-members">{c.memberCount?.toLocaleString()} members</div>
+                        </div>
                       </div>
                       {joinedMap[c._id] ? (
                         <span className="panel-joined">✓ Joined</span>

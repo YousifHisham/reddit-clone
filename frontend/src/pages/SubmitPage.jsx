@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { getMe, logout } from '../api/auth';
 import { createPost, saveDraft } from '../api/posts';
 import { getCommunities, getCommunityFlairs } from '../api/communities';
@@ -188,6 +188,7 @@ function SidebarSection({ section }) {
 
 export default function SubmitPage() {
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const [user, setUser] = useState(null);
   const [communities, setCommunities] = useState([]);
@@ -220,7 +221,16 @@ export default function SubmitPage() {
 
   useEffect(() => {
     getMe().then(d => { if (d.success) setUser(d.user); else navigate('/Login'); });
-    getCommunities().then(d => { if (d.success) setCommunities(d.communities); });
+    getCommunities().then(d => {
+      if (d.success) {
+        setCommunities(d.communities);
+        const preselect = searchParams.get('community');
+        if (preselect) {
+          const match = d.communities.find(c => c.name === preselect.toLowerCase());
+          if (match) setSelectedCommunity(match);
+        }
+      }
+    });
     getNotifications().then(d => { if (d.success) setNotifications(d.notifications); });
   }, []);
 
