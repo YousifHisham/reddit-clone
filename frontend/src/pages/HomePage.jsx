@@ -874,7 +874,8 @@ export default function RedditLayout() {
   const chatRef = useRef(null);
   const [showProfile, setShowProfile] = useState(false);
   const profileRef = useRef(null);
-  const [modMode, setModMode] = useState(false);
+  const [showDisplayMode, setShowDisplayMode] = useState(false);
+  const [displayMode, setDisplayMode] = useState('dark');
   const [toast, setToast] = useState('');
 
   useEffect(() => {
@@ -1129,21 +1130,10 @@ export default function RedditLayout() {
                   <span>Premium</span>
                 </button>
 
-                <button className="pd-item pd-item-toggle">
-                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M9 12l2 2 4-4"/></svg>
-                  <span style={{ flex: 1 }}>Mod Mode</span>
-                  <button
-                    className={`pd-toggle ${modMode ? 'on' : ''}`}
-                    onClick={e => { e.stopPropagation(); setModMode(p => !p); }}
-                  >
-                    <span className="pd-toggle-knob" />
+                <button className="pd-item pd-item-toggle" onClick={() => { setShowProfile(false); setShowDisplayMode(true); }}>
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+                    <span>Display Mode</span>
                   </button>
-                </button>
-
-                <button className="pd-item">
-                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
-                  <span>Display Mode</span>
-                </button>
 
                 <button className="pd-item" onClick={handleLogout}>
                   <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
@@ -1326,6 +1316,54 @@ export default function RedditLayout() {
         />
       )}
       {toast && <div className="toast">{toast}</div>}
+
+      {/* Display Mode Modal */}
+      {showDisplayMode && (
+        <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.5)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 400 }} onClick={() => setShowDisplayMode(false)}>
+          <div style={{ background: 'var(--bg)', borderRadius: 16, width: 360, padding: '24px', boxShadow: '0 8px 32px rgba(0,0,0,0.4)' }} onClick={e => e.stopPropagation()}>
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 20 }}>
+              <span style={{ fontSize: 18, fontWeight: 700, color: 'var(--text)' }}>Display Mode</span>
+              <button onClick={() => setShowDisplayMode(false)} style={{ background: 'var(--hover-bg)', border: 'none', borderRadius: '50%', width: 32, height: 32, cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--text)' }}>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+              </button>
+            </div>
+
+            {[{value:'auto',label:'Auto (follow system settings)',icon:<><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></>},{value:'light',label:'Light',icon:<><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></>},{value:'dark',label:'Dark',icon:<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>}].map(opt => (
+              <div
+                key={opt.value}
+                onClick={() => setDisplayMode(opt.value)}
+                style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '14px 16px', borderRadius: 8, cursor: 'pointer', background: displayMode === opt.value ? 'var(--hover-bg)' : 'transparent', marginBottom: 4 }}
+              >
+                <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">{opt.icon}</svg>
+                  <span style={{ fontSize: 15, color: 'var(--text)' }}>{opt.label}</span>
+                </div>
+                {displayMode === opt.value && (
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--blue)" strokeWidth="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+                )}
+              </div>
+            ))}
+
+            <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: 20 }}>
+              <button
+                onClick={() => {
+                  if (displayMode === 'dark') document.documentElement.setAttribute('data-theme', 'dark');
+                  else if (displayMode === 'light') document.documentElement.removeAttribute('data-theme');
+                  else {
+                    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+                    if (prefersDark) document.documentElement.setAttribute('data-theme', 'dark');
+                    else document.documentElement.removeAttribute('data-theme');
+                  }
+                  setShowDisplayMode(false);
+                }}
+                style={{ background: '#0079d3', color: '#fff', border: 'none', borderRadius: 999, padding: '10px 28px', fontSize: 15, fontWeight: 700, cursor: 'pointer', fontFamily: 'var(--font)' }}
+              >
+                Done
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </>
   );
 }
