@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { getMe, logout } from '../api/auth';
 import { getCommunities } from '../api/communities';
+import CreateCommunityModal from './CreateCommunityModal';
 
 const RedditLogo = () => (
   <svg width="32" height="32" viewBox="0 0 20 20">
@@ -21,12 +22,13 @@ export default function Layout({ children }) {
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const [communities, setCommunities] = useState([]);
   const [communitiesOpen, setCommunitiesOpen] = useState(true);
+  const [showCreateCommunity, setShowCreateCommunity] = useState(false);
   const menuRef = useRef(null);
 
   useEffect(() => {
     const token = localStorage.getItem('accessToken');
     if (token) getMe().then(d => { if (d.success) setCurrentUser(d.user); });
-    getCommunities().then(d => { if (d.success) setCommunities(d.communities.slice(0, 5)); });
+    getCommunities().then(d => { if (d.success) setCommunities(d.communities.slice(0, 10)); });
   }, []);
 
   useEffect(() => {
@@ -159,41 +161,45 @@ export default function Layout({ children }) {
 
           <hr className="sidebar-divider" />
 
-          {/* Communities section */}
-          <button className="sidebar-section-header" onClick={() => setCommunitiesOpen(o => !o)}>
-            <span>COMMUNITIES</span>
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" style={{ transform: communitiesOpen ? 'rotate(180deg)' : 'none', transition: 'transform 0.2s' }}>
-              <polyline points="6 9 12 15 18 9"/>
+          <button className="sidebar-nav-item" onClick={() => setShowCreateCommunity(true)}>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/>
+              <line x1="19" y1="8" x2="19" y2="14"/><line x1="22" y1="11" x2="16" y2="11"/>
             </svg>
+            <span>Start a Community</span>
           </button>
-          <div className="sidebar-section-items" style={{ maxHeight: communitiesOpen ? '500px' : '0' }}>
-            <button className="sidebar-sub-item" onClick={() => navigate('/home')}>
-              <span className="community-dot" style={{ background: '#ff4500', fontSize: 14 }}>+</span>
-              <span>Create Community</span>
-            </button>
-            {communities.map((c, i) => (
-              <button key={c._id} className="sidebar-sub-item" onClick={() => navigate(`/r/${c.name}`)}>
-                <span className="community-dot" style={{ background: COMMUNITY_COLORS[i % COMMUNITY_COLORS.length] }}>
-                  {c.name[0].toUpperCase()}
-                </span>
-                <span>r/{c.name}</span>
-              </button>
-            ))}
-          </div>
 
           <hr className="sidebar-divider" />
 
-          {/* Resources */}
-          <button className="sidebar-section-header">
-            <span>RESOURCES</span>
-          </button>
-          {['Help', 'About Reddit'].map(item => (
-            <button key={item} className="sidebar-sub-item">
-              <span>{item}</span>
-            </button>
-          ))}
+          {communities.length > 0 && (
+            <>
+              <button className="sidebar-section-header" onClick={() => setCommunitiesOpen(o => !o)}>
+                <span>COMMUNITIES</span>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" style={{ transform: communitiesOpen ? 'rotate(180deg)' : 'none', transition: 'transform 0.2s' }}>
+                  <polyline points="6 9 12 15 18 9"/>
+                </svg>
+              </button>
+              <div className="sidebar-section-items" style={{ maxHeight: communitiesOpen ? '600px' : '0', overflow: 'hidden', transition: 'max-height 0.2s' }}>
+                {communities.map((c, i) => (
+                  <button key={c._id} className="sidebar-sub-item" onClick={() => navigate(`/r/${c.name}`)}>
+                    <span className="community-dot" style={{ background: COMMUNITY_COLORS[i % COMMUNITY_COLORS.length] }}>
+                      {c.name[0].toUpperCase()}
+                    </span>
+                    <span>r/{c.name}</span>
+                  </button>
+                ))}
+              </div>
+            </>
+          )}
         </div>
       </nav>
+
+      {showCreateCommunity && (
+        <CreateCommunityModal
+          onClose={() => setShowCreateCommunity(false)}
+          onCreated={c => { setShowCreateCommunity(false); navigate(`/r/${c.name}`); }}
+        />
+      )}
 
       {/* Main content */}
       <div
