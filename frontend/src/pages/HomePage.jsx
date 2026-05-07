@@ -1084,7 +1084,7 @@ export default function RedditLayout() {
             {showProfile && (
               <div className="profile-dropdown" onClick={e => e.stopPropagation()}>
                 {/* View Profile */}
-                <div className="pd-profile-row">
+                <div className="pd-profile-row" onClick={() => { setShowProfile(false); navigate(`/u/${user?.username}`); }}>
                   <div className="pd-avatar" style={avatarBg ? { background: avatarBg } : {}}>
                     {user?.username?.[0]?.toUpperCase() || 'U'}
                     <span className="pd-online-dot" />
