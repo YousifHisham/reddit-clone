@@ -3896,12 +3896,40 @@
 }
 
 /* ══ EXPLORE PAGE ══ */
-.explore-pills {
+.explore-pills-wrap {
   display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
+  align-items: center;
+  gap: 6px;
   margin-bottom: 24px;
 }
+
+.explore-pills-arrow {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: 1px solid var(--border);
+  background: var(--bg);
+  color: var(--text);
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: background 0.15s, border-color 0.15s;
+}
+.explore-pills-arrow:hover { background: var(--hover-bg); border-color: #898989; }
+
+.explore-pills {
+  display: flex;
+  flex-wrap: nowrap;
+  gap: 8px;
+  overflow-x: auto;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  flex: 1;
+  min-width: 0;
+}
+.explore-pills::-webkit-scrollbar { display: none; }
 
 .explore-pill {
   display: flex;

@@ -1,21 +1,39 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Layout from '../components/Layout';
 import { getCommunities, joinCommunity, leaveCommunity } from '../api/communities';
 import { getMe } from '../api/auth';
 
 const CATEGORIES = [
-  'All', 'Gaming', 'Arts', 'Music', 'Science', 'Technology',
-  'Sports', 'Entertainment', 'Food', 'News', 'Education',
-  'Health', 'Humor', 'Fashion', 'Travel', 'Finance', 'General',
+  { label: 'All',                    icon: '🌐' },
+  { label: 'Anime & Cosplay',        icon: '🍣' },
+  { label: 'Art',                    icon: '🧑‍🎨' },
+  { label: 'Business & Finance',     icon: '💵' },
+  { label: 'Collectibles & Other Hobbies', icon: '🧩' },
+  { label: 'Education & Career',     icon: '🧑‍🏫' },
+  { label: 'Fashion & Beauty',       icon: '🪞' },
+  { label: 'Food & Drinks',          icon: '🍔' },
+  { label: 'Games',                  icon: '🕹️' },
+  { label: 'Health',                 icon: '❤️‍🩹' },
+  { label: 'Home & Garden',          icon: '🏡' },
+  { label: 'Humanities & Law',       icon: '📜' },
+  { label: 'Identity & Relationships', icon: '🌈' },
+  { label: 'Internet Culture',       icon: '🙉' },
+  { label: 'Movies & TV',            icon: '🎞️' },
+  { label: 'Music',                  icon: '🎶' },
+  { label: 'Nature & Outdoors',      icon: '🌿' },
+  { label: 'News & Politics',        icon: '📰' },
+  { label: 'Places & Travel',        icon: '🌐' },
+  { label: 'Pop Culture',            icon: '✨' },
+  { label: "Q&As & Stories",         icon: '✏️' },
+  { label: 'Reading & Writing',      icon: '📖' },
+  { label: 'Sciences',               icon: '🧪' },
+  { label: 'Spooky',                 icon: '💀' },
+  { label: 'Sports',                 icon: '🏅' },
+  { label: 'Technology',             icon: '🛰️' },
+  { label: 'Vehicles',               icon: '🚗' },
+  { label: 'Wellness',               icon: '🧘' },
 ];
-
-const CATEGORY_ICONS = {
-  All: '🌐', Gaming: '🎮', Arts: '🎨', Music: '🎵', Science: '🔬',
-  Technology: '💻', Sports: '⚽', Entertainment: '🎬', Food: '🍕',
-  News: '📰', Education: '📚', Health: '❤️', Humor: '😂',
-  Fashion: '👗', Travel: '✈️', Finance: '💰', General: '💬',
-};
 
 const COMMUNITY_COLORS = ['#ff4500', '#0079d3', '#46d160', '#9b59b6', '#e74c3c', '#f39c12'];
 
@@ -77,6 +95,11 @@ export default function ExplorePage() {
   const [loading, setLoading] = useState(true);
   const [currentUser, setCurrentUser] = useState(null);
   const [memberIds, setMemberIds] = useState(new Set());
+  const pillsRef = useRef(null);
+
+  const scroll = dir => {
+    if (pillsRef.current) pillsRef.current.scrollBy({ left: dir * 300, behavior: 'smooth' });
+  };
 
   useEffect(() => {
     getMe().then(d => {
@@ -116,17 +139,25 @@ export default function ExplorePage() {
         <h1 style={{ fontSize: 22, fontWeight: 700, color: 'var(--text)', margin: '0 0 20px' }}>Explore Communities</h1>
 
         {/* Category pills */}
-        <div className="explore-pills">
-          {CATEGORIES.map(cat => (
-            <button
-              key={cat}
-              className={`explore-pill${category === cat ? ' active' : ''}`}
-              onClick={() => setCategory(cat)}
-            >
-              <span>{CATEGORY_ICONS[cat]}</span>
-              <span>{cat}</span>
-            </button>
-          ))}
+        <div className="explore-pills-wrap">
+          <button className="explore-pills-arrow" onClick={() => scroll(-1)} aria-label="Scroll left">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+          </button>
+          <div className="explore-pills" ref={pillsRef}>
+            {CATEGORIES.map(({ label, icon }) => (
+              <button
+                key={label}
+                className={`explore-pill${category === label ? ' active' : ''}`}
+                onClick={() => setCategory(label)}
+              >
+                <span>{icon}</span>
+                <span>{label}</span>
+              </button>
+            ))}
+          </div>
+          <button className="explore-pills-arrow" onClick={() => scroll(1)} aria-label="Scroll right">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+          </button>
         </div>
 
         {/* Grid */}
