@@ -1,0 +1,2643 @@
+openapi: 3.0.3
+info:
+  title: Reddit Clone API
+  description: Full REST API documentation for the Reddit Clone project.
+  version: 1.0.0
+
+servers:
+  - url: http://localhost:5000/api
+    description: Local development server
+
+components:
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+  schemas:
+    # ─── Primitives ──────────────────────────────────────────────────────────
+
+    ObjectId:
+      type: string
+      example: "64a1f2b3c4d5e6f7a8b9c0d1"
+
+    # ─── Sub-schemas ─────────────────────────────────────────────────────────
+
+    SocialLink:
+      type: object
+      properties:
+        platform:
+          type: string
+        url:
+          type: string
+
+    Flair:
+      type: object
+      properties:
+        name:
+          type: string
+        color:
+          type: string
+          example: "#ff4500"
+
+    NotificationSettings:
+      type: object
+      properties:
+        chatMessages:
+          type: string
+        chatRequestsNotif:
+          type: string
+        mentions:
+          type: string
+        commentsOnPosts:
+          type: string
+        upvotesOnPosts:
+          type: string
+        upvotesOnComments:
+          type: string
+        repliesToComments:
+          type: string
+        newFollowers:
+          type: string
+        awards:
+          type: string
+        postsYouFollow:
+          type: string
+        trendingPosts:
+          type: string
+        featuredContent:
+          type: string
+        breakingNews:
+          type: string
+        redditAnnouncements:
+          type: string
+        cakeDay:
+          type: string
+        modNotifications:
+          type: string
+
+    EmailNotifications:
+      type: object
+      properties:
+        messages:
+          type: boolean
+        adminNotifications:
+          type: boolean
+        chatRequests:
+          type: boolean
+        commentsOnPosts:
+          type: boolean
+        repliesToComments:
+          type: boolean
+        upvotesOnPosts:
+          type: boolean
+        upvotesOnComments:
+          type: boolean
+        usernameMentions:
+          type: boolean
+        newFollowers:
+          type: boolean
+        dailyDigest:
+          type: boolean
+        weeklyRecap:
+          type: boolean
+        weeklyTopic:
+          type: boolean
+
+    # ─── Core models ─────────────────────────────────────────────────────────
+
+    User:
+      type: object
+      properties:
+        _id:
+          $ref: '#/components/schemas/ObjectId'
+        username:
+          type: string
+        email:
+          type: string
+        bio:
+          type: string
+        profilePicture:
+          type: string
+        banner:
+          type: string
+        displayName:
+          type: string
+        gender:
+          type: string
+        interests:
+          type: array
+          items:
+            type: string
+        tags:
+          type: array
+          items:
+            type: string
+        verified:
+          type: boolean
+        postKarma:
+          type: integer
+        commentKarma:
+          type: integer
+        savedPosts:
+          type: array
+          items:
+            $ref: '#/components/schemas/ObjectId'
+        socialLinks:
+          type: array
+          items:
+            $ref: '#/components/schemas/SocialLink'
+        nsfwProfile:
+          type: boolean
+        showFollowerCount:
+          type: boolean
+        allowFollow:
+          type: boolean
+        chatRequests:
+          type: string
+        showInSearch:
+          type: boolean
+        listOnDirectory:
+          type: boolean
+        personalizeAds:
+          type: boolean
+        partnerAds:
+          type: boolean
+        useApproxLocation:
+          type: boolean
+        showNsfw:
+          type: boolean
+        blurNsfw:
+          type: boolean
+        showRecommendations:
+          type: boolean
+        displayLanguage:
+          type: string
+        autoplayMedia:
+          type: boolean
+        reduceMotion:
+          type: boolean
+        displayMode:
+          type: string
+        useCommunityThemes:
+          type: boolean
+        openInNewTab:
+          type: boolean
+        defaultFeedView:
+          type: string
+        useMarkdownEditor:
+          type: boolean
+        notificationSettings:
+          $ref: '#/components/schemas/NotificationSettings'
+        emailNotifications:
+          $ref: '#/components/schemas/EmailNotifications'
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+
+    UserSummary:
+      type: object
+      properties:
+        _id:
+          $ref: '#/components/schemas/ObjectId'
+        username:
+          type: string
+        profilePicture:
+          type: string
+        postKarma:
+          type: integer
+        commentKarma:
+          type: integer
+
+    Post:
+      type: object
+      properties:
+        _id:
+          $ref: '#/components/schemas/ObjectId'
+        title:
+          type: string
+        content:
+          type: string
+        image:
+          type: string
+        author:
+          $ref: '#/components/schemas/UserSummary'
+        community:
+          $ref: '#/components/schemas/CommunitySummary'
+        flair:
+          type: string
+        flairColor:
+          type: string
+        tags:
+          type: array
+          items:
+            type: string
+        nsfw:
+          type: boolean
+        status:
+          type: string
+          enum: [published, pending, rejected]
+        upvotes:
+          type: integer
+        downvotes:
+          type: integer
+        commentCount:
+          type: integer
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+
+    Comment:
+      type: object
+      properties:
+        _id:
+          $ref: '#/components/schemas/ObjectId'
+        content:
+          type: string
+        author:
+          $ref: '#/components/schemas/UserSummary'
+        post:
+          $ref: '#/components/schemas/ObjectId'
+        parent:
+          $ref: '#/components/schemas/ObjectId'
+        depth:
+          type: integer
+        upvotes:
+          type: integer
+        downvotes:
+          type: integer
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+
+    Community:
+      type: object
+      properties:
+        _id:
+          $ref: '#/components/schemas/ObjectId'
+        name:
+          type: string
+        description:
+          type: string
+        rules:
+          type: string
+        creator:
+          $ref: '#/components/schemas/UserSummary'
+        members:
+          type: array
+          items:
+            $ref: '#/components/schemas/ObjectId'
+        memberCount:
+          type: integer
+        banner:
+          type: string
+        icon:
+          type: string
+        flairs:
+          type: array
+          items:
+            $ref: '#/components/schemas/Flair'
+        requiresApproval:
+          type: boolean
+        type:
+          type: string
+          enum: [public, restricted, private]
+        category:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+
+    CommunitySummary:
+      type: object
+      properties:
+        _id:
+          $ref: '#/components/schemas/ObjectId'
+        name:
+          type: string
+        icon:
+          type: string
+        memberCount:
+          type: integer
+
+    Message:
+      type: object
+      properties:
+        _id:
+          $ref: '#/components/schemas/ObjectId'
+        thread:
+          $ref: '#/components/schemas/ObjectId'
+        sender:
+          $ref: '#/components/schemas/UserSummary'
+        content:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+
+    Thread:
+      type: object
+      properties:
+        _id:
+          $ref: '#/components/schemas/ObjectId'
+        participants:
+          type: array
+          items:
+            $ref: '#/components/schemas/UserSummary'
+        lastMessage:
+          type: string
+        lastMessageAt:
+          type: string
+          format: date-time
+        readBy:
+          type: array
+          items:
+            $ref: '#/components/schemas/ObjectId'
+        createdAt:
+          type: string
+          format: date-time
+
+    Notification:
+      type: object
+      properties:
+        _id:
+          $ref: '#/components/schemas/ObjectId'
+        recipient:
+          $ref: '#/components/schemas/ObjectId'
+        sender:
+          $ref: '#/components/schemas/UserSummary'
+        type:
+          type: string
+          enum:
+            - upvote
+            - comment
+            - join
+            - post_approval
+            - post_approved
+            - post_rejected
+            - join_request
+            - join_approved
+            - join_rejected
+        message:
+          type: string
+        read:
+          type: boolean
+        postId:
+          $ref: '#/components/schemas/ObjectId'
+        communityId:
+          $ref: '#/components/schemas/ObjectId'
+        authorId:
+          $ref: '#/components/schemas/ObjectId'
+        requesterId:
+          $ref: '#/components/schemas/ObjectId'
+        createdAt:
+          type: string
+          format: date-time
+
+    JoinRequest:
+      type: object
+      properties:
+        _id:
+          $ref: '#/components/schemas/ObjectId'
+        community:
+          $ref: '#/components/schemas/ObjectId'
+        requester:
+          $ref: '#/components/schemas/UserSummary'
+        status:
+          type: string
+          enum: [pending, approved, rejected]
+        createdAt:
+          type: string
+          format: date-time
+
+    # ─── Response envelopes ───────────────────────────────────────────────────
+
+    ErrorResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: false
+        message:
+          type: string
+        code:
+          type: string
+
+    SuccessMessage:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: true
+        message:
+          type: string
+
+  responses:
+    Unauthorized:
+      description: Missing or invalid authentication token
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          example:
+            success: false
+            message: "Unauthorized"
+
+    Forbidden:
+      description: Authenticated but not permitted to perform this action
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          example:
+            success: false
+            message: "Forbidden"
+
+    NotFound:
+      description: Resource not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          example:
+            success: false
+            message: "Not found"
+
+    ValidationError:
+      description: Request body / query parameter validation failed
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          example:
+            success: false
+            message: "Validation error"
+
+    ServerError:
+      description: Internal server error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          example:
+            success: false
+            message: "Internal server error"
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# PATHS
+# ═══════════════════════════════════════════════════════════════════════════════
+
+paths:
+
+  # ─────────────────────────────────────────────────────────────────────────────
+  # AUTH
+  # ─────────────────────────────────────────────────────────────────────────────
+
+  /auth/send-otp:
+    post:
+      tags: [Auth]
+      summary: Send OTP to email
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [email]
+              properties:
+                email:
+                  type: string
+                  format: email
+      responses:
+        '200':
+          description: OTP sent successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  message:
+                    type: string
+                    example: "OTP sent to your email"
+        '400':
+          $ref: '#/components/responses/ValidationError'
+        '500':
+          $ref: '#/components/responses/ServerError'
+
+  /auth/verify-otp:
+    post:
+      tags: [Auth]
+      summary: Verify OTP and receive tokens
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [email, otp]
+              properties:
+                email:
+                  type: string
+                  format: email
+                otp:
+                  type: string
+                  minLength: 6
+                  maxLength: 6
+                  example: "123456"
+      responses:
+        '200':
+          description: OTP verified — tokens returned
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  token:
+                    type: string
+                    description: Refresh token (also set as HttpOnly cookie)
+                  accessToken:
+                    type: string
+                  isNewUser:
+                    type: boolean
+                  userId:
+                    $ref: '#/components/schemas/ObjectId'
+        '400':
+          $ref: '#/components/responses/ValidationError'
+        '500':
+          $ref: '#/components/responses/ServerError'
+
+  /auth/refresh:
+    post:
+      tags: [Auth]
+      summary: Refresh access token using refresh token cookie
+      responses:
+        '200':
+          description: New access token issued
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  token:
+                    type: string
+                  accessToken:
+                    type: string
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '500':
+          $ref: '#/components/responses/ServerError'
+
+  /auth/complete-profile:
+    post:
+      tags: [Auth]
+      summary: Complete user profile after first login
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [username]
+              properties:
+                username:
+                  type: string
+                  minLength: 3
+                  maxLength: 20
+                gender:
+                  type: string
+                interests:
+                  type: array
+                  items:
+                    type: string
+                tags:
+                  type: array
+                  items:
+                    type: string
+      responses:
+        '200':
+          description: Profile completed
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  user:
+                    $ref: '#/components/schemas/User'
+        '400':
+          $ref: '#/components/responses/ValidationError'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '500':
+          $ref: '#/components/responses/ServerError'
+
+  /auth/google:
+    post:
+      tags: [Auth]
+      summary: Sign in with Google OAuth
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [credential]
+              properties:
+                credential:
+                  type: string
+                  description: Google ID token
+      responses:
+        '200':
+          description: Google sign-in successful
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  accessToken:
+                    type: string
+                  token:
+                    type: string
+                  isNewUser:
+                    type: boolean
+                  userId:
+                    $ref: '#/components/schemas/ObjectId'
+        '400':
+          $ref: '#/components/responses/ValidationError'
+        '500':
+          $ref: '#/components/responses/ServerError'
+
+  /auth/me:
+    get:
+      tags: [Auth]
+      summary: Get authenticated user profile
+      security:
+        - BearerAuth: []
+      responses:
+        '200':
+          description: Current user
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  user:
+                    $ref: '#/components/schemas/User'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '500':
+          $ref: '#/components/responses/ServerError'
+
+  /auth/logout:
+    post:
+      tags: [Auth]
+      summary: Log out and invalidate refresh token
+      security:
+        - BearerAuth: []
+      responses:
+        '200':
+          description: Logged out
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessMessage'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '500':
+          $ref: '#/components/responses/ServerError'
+
+  /auth/check-username:
+    get:
+      tags: [Auth]
+      summary: Check if a username is available
+      parameters:
+        - in: query
+          name: username
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Availability status
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  available:
+                    type: boolean
+        '400':
+          $ref: '#/components/responses/ValidationError'
+        '500':
+          $ref: '#/components/responses/ServerError'
+
+  # ─────────────────────────────────────────────────────────────────────────────
+  # USERS
+  # ─────────────────────────────────────────────────────────────────────────────
+
+  /users/search:
+    get:
+      tags: [Users]
+      summary: Search users by username
+      parameters:
+        - in: query
+          name: q
+          required: true
+          schema:
+            type: string
+            maxLength: 50
+      responses:
+        '200':
+          description: Matching users
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  users:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/UserSummary'
+        '400':
+          $ref: '#/components/responses/ValidationError'
+        '500':
+          $ref: '#/components/responses/ServerError'
+
+  /users/me:
+    get:
+      tags: [Users]
+      summary: Get authenticated user (alias)
+      security:
+        - BearerAuth: []
+      responses:
+        '200':
+          description: Authenticated user
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  user:
+                    $ref: '#/components/schemas/User'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '500':
+          $ref: '#/components/responses/ServerError'
+
+  /users/username/{username}:
+    get:
+      tags: [Users]
+      summary: Get user by username
+      parameters:
+        - in: path
+          name: username
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: User profile
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  user:
+                    $ref: '#/components/schemas/User'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/ServerError'
+
+  /users/{username}/posts:
+    get:
+      tags: [Users]
+      summary: Get posts by username
+      parameters:
+        - in: path
+          name: username
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: User posts
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  posts:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Post'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/ServerError'
+
+  /users/{username}/comments:
+    get:
+      tags: [Users]
+      summary: Get comments by username
+      parameters:
+        - in: path
+          name: username
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: User comments
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  comments:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Comment'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/ServerError'
+
+  /users/{id}:
+    get:
+      tags: [Users]
+      summary: Get user by ID
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            $ref: '#/components/schemas/ObjectId'
+      responses:
+        '200':
+          description: User profile
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  user:
+                    $ref: '#/components/schemas/User'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/ServerError'
+
+    put:
+      tags: [Users]
+      summary: Update user profile
+      security:
+        - BearerAuth: []
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            $ref: '#/components/schemas/ObjectId'
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                bio:
+                  type: string
+                  maxLength: 500
+                profilePicture:
+                  type: string
+                  format: binary
+      responses:
+        '200':
+          description: Updated user
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  user:
+                    $ref: '#/components/schemas/User'
+        '400':
+          $ref: '#/components/responses/ValidationError'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/ServerError'
+
+  /users/{id}/saved:
+    get:
+      tags: [Users]
+      summary: Get saved posts for a user
+      security:
+        - BearerAuth: []
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            $ref: '#/components/schemas/ObjectId'
+      responses:
+        '200':
+          description: Saved posts
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  savedPosts:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Post'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '500':
+          $ref: '#/components/responses/ServerError'
+
+  /users/{id}/save/{postId}:
+    post:
+      tags: [Users]
+      summary: Save a post
+      security:
+        - BearerAuth: []
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            $ref: '#/components/schemas/ObjectId'
+        - in: path
+          name: postId
+          required: true
+          schema:
+            $ref: '#/components/schemas/ObjectId'
+      responses:
+        '200':
+          description: Post saved
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  savedPosts:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ObjectId'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/ServerError'
+
+    delete:
+      tags: [Users]
+      summary: Unsave a post
+      security:
+        - BearerAuth: []
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            $ref: '#/components/schemas/ObjectId'
+        - in: path
+          name: postId
+          required: true
+          schema:
+            $ref: '#/components/schemas/ObjectId'
+      responses:
+        '200':
+          description: Post removed from saved
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  savedPosts:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ObjectId'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/ServerError'
+
+  # ─────────────────────────────────────────────────────────────────────────────
+  # COMMUNITIES
+  # ─────────────────────────────────────────────────────────────────────────────
+
+  /communities/search:
+    get:
+      tags: [Communities]
+      summary: Search communities by name
+      parameters:
+        - in: query
+          name: q
+          required: true
+          schema:
+            type: string
+            maxLength: 50
+      responses:
+        '200':
+          description: Matching communities
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  communities:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Community'
+        '400':
+          $ref: '#/components/responses/ValidationError'
+        '500':
+          $ref: '#/components/responses/ServerError'
+
+  /communities:
+    get:
+      tags: [Communities]
+      summary: List communities (optionally filtered)
+      parameters:
+        - in: query
+          name: joined
+          schema:
+            type: boolean
+          description: Filter to communities the authenticated user has joined
+        - in: query
+          name: category
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Community list
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  communities:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Community'
+        '500':
+          $ref: '#/components/responses/ServerError'
+
+    post:
+      tags: [Communities]
+      summary: Create a new community
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [name, description]
+              properties:
+                name:
+                  type: string
+                  minLength: 3
+                  maxLength: 21
+                description:
+                  type: string
+                rules:
+                  type: string
+                  maxLength: 5000
+                category:
+                  type: string
+      responses:
+        '201':
+          description: Community created
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  community:
+                    $ref: '#/components/schemas/Community'
+        '400':
+          $ref: '#/components/responses/ValidationError'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '500':
+          $ref: '#/components/responses/ServerError'
+
+  /communities/name/{name}:
+    get:
+      tags: [Communities]
+      summary: Get community by name
+      parameters:
+        - in: path
+          name: name
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Community details
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  community:
+                    $ref: '#/components/schemas/Community'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/ServerError'
+
+  /communities/{id}:
+    get:
+      tags: [Communities]
+      summary: Get community by ID
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            $ref: '#/components/schemas/ObjectId'
+      responses:
+        '200':
+          description: Community details
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  community:
+                    $ref: '#/components/schemas/Community'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/ServerError'
+
+  /communities/{id}/join:
+    post:
+      tags: [Communities]
+      summary: Join a community
+      security:
+        - BearerAuth: []
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            $ref: '#/components/schemas/ObjectId'
+      responses:
+        '200':
+          description: Joined (or join request submitted for restricted communities)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessMessage'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/ServerError'
+
+  /communities/{id}/leave:
+    post:
+      tags: [Communities]
+      summary: Leave a community
+      security:
+        - BearerAuth: []
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            $ref: '#/components/schemas/ObjectId'
+      responses:
+        '200':
+          description: Left community
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessMessage'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/ServerError'
+
+  /communities/{id}/posts:
+    get:
+      tags: [Communities]
+      summary: Get posts in a community
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            $ref: '#/components/schemas/ObjectId'
+        - in: query
+          name: sort
+          schema:
+            type: string
+            enum: [new, top, hot]
+            default: hot
+      responses:
+        '200':
+          description: Posts in community
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  posts:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Post'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/ServerError'
+
+  /communities/{id}/flairs:
+    get:
+      tags: [Communities]
+      summary: Get flairs for a community
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            $ref: '#/components/schemas/ObjectId'
+      responses:
+        '200':
+          description: Community flairs
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  flairs:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Flair'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/ServerError'
+
+    post:
+      tags: [Communities]
+      summary: Add a flair to a community (moderator only)
+      security:
+        - BearerAuth: []
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            $ref: '#/components/schemas/ObjectId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [name]
+              properties:
+                name:
+                  type: string
+                color:
+                  type: string
+                  example: "#ff4500"
+      responses:
+        '200':
+          description: Updated flairs list
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  flairs:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Flair'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/ServerError'
+
+  /communities/{id}/pending:
+    get:
+      tags: [Communities]
+      summary: Get pending posts awaiting approval (moderator only)
+      security:
+        - BearerAuth: []
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            $ref: '#/components/schemas/ObjectId'
+      responses:
+        '200':
+          description: Pending posts
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  posts:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Post'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/ServerError'
+
+  /communities/{id}/join-request:
+    post:
+      tags: [Communities]
+      summary: Submit a join request (restricted communities)
+      security:
+        - BearerAuth: []
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            $ref: '#/components/schemas/ObjectId'
+      responses:
+        '200':
+          description: Join request submitted
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  status:
+                    type: string
+                    example: pending
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/ServerError'
+
+  /communities/{id}/join-request/{requesterId}:
+    patch:
+      tags: [Communities]
+      summary: Approve or reject a join request (moderator only)
+      security:
+        - BearerAuth: []
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            $ref: '#/components/schemas/ObjectId'
+        - in: path
+          name: requesterId
+          required: true
+          schema:
+            $ref: '#/components/schemas/ObjectId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [status]
+              properties:
+                status:
+                  type: string
+                  enum: [approved, rejected]
+      responses:
+        '200':
+          description: Decision recorded
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  status:
+                    type: string
+                    example: approved
+        '400':
+          $ref: '#/components/responses/ValidationError'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/ServerError'
+
+  /communities/{id}/join-requests:
+    get:
+      tags: [Communities]
+      summary: List pending join requests (moderator only)
+      security:
+        - BearerAuth: []
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            $ref: '#/components/schemas/ObjectId'
+      responses:
+        '200':
+          description: Join requests
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  requests:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/JoinRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/ServerError'
+
+  # ─────────────────────────────────────────────────────────────────────────────
+  # POSTS
+  # ─────────────────────────────────────────────────────────────────────────────
+
+  /posts/feed:
+    get:
+      tags: [Posts]
+      summary: Get paginated post feed
+      parameters:
+        - in: query
+          name: sort
+          schema:
+            type: string
+            enum: [hot, new, top, rising, popular]
+            default: hot
+        - in: query
+          name: page
+          schema:
+            type: integer
+            default: 1
+      responses:
+        '200':
+          description: Feed posts
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  posts:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Post'
+        '500':
+          $ref: '#/components/responses/ServerError'
+
+  /posts:
+    post:
+      tags: [Posts]
+      summary: Create a new post
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              required: [title, community]
+              properties:
+                title:
+                  type: string
+                content:
+                  type: string
+                community:
+                  $ref: '#/components/schemas/ObjectId'
+                flair:
+                  type: string
+                flairColor:
+                  type: string
+                tags:
+                  type: array
+                  items:
+                    type: string
+                nsfw:
+                  type: boolean
+                image:
+                  type: string
+                  format: binary
+      responses:
+        '201':
+          description: Post created
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  post:
+                    $ref: '#/components/schemas/Post'
+        '400':
+          $ref: '#/components/responses/ValidationError'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '500':
+          $ref: '#/components/responses/ServerError'
+
+  /posts/{id}:
+    get:
+      tags: [Posts]
+      summary: Get a post by ID
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            $ref: '#/components/schemas/ObjectId'
+      responses:
+        '200':
+          description: Post details
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  post:
+                    $ref: '#/components/schemas/Post'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/ServerError'
+
+    patch:
+      tags: [Posts]
+      summary: Edit post body (author only)
+      security:
+        - BearerAuth: []
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            $ref: '#/components/schemas/ObjectId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                body:
+                  type: string
+      responses:
+        '200':
+          description: Updated post
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  post:
+                    $ref: '#/components/schemas/Post'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/ServerError'
+
+    delete:
+      tags: [Posts]
+      summary: Delete a post (author only)
+      security:
+        - BearerAuth: []
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            $ref: '#/components/schemas/ObjectId'
+      responses:
+        '200':
+          description: Post deleted
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessMessage'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/ServerError'
+
+  /posts/{id}/comments:
+    get:
+      tags: [Posts]
+      summary: Get comments for a post
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            $ref: '#/components/schemas/ObjectId'
+      responses:
+        '200':
+          description: Comments list
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  comments:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Comment'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/ServerError'
+
+  /posts/{id}/status:
+    patch:
+      tags: [Posts]
+      summary: Approve or reject a post (moderator only)
+      security:
+        - BearerAuth: []
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            $ref: '#/components/schemas/ObjectId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [status]
+              properties:
+                status:
+                  type: string
+                  enum: [published, rejected]
+      responses:
+        '200':
+          description: Post status updated
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  post:
+                    $ref: '#/components/schemas/Post'
+        '400':
+          $ref: '#/components/responses/ValidationError'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/ServerError'
+
+  /posts/{id}/upvote:
+    post:
+      tags: [Posts]
+      summary: Upvote a post
+      security:
+        - BearerAuth: []
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            $ref: '#/components/schemas/ObjectId'
+      responses:
+        '200':
+          description: Vote recorded
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  upvotes:
+                    type: integer
+                  downvotes:
+                    type: integer
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/ServerError'
+
+  /posts/{id}/downvote:
+    post:
+      tags: [Posts]
+      summary: Downvote a post
+      security:
+        - BearerAuth: []
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            $ref: '#/components/schemas/ObjectId'
+      responses:
+        '200':
+          description: Vote recorded
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  upvotes:
+                    type: integer
+                  downvotes:
+                    type: integer
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/ServerError'
+
+  # ─────────────────────────────────────────────────────────────────────────────
+  # COMMENTS
+  # ─────────────────────────────────────────────────────────────────────────────
+
+  /comments:
+    post:
+      tags: [Comments]
+      summary: Create a comment or reply
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [content, postId]
+              properties:
+                content:
+                  type: string
+                postId:
+                  $ref: '#/components/schemas/ObjectId'
+                parentId:
+                  $ref: '#/components/schemas/ObjectId'
+                  description: Omit for top-level comment; provide for a reply
+      responses:
+        '201':
+          description: Comment created
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  comment:
+                    $ref: '#/components/schemas/Comment'
+        '400':
+          $ref: '#/components/responses/ValidationError'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/ServerError'
+
+  /comments/{id}:
+    delete:
+      tags: [Comments]
+      summary: Delete a comment (author only)
+      security:
+        - BearerAuth: []
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            $ref: '#/components/schemas/ObjectId'
+      responses:
+        '200':
+          description: Comment deleted
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessMessage'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/ServerError'
+
+  /comments/{id}/upvote:
+    post:
+      tags: [Comments]
+      summary: Upvote a comment
+      security:
+        - BearerAuth: []
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            $ref: '#/components/schemas/ObjectId'
+      responses:
+        '200':
+          description: Vote recorded
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  upvotes:
+                    type: integer
+                  downvotes:
+                    type: integer
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/ServerError'
+
+  /comments/{id}/downvote:
+    post:
+      tags: [Comments]
+      summary: Downvote a comment
+      security:
+        - BearerAuth: []
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            $ref: '#/components/schemas/ObjectId'
+      responses:
+        '200':
+          description: Vote recorded
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  upvotes:
+                    type: integer
+                  downvotes:
+                    type: integer
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/ServerError'
+
+  # ─────────────────────────────────────────────────────────────────────────────
+  # MESSAGES
+  # ─────────────────────────────────────────────────────────────────────────────
+
+  /messages/threads:
+    get:
+      tags: [Messages]
+      summary: List message threads for authenticated user
+      security:
+        - BearerAuth: []
+      parameters:
+        - in: query
+          name: type
+          schema:
+            type: string
+        - in: query
+          name: unread
+          schema:
+            type: boolean
+      responses:
+        '200':
+          description: Thread list
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  threads:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Thread'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '500':
+          $ref: '#/components/responses/ServerError'
+
+  /messages/{threadId}:
+    get:
+      tags: [Messages]
+      summary: Get messages in a thread
+      security:
+        - BearerAuth: []
+      parameters:
+        - in: path
+          name: threadId
+          required: true
+          schema:
+            $ref: '#/components/schemas/ObjectId'
+      responses:
+        '200':
+          description: Messages in thread
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  messages:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Message'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/ServerError'
+
+  /messages:
+    post:
+      tags: [Messages]
+      summary: Send a message (start new thread or reply to existing)
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [content]
+              properties:
+                recipientId:
+                  $ref: '#/components/schemas/ObjectId'
+                  description: Required when starting a new thread
+                threadId:
+                  $ref: '#/components/schemas/ObjectId'
+                  description: Required when replying to an existing thread
+                content:
+                  type: string
+      responses:
+        '201':
+          description: Message sent
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  message:
+                    $ref: '#/components/schemas/Message'
+                  thread:
+                    $ref: '#/components/schemas/Thread'
+                  threadId:
+                    $ref: '#/components/schemas/ObjectId'
+        '400':
+          $ref: '#/components/responses/ValidationError'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/ServerError'
+
+  /messages/{threadId}/read:
+    patch:
+      tags: [Messages]
+      summary: Mark a thread as read
+      security:
+        - BearerAuth: []
+      parameters:
+        - in: path
+          name: threadId
+          required: true
+          schema:
+            $ref: '#/components/schemas/ObjectId'
+      responses:
+        '200':
+          description: Thread marked as read
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/ServerError'
+
+  # ─────────────────────────────────────────────────────────────────────────────
+  # NOTIFICATIONS
+  # ─────────────────────────────────────────────────────────────────────────────
+
+  /notifications:
+    get:
+      tags: [Notifications]
+      summary: Get notifications for authenticated user
+      security:
+        - BearerAuth: []
+      responses:
+        '200':
+          description: Notifications list
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  notifications:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Notification'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '500':
+          $ref: '#/components/responses/ServerError'
+
+  /notifications/read:
+    patch:
+      tags: [Notifications]
+      summary: Mark all notifications as read
+      security:
+        - BearerAuth: []
+      responses:
+        '200':
+          description: All notifications marked read
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '500':
+          $ref: '#/components/responses/ServerError'
+
+  # ─────────────────────────────────────────────────────────────────────────────
+  # SEARCH
+  # ─────────────────────────────────────────────────────────────────────────────
+
+  /search:
+    get:
+      tags: [Search]
+      summary: Search across posts, communities, and users
+      parameters:
+        - in: query
+          name: q
+          required: true
+          schema:
+            type: string
+        - in: query
+          name: type
+          schema:
+            type: string
+            enum: [all, posts, communities, people]
+            default: all
+      responses:
+        '200':
+          description: Search results
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  posts:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Post'
+                  communities:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Community'
+                  users:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/UserSummary'
+        '400':
+          $ref: '#/components/responses/ValidationError'
+        '500':
+          $ref: '#/components/responses/ServerError'
+
+  # ─────────────────────────────────────────────────────────────────────────────
+  # SETTINGS
+  # ─────────────────────────────────────────────────────────────────────────────
+
+  /settings:
+    get:
+      tags: [Settings]
+      summary: Get all settings for authenticated user
+      security:
+        - BearerAuth: []
+      responses:
+        '200':
+          description: User settings
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  user:
+                    $ref: '#/components/schemas/User'
+                  settings:
+                    type: object
+                    properties:
+                      account:
+                        type: object
+                      profile:
+                        type: object
+                      privacy:
+                        type: object
+                      preferences:
+                        type: object
+                      notifications:
+                        type: object
+                      email:
+                        type: object
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '500':
+          $ref: '#/components/responses/ServerError'
+
+  /settings/account:
+    patch:
+      tags: [Settings]
+      summary: Update account settings
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                gender:
+                  type: string
+                useApproxLocation:
+                  type: boolean
+      responses:
+        '200':
+          description: Account settings updated
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  user:
+                    $ref: '#/components/schemas/User'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '500':
+          $ref: '#/components/responses/ServerError'
+
+  /settings/profile:
+    patch:
+      tags: [Settings]
+      summary: Update profile settings
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                displayName:
+                  type: string
+                bio:
+                  type: string
+                about:
+                  type: string
+                nsfwProfile:
+                  type: boolean
+                nsfw:
+                  type: boolean
+                showFollowerCount:
+                  type: boolean
+                socialLinks:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/SocialLink'
+      responses:
+        '200':
+          description: Profile settings updated
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  user:
+                    $ref: '#/components/schemas/User'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '500':
+          $ref: '#/components/responses/ServerError'
+
+  /settings/privacy:
+    patch:
+      tags: [Settings]
+      summary: Update privacy settings
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                allowFollow:
+                  type: boolean
+                chatRequests:
+                  type: string
+                showInSearch:
+                  type: boolean
+                listOnDirectory:
+                  type: boolean
+                personalizeAds:
+                  type: boolean
+                partnerAds:
+                  type: boolean
+      responses:
+        '200':
+          description: Privacy settings updated
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  user:
+                    $ref: '#/components/schemas/User'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '500':
+          $ref: '#/components/responses/ServerError'
+
+  /settings/preferences:
+    patch:
+      tags: [Settings]
+      summary: Update feed & display preferences
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                showNsfw:
+                  type: boolean
+                blurNsfw:
+                  type: boolean
+                showRecommendations:
+                  type: boolean
+                displayLanguage:
+                  type: string
+                autoplayMedia:
+                  type: boolean
+                reduceMotion:
+                  type: boolean
+                displayMode:
+                  type: string
+                useCommunityThemes:
+                  type: boolean
+                openInNewTab:
+                  type: boolean
+                defaultFeedView:
+                  type: string
+                useMarkdownEditor:
+                  type: boolean
+      responses:
+        '200':
+          description: Preferences updated
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  user:
+                    $ref: '#/components/schemas/User'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '500':
+          $ref: '#/components/responses/ServerError'
+
+  /settings/notifications:
+    patch:
+      tags: [Settings]
+      summary: Update in-app notification preferences
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                notificationSettings:
+                  $ref: '#/components/schemas/NotificationSettings'
+      responses:
+        '200':
+          description: Notification settings updated
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  notificationSettings:
+                    $ref: '#/components/schemas/NotificationSettings'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '500':
+          $ref: '#/components/responses/ServerError'
+
+  /settings/email:
+    patch:
+      tags: [Settings]
+      summary: Update email notification preferences
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                emailNotifications:
+                  $ref: '#/components/schemas/EmailNotifications'
+      responses:
+        '200':
+          description: Email notification settings updated
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  emailNotifications:
+                    $ref: '#/components/schemas/EmailNotifications'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '500':
+          $ref: '#/components/responses/ServerError'
+
+  /settings/account/delete:
+    delete:
+      tags: [Settings]
+      summary: Delete account permanently
+      security:
+        - BearerAuth: []
+      responses:
+        '200':
+          description: Account deleted
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessMessage'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '500':
+          $ref: '#/components/responses/ServerError'
+
+tags:
+  - name: Auth
+    description: Authentication — OTP, Google OAuth, token refresh, profile setup
+  - name: Users
+    description: User profiles, saved posts
+  - name: Communities
+    description: Subreddit-like communities, membership, moderation
+  - name: Posts
+    description: Post CRUD, voting, feed
+  - name: Comments
+    description: Comment threads and voting
+  - name: Messages
+    description: Direct messaging between users
+  - name: Notifications
+    description: In-app notifications
+  - name: Search
+    description: Cross-entity search
+  - name: Settings
+    description: Account, profile, privacy, preference, and notification settings
