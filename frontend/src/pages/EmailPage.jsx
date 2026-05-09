@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { GoogleLogin } from '@react-oauth/google';
 import { sendOtp, googleLogin } from '../api/auth';
@@ -8,6 +8,10 @@ export default function EmailPage() {
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if (localStorage.getItem('accessToken')) navigate('/home', { replace: true });
+  }, [navigate]);
 
   const handleGoogle = async (credentialResponse) => {
     setError('');
@@ -86,6 +90,7 @@ export default function EmailPage() {
             width="320"
             text="continue_with"
             shape="pill"
+            locale="en"
           />
         </div>
       </div>

@@ -25,7 +25,7 @@ export default function App() {
     document.documentElement.setAttribute('data-theme', 'dark');
   }
   return (
-    <GoogleOAuthProvider clientId={import.meta.env.VITE_GOOGLE_CLIENT_ID || ''}>
+    <GoogleOAuthProvider clientId={import.meta.env.VITE_GOOGLE_CLIENT_ID || ''} locale="en">
     <BrowserRouter>
       <Routes>
         <Route path="/Login" element={<EmailPage />} />

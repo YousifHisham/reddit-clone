@@ -29,3 +29,5 @@ coverage/
 .claude/
 
 graphify-out/
+
+deploy.sh
