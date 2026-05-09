@@ -1,24 +1,27 @@
 import { fetchWithAuth } from './auth';
+import { API_BASE } from './base';
 
-export const getSettings = () => fetchWithAuth('/api/settings');
+const BASE = `${API_BASE}/api/settings`;
+
+export const getSettings = () => fetchWithAuth(BASE);
 
 export const updateAccount = (data) =>
-  fetchWithAuth('/api/settings/account', { method: 'PATCH', body: JSON.stringify(data) });
+  fetchWithAuth(`${BASE}/account`, { method: 'PATCH', body: JSON.stringify(data) });
 
 export const updateProfile = (data) =>
-  fetchWithAuth('/api/settings/profile', { method: 'PATCH', body: JSON.stringify(data) });
+  fetchWithAuth(`${BASE}/profile`, { method: 'PATCH', body: JSON.stringify(data) });
 
 export const updatePrivacy = (data) =>
-  fetchWithAuth('/api/settings/privacy', { method: 'PATCH', body: JSON.stringify(data) });
+  fetchWithAuth(`${BASE}/privacy`, { method: 'PATCH', body: JSON.stringify(data) });
 
 export const updatePreferences = (data) =>
-  fetchWithAuth('/api/settings/preferences', { method: 'PATCH', body: JSON.stringify(data) });
+  fetchWithAuth(`${BASE}/preferences`, { method: 'PATCH', body: JSON.stringify(data) });
 
 export const updateNotifications = (data) =>
-  fetchWithAuth('/api/settings/notifications', { method: 'PATCH', body: JSON.stringify(data) });
+  fetchWithAuth(`${BASE}/notifications`, { method: 'PATCH', body: JSON.stringify(data) });
 
 export const updateEmailNotifications = (data) =>
-  fetchWithAuth('/api/settings/email', { method: 'PATCH', body: JSON.stringify(data) });
+  fetchWithAuth(`${BASE}/email`, { method: 'PATCH', body: JSON.stringify(data) });
 
 export const deleteAccount = () =>
-  fetchWithAuth('/api/settings/account', { method: 'DELETE' });
+  fetchWithAuth(`${BASE}/account`, { method: 'DELETE' });

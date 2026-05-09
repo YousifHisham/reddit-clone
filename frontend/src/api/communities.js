@@ -1,6 +1,7 @@
 import { fetchWithAuth } from './auth';
+import { API_BASE } from './base';
 
-const BASE = '/api/communities';
+const BASE = `${API_BASE}/api/communities`;
 
 async function parseResponse(res) {
   const text = await res.text();
@@ -34,13 +35,13 @@ export async function createCommunity(data) {
 }
 
 export async function getCommunityFlairs(id) {
-  const res = await fetch(`/api/communities/${id}/flairs`);
+  const res = await fetch(`${BASE}/${id}/flairs`);
   const text = await res.text();
   try { return JSON.parse(text); } catch { return { success: false }; }
 }
 
 export async function createFlair(id, data) {
-  return fetchWithAuth(`/api/communities/${id}/flairs`, {
+  return fetchWithAuth(`${BASE}/${id}/flairs`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(data),
@@ -48,15 +49,15 @@ export async function createFlair(id, data) {
 }
 
 export async function getPendingPosts(id) {
-  return fetchWithAuth(`/api/communities/${id}/pending`);
+  return fetchWithAuth(`${BASE}/${id}/pending`);
 }
 
 export async function createJoinRequest(id) {
-  return fetchWithAuth(`/api/communities/${id}/join-request`, { method: 'POST' });
+  return fetchWithAuth(`${BASE}/${id}/join-request`, { method: 'POST' });
 }
 
 export async function handleJoinRequest(communityId, requesterId, status) {
-  return fetchWithAuth(`/api/communities/${communityId}/join-request/${requesterId}`, {
+  return fetchWithAuth(`${BASE}/${communityId}/join-request/${requesterId}`, {
     method: 'PATCH',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ status }),
@@ -64,7 +65,7 @@ export async function handleJoinRequest(communityId, requesterId, status) {
 }
 
 export async function updateCommunitySettings(id, data) {
-  return fetchWithAuth(`/api/communities/${id}`, {
+  return fetchWithAuth(`${BASE}/${id}`, {
     method: 'PATCH',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(data),
@@ -72,13 +73,13 @@ export async function updateCommunitySettings(id, data) {
 }
 
 export async function getCommunityByName(name) {
-  const res = await fetch(`/api/communities/name/${encodeURIComponent(name)}`);
+  const res = await fetch(`${BASE}/name/${encodeURIComponent(name)}`);
   const text = await res.text();
   try { return JSON.parse(text); } catch { return { success: false }; }
 }
 
 export async function getCommunityPosts(id, sort = 'new') {
-  const res = await fetch(`/api/communities/${id}/posts?sort=${sort}`);
+  const res = await fetch(`${BASE}/${id}/posts?sort=${sort}`);
   const text = await res.text();
   try { return JSON.parse(text); } catch { return { success: false }; }
 }
