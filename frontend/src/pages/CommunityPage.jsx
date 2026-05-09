@@ -195,7 +195,7 @@ export default function CommunityPage() {
   const [community, setCommunity] = useState(null);
   const [posts, setPosts] = useState([]);
   const [currentUser, setCurrentUser] = useState(null);
-  const [sort, setSort] = useState('hot');
+  const [sort, setSort] = useState('new');
   const [joined, setJoined] = useState(false);
   const [joinPending, setJoinPending] = useState(false);
   const [loading, setLoading] = useState(true);
@@ -218,7 +218,7 @@ export default function CommunityPage() {
         const uid = meData.user._id;
         setJoined(data.community.members?.some(m => m === uid || m?._id === uid) ?? false);
         const savedData = await getSavedPosts(uid);
-        if (savedData.success) setSavedPostIds(new Set((savedData.posts || []).map(p => p._id?.toString())));
+        if (savedData.success) setSavedPostIds(new Set((savedData.savedPosts || []).map(p => (p._id || p).toString())));
       }
     }
     setLoading(false);

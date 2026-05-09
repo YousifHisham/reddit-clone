@@ -1,8 +1,9 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import Layout from '../components/Layout';
 import { getUserByUsername, getUserPosts, getUserComments, updateProfile, getSavedPosts } from '../api/users';
 import { getMe } from '../api/auth';
+import { deletePost } from '../api/posts';
 
 function timeAgo(date) {
   const diff = (Date.now() - new Date(date)) / 1000;
@@ -21,6 +22,94 @@ function formatScore(n) {
 }
 
 const TABS = ['Overview', 'Posts', 'Comments', 'Saved', 'Upvoted', 'Downvoted'];
+
+function ProfilePostCard({ post, isOwnProfile, onDeleted }) {
+  const [menuOpen, setMenuOpen] = useState(false);
+  const [confirmDelete, setConfirmDelete] = useState(false);
+  const [deleting, setDeleting] = useState(false);
+  const [error, setError] = useState('');
+  const menuRef = useRef(null);
+
+  useEffect(() => {
+    if (!menuOpen) return;
+    const handler = e => { if (menuRef.current && !menuRef.current.contains(e.target)) setMenuOpen(false); };
+    document.addEventListener('mousedown', handler);
+    return () => document.removeEventListener('mousedown', handler);
+  }, [menuOpen]);
+
+  const handleDelete = async () => {
+    setDeleting(true);
+    const data = await deletePost(post._id);
+    setDeleting(false);
+    if (data.success) {
+      onDeleted(post._id);
+    } else {
+      setError(data.message || 'Failed to delete post.');
+    }
+  };
+
+  return (
+    <div className="content-card" style={{ background: 'var(--bg-page)', borderRadius: 8, marginBottom: 8 }}>
+      <div className="content-card-body">
+        <div className="card-meta" style={{ display: 'flex', alignItems: 'center' }}>
+          <Link to={`/r/${post.community?.name}`} style={{ color: 'var(--text)', fontWeight: 700, textDecoration: 'none', fontSize: 12 }}>
+            r/{post.community?.name}
+          </Link>
+          <span className="post-dot">•</span>
+          <span>{timeAgo(post.createdAt)}</span>
+          {isOwnProfile && (
+            <div ref={menuRef} style={{ marginLeft: 'auto', position: 'relative' }}>
+              <button
+                className="post-action-btn"
+                style={{ padding: '4px 8px' }}
+                onClick={() => setMenuOpen(o => !o)}
+                title="More options"
+              >
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/><circle cx="5" cy="12" r="1"/></svg>
+              </button>
+              {menuOpen && (
+                <div className="post-dropdown">
+                  <button
+                    className="post-dropdown-item post-dropdown-delete"
+                    onClick={() => { setMenuOpen(false); setConfirmDelete(true); }}
+                  >
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg>
+                    Delete
+                  </button>
+                </div>
+              )}
+            </div>
+          )}
+        </div>
+        <Link to={`/post/${post._id}`} className="card-title">{post.title}</Link>
+        {post.content && <p className="card-excerpt">{post.content}</p>}
+        {post.image && (
+          <img src={post.image} alt="" style={{ width: '100%', maxHeight: 400, objectFit: 'cover', borderRadius: 8, marginTop: 8 }} />
+        )}
+        <div className="card-stats">
+          <span>{formatScore(post.upvotes - post.downvotes)} points</span>
+          <span>•</span>
+          <Link to={`/post/${post._id}`} style={{ color: 'var(--muted)', textDecoration: 'none' }}>{post.commentCount} comments</Link>
+        </div>
+      </div>
+
+      {confirmDelete && (
+        <div className="post-confirm-overlay" onClick={e => e.stopPropagation()}>
+          <div className="post-confirm-dialog">
+            <p className="post-confirm-text">Are you sure you want to delete this post?</p>
+            {error && <p style={{ color: '#ff4500', fontSize: 13, marginBottom: 8 }}>{error}</p>}
+            <div className="post-confirm-actions">
+              <button className="post-confirm-cancel" onClick={() => { setConfirmDelete(false); setError(''); }}>Cancel</button>
+              <button className="post-confirm-delete" onClick={handleDelete} disabled={deleting}>
+                {deleting ? 'Deleting…' : 'Delete'}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
 
 export default function ProfilePage() {
   const { username } = useParams();
@@ -158,24 +247,12 @@ export default function ProfilePage() {
                   </div>
                 )
                 : posts.map(post => (
-                  <div key={post._id} className="content-card" style={{ background: 'var(--bg-page)', borderRadius: 8, marginBottom: 8 }}>
-                    <div className="content-card-body">
-                      <div className="card-meta">
-                        <Link to={`/r/${post.community?.name}`} style={{ color: 'var(--text)', fontWeight: 700, textDecoration: 'none', fontSize: 12 }}>
-                          r/{post.community?.name}
-                        </Link>
-                        <span className="post-dot">•</span>
-                        <span>{timeAgo(post.createdAt)}</span>
-                      </div>
-                      <Link to={`/post/${post._id}`} className="card-title">{post.title}</Link>
-                      {post.content && <p className="card-excerpt">{post.content}</p>}
-                      <div className="card-stats">
-                        <span>{formatScore(post.upvotes - post.downvotes)} points</span>
-                        <span>•</span>
-                        <Link to={`/post/${post._id}`} style={{ color: 'var(--muted)', textDecoration: 'none' }}>{post.commentCount} comments</Link>
-                      </div>
-                    </div>
-                  </div>
+                  <ProfilePostCard
+                    key={post._id}
+                    post={post}
+                    isOwnProfile={isOwnProfile}
+                    onDeleted={id => setPosts(prev => prev.filter(p => p._id !== id))}
+                  />
                 ))
           )}
 
@@ -224,6 +301,13 @@ export default function ProfilePage() {
                         </div>
                         <Link to={`/post/${post._id}`} className="card-title">{post.title}</Link>
                         {post.content && <p className="card-excerpt">{post.content}</p>}
+                        {post.image && (
+                          <img
+                            src={post.image}
+                            alt=""
+                            style={{ width: '100%', maxHeight: 400, objectFit: 'cover', borderRadius: 8, marginTop: 8 }}
+                          />
+                        )}
                         <div className="card-stats">
                           <span>{formatScore(post.upvotes - post.downvotes)} points</span>
                           <span>•</span>

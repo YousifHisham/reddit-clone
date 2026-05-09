@@ -53,7 +53,7 @@ const getCommunityPosts = async (req, res, next) => {
   try {
     const { sort = 'new' } = req.query;
     const sortMap = { new: { createdAt: -1 }, top: { upvotes: -1 }, hot: { upvotes: -1, createdAt: -1 } };
-    const posts = await Post.find({ community: req.params.id })
+    const posts = await Post.find({ community: req.params.id, status: 'published' })
       .sort(sortMap[sort] || { createdAt: -1 })
       .populate('author', 'username profilePicture')
       .limit(20);
@@ -84,7 +84,9 @@ const getFeed = async (req, res, next) => {
     if (req.user) {
       const joinedCommunities = await Community.find({ members: req.user.id }).select('_id');
       const joinedIds = joinedCommunities.map((c) => c._id);
-      filter.$or = [{ community: { $in: joinedIds } }, {}];
+      if (joinedIds.length > 0) {
+        filter.community = { $in: joinedIds };
+      }
     }
 
     const posts = await Post.find(filter)

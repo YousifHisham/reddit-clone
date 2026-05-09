@@ -153,7 +153,7 @@ const updateEmailNotifications = async (req, res, next) => {
 const deleteAccount = async (req, res, next) => {
   try {
     await User.findByIdAndDelete(req.user.id);
-    res.clearCookie('token');
+    res.clearCookie('refreshToken', { httpOnly: true, secure: process.env.NODE_ENV === 'production', sameSite: 'lax', path: '/api/auth' });
     return res.json({ success: true, message: 'Account deleted' });
   } catch (err) {
     return next(err);

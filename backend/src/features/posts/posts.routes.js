@@ -10,7 +10,7 @@ const optionalAuth = (req, res, next) => {
   const authHeader = req.headers.authorization;
   if (authHeader && authHeader.startsWith('Bearer ')) {
     try {
-      const decoded = jwt.verify(authHeader.split(' ')[1], process.env.JWT_SECRET);
+      const decoded = jwt.verify(authHeader.split(' ')[1], process.env.ACCESS_TOKEN_SECRET || process.env.JWT_SECRET);
       req.user = { id: decoded.id };
     } catch {}
   }

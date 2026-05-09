@@ -545,7 +545,7 @@ export default function RedditLayout() {
   const navigate = useNavigate();
   const location = useLocation();
   const [sidebarOpen, setSidebarOpen] = useState(true);
-  const [activeSort, setActiveSort] = useState("Hot");
+  const [activeSort, setActiveSort] = useState("New");
   const [joinedMap, setJoinedMap] = useState({});
   const [joinRequestMap, setJoinRequestMap] = useState({});
 
@@ -590,8 +590,7 @@ export default function RedditLayout() {
   }, []);
 
   useEffect(() => {
-    const token = localStorage.getItem('accessToken');
-    getFeed(token, activeSort.toLowerCase()).then(data => { if (data.success) setPosts(data.posts); });
+    getFeed(activeSort.toLowerCase()).then(data => { if (data.success) setPosts(data.posts); });
   }, [activeSort]);
 
   useEffect(() => {
