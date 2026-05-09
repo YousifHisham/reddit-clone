@@ -1,0 +1,138 @@
+<mxfile host="app.diagrams.net" modified="2026-05-09T00:00:00.000Z" agent="Codex" version="24.7.17" type="device">
+  <diagram id="reddit-clone-db-schema" name="Database Schema">
+    <mxGraphModel dx="2074" dy="1347" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1600" pageHeight="1200" math="0" shadow="0">
+      <root>
+        <mxCell id="0"/>
+        <mxCell id="1" parent="0"/>
+        <mxCell id="title" value="Reddit Clone Database Schema (MongoDB / Mongoose)" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=24;fontStyle=1" vertex="1" parent="1">
+          <mxGeometry x="410" y="20" width="760" height="40" as="geometry"/>
+        </mxCell>
+        <mxCell id="user" value="&lt;b&gt;User&lt;/b&gt;&lt;hr&gt;&lt;b&gt;PK&lt;/b&gt; _id: ObjectId&lt;br&gt;username: String unique sparse&lt;br&gt;email: String required unique&lt;br&gt;bio: String&lt;br&gt;profilePicture: String&lt;br&gt;gender: String&lt;br&gt;interests: String[]&lt;br&gt;tags: String[]&lt;br&gt;otp: String&lt;br&gt;otpExpiry: Date&lt;br&gt;verified: Boolean&lt;br&gt;postKarma: Number&lt;br&gt;commentKarma: Number&lt;br&gt;&lt;b&gt;FK&lt;/b&gt; savedPosts: Post[]&lt;br&gt;fcmToken: String&lt;br&gt;refreshTokens: Embedded[]&lt;br&gt;displayName: String&lt;br&gt;banner: String&lt;br&gt;socialLinks: Embedded[]&lt;br&gt;nsfwProfile: Boolean&lt;br&gt;showFollowerCount: Boolean&lt;br&gt;allowFollow: Boolean&lt;br&gt;chatRequests: String&lt;br&gt;&lt;b&gt;FK&lt;/b&gt; blockedUsers: User[]&lt;br&gt;privacy/preferences/notifications: Embedded&lt;br&gt;createdAt: Date&lt;br&gt;updatedAt: Date" style="rounded=0;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacing=10;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="40" y="100" width="300" height="520" as="geometry"/>
+        </mxCell>
+        <mxCell id="community" value="&lt;b&gt;Community&lt;/b&gt;&lt;hr&gt;&lt;b&gt;PK&lt;/b&gt; _id: ObjectId&lt;br&gt;name: String required unique&lt;br&gt;description: String&lt;br&gt;rules: String&lt;br&gt;&lt;b&gt;FK&lt;/b&gt; creator: User required&lt;br&gt;&lt;b&gt;FK&lt;/b&gt; members: User[]&lt;br&gt;memberCount: Number&lt;br&gt;banner: String&lt;br&gt;icon: String&lt;br&gt;flairs: Embedded[]&lt;br&gt;requiresApproval: Boolean&lt;br&gt;type: public | restricted | private&lt;br&gt;category: String&lt;br&gt;createdAt: Date&lt;br&gt;updatedAt: Date" style="rounded=0;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacing=10;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="450" y="100" width="300" height="310" as="geometry"/>
+        </mxCell>
+        <mxCell id="post" value="&lt;b&gt;Post&lt;/b&gt;&lt;hr&gt;&lt;b&gt;PK&lt;/b&gt; _id: ObjectId&lt;br&gt;title: String required max 300&lt;br&gt;content: String&lt;br&gt;image: String&lt;br&gt;&lt;b&gt;FK&lt;/b&gt; author: User required&lt;br&gt;&lt;b&gt;FK&lt;/b&gt; community: Community required&lt;br&gt;flair: String&lt;br&gt;flairColor: String&lt;br&gt;tags: String[]&lt;br&gt;nsfw: Boolean&lt;br&gt;status: published | pending | rejected&lt;br&gt;upvotes: Number&lt;br&gt;downvotes: Number&lt;br&gt;&lt;b&gt;FK&lt;/b&gt; upvoters: User[]&lt;br&gt;&lt;b&gt;FK&lt;/b&gt; downvoters: User[]&lt;br&gt;commentCount: Number&lt;br&gt;createdAt: Date&lt;br&gt;updatedAt: Date" style="rounded=0;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacing=10;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="870" y="100" width="320" height="390" as="geometry"/>
+        </mxCell>
+        <mxCell id="comment" value="&lt;b&gt;Comment&lt;/b&gt;&lt;hr&gt;&lt;b&gt;PK&lt;/b&gt; _id: ObjectId&lt;br&gt;content: String required max 10000&lt;br&gt;&lt;b&gt;FK&lt;/b&gt; author: User required&lt;br&gt;&lt;b&gt;FK&lt;/b&gt; post: Post required&lt;br&gt;&lt;b&gt;FK&lt;/b&gt; parent: Comment nullable&lt;br&gt;depth: Number&lt;br&gt;upvotes: Number&lt;br&gt;downvotes: Number&lt;br&gt;&lt;b&gt;FK&lt;/b&gt; upvoters: User[]&lt;br&gt;&lt;b&gt;FK&lt;/b&gt; downvoters: User[]&lt;br&gt;createdAt: Date&lt;br&gt;updatedAt: Date" style="rounded=0;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacing=10;fillColor=#e1d5e7;strokeColor=#9673a6;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="1250" y="100" width="300" height="290" as="geometry"/>
+        </mxCell>
+        <mxCell id="joinRequest" value="&lt;b&gt;JoinRequest&lt;/b&gt;&lt;hr&gt;&lt;b&gt;PK&lt;/b&gt; _id: ObjectId&lt;br&gt;&lt;b&gt;FK&lt;/b&gt; community: Community required&lt;br&gt;&lt;b&gt;FK&lt;/b&gt; requester: User required&lt;br&gt;status: pending | approved | rejected&lt;br&gt;createdAt: Date&lt;br&gt;updatedAt: Date&lt;br&gt;&lt;b&gt;Index&lt;/b&gt; unique(community, requester)" style="rounded=0;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacing=10;fillColor=#f8cecc;strokeColor=#b85450;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="450" y="500" width="300" height="170" as="geometry"/>
+        </mxCell>
+        <mxCell id="thread" value="&lt;b&gt;Thread&lt;/b&gt;&lt;hr&gt;&lt;b&gt;PK&lt;/b&gt; _id: ObjectId&lt;br&gt;&lt;b&gt;FK&lt;/b&gt; participants: User[] required&lt;br&gt;lastMessage: String&lt;br&gt;lastMessageAt: Date&lt;br&gt;&lt;b&gt;FK&lt;/b&gt; readBy: User[]&lt;br&gt;createdAt: Date&lt;br&gt;updatedAt: Date" style="rounded=0;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacing=10;fillColor=#ffe6cc;strokeColor=#d79b00;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="40" y="760" width="300" height="180" as="geometry"/>
+        </mxCell>
+        <mxCell id="message" value="&lt;b&gt;Message&lt;/b&gt;&lt;hr&gt;&lt;b&gt;PK&lt;/b&gt; _id: ObjectId&lt;br&gt;&lt;b&gt;FK&lt;/b&gt; thread: Thread required&lt;br&gt;&lt;b&gt;FK&lt;/b&gt; sender: User required&lt;br&gt;content: String required&lt;br&gt;createdAt: Date&lt;br&gt;updatedAt: Date" style="rounded=0;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacing=10;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="450" y="760" width="300" height="160" as="geometry"/>
+        </mxCell>
+        <mxCell id="notification" value="&lt;b&gt;Notification&lt;/b&gt;&lt;hr&gt;&lt;b&gt;PK&lt;/b&gt; _id: ObjectId&lt;br&gt;&lt;b&gt;FK&lt;/b&gt; recipient: User required&lt;br&gt;&lt;b&gt;FK&lt;/b&gt; sender: User nullable&lt;br&gt;type: upvote | comment | join | ...&lt;br&gt;message: String required&lt;br&gt;read: Boolean&lt;br&gt;&lt;b&gt;FK&lt;/b&gt; postId: Post nullable&lt;br&gt;&lt;b&gt;FK&lt;/b&gt; communityId: Community nullable&lt;br&gt;&lt;b&gt;FK&lt;/b&gt; authorId: User nullable&lt;br&gt;&lt;b&gt;FK&lt;/b&gt; requesterId: User nullable&lt;br&gt;createdAt: Date&lt;br&gt;updatedAt: Date" style="rounded=0;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacing=10;fillColor=#f5f5f5;strokeColor=#666666;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="870" y="640" width="320" height="280" as="geometry"/>
+        </mxCell>
+        <mxCell id="legend" value="&lt;b&gt;Legend&lt;/b&gt;&lt;br&gt;PK = MongoDB document _id&lt;br&gt;FK = ObjectId reference via Mongoose ref&lt;br&gt;Embedded = nested subdocument, not separate collection&lt;br&gt;All timestamped schemas include createdAt and updatedAt" style="rounded=0;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacing=10;fillColor=#ffffff;strokeColor=#999999;fontSize=12;dashed=1;" vertex="1" parent="1">
+          <mxGeometry x="1250" y="760" width="300" height="140" as="geometry"/>
+        </mxCell>
+        <mxCell id="community_creator_user" value="creator" style="endArrow=block;html=1;rounded=0;strokeWidth=2;edgeStyle=orthogonalEdgeStyle;endFill=1;strokeColor=#6c8ebf;" edge="1" parent="1" source="community" target="user">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="community_members_user" value="members[]" style="endArrow=block;html=1;rounded=0;strokeWidth=1;edgeStyle=orthogonalEdgeStyle;endFill=1;strokeColor=#6c8ebf;dashed=1;" edge="1" parent="1" source="community" target="user">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="390" y="370"/>
+              <mxPoint x="390" y="500"/>
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="post_author_user" value="author" style="endArrow=block;html=1;rounded=0;strokeWidth=2;edgeStyle=orthogonalEdgeStyle;endFill=1;strokeColor=#82b366;" edge="1" parent="1" source="post" target="user">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="810" y="80"/>
+              <mxPoint x="190" y="80"/>
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="post_community" value="community" style="endArrow=block;html=1;rounded=0;strokeWidth=2;edgeStyle=orthogonalEdgeStyle;endFill=1;strokeColor=#82b366;" edge="1" parent="1" source="post" target="community">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="post_voters_user" value="upvoters[] / downvoters[]" style="endArrow=block;html=1;rounded=0;strokeWidth=1;edgeStyle=orthogonalEdgeStyle;endFill=1;strokeColor=#82b366;dashed=1;" edge="1" parent="1" source="post" target="user">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="810" y="560"/>
+              <mxPoint x="190" y="560"/>
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="user_saved_posts" value="savedPosts[]" style="endArrow=block;html=1;rounded=0;strokeWidth=1;edgeStyle=orthogonalEdgeStyle;endFill=1;strokeColor=#d6b656;dashed=1;" edge="1" parent="1" source="user" target="post">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="380" y="620"/>
+              <mxPoint x="1030" y="620"/>
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="join_community" value="community" style="endArrow=block;html=1;rounded=0;strokeWidth=2;edgeStyle=orthogonalEdgeStyle;endFill=1;strokeColor=#b85450;" edge="1" parent="1" source="joinRequest" target="community">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="join_requester" value="requester" style="endArrow=block;html=1;rounded=0;strokeWidth=2;edgeStyle=orthogonalEdgeStyle;endFill=1;strokeColor=#b85450;" edge="1" parent="1" source="joinRequest" target="user">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="comment_author_user" value="author / voters[]" style="endArrow=block;html=1;rounded=0;strokeWidth=2;edgeStyle=orthogonalEdgeStyle;endFill=1;strokeColor=#9673a6;" edge="1" parent="1" source="comment" target="user">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1400" y="60"/>
+              <mxPoint x="190" y="60"/>
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="comment_post" value="post" style="endArrow=block;html=1;rounded=0;strokeWidth=2;edgeStyle=orthogonalEdgeStyle;endFill=1;strokeColor=#9673a6;" edge="1" parent="1" source="comment" target="post">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="comment_parent" value="parent" style="endArrow=block;html=1;rounded=0;strokeWidth=1;edgeStyle=orthogonalEdgeStyle;endFill=1;strokeColor=#9673a6;dashed=1;" edge="1" parent="1" source="comment" target="comment">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1560" y="245" as="sourcePoint"/>
+            <mxPoint x="1560" y="245" as="targetPoint"/>
+            <Array as="points">
+              <mxPoint x="1570" y="90"/>
+              <mxPoint x="1570" y="400"/>
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="thread_participants_user" value="participants[] / readBy[]" style="endArrow=block;html=1;rounded=0;strokeWidth=2;edgeStyle=orthogonalEdgeStyle;endFill=1;strokeColor=#d79b00;" edge="1" parent="1" source="thread" target="user">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="message_thread" value="thread" style="endArrow=block;html=1;rounded=0;strokeWidth=2;edgeStyle=orthogonalEdgeStyle;endFill=1;strokeColor=#d6b656;" edge="1" parent="1" source="message" target="thread">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="message_sender_user" value="sender" style="endArrow=block;html=1;rounded=0;strokeWidth=2;edgeStyle=orthogonalEdgeStyle;endFill=1;strokeColor=#d6b656;" edge="1" parent="1" source="message" target="user">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="600" y="980"/>
+              <mxPoint x="190" y="980"/>
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="notification_user" value="recipient / sender / author / requester" style="endArrow=block;html=1;rounded=0;strokeWidth=2;edgeStyle=orthogonalEdgeStyle;endFill=1;strokeColor=#666666;" edge="1" parent="1" source="notification" target="user">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1030" y="970"/>
+              <mxPoint x="190" y="970"/>
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="notification_post" value="postId" style="endArrow=block;html=1;rounded=0;strokeWidth=1;edgeStyle=orthogonalEdgeStyle;endFill=1;strokeColor=#666666;" edge="1" parent="1" source="notification" target="post">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="notification_community" value="communityId" style="endArrow=block;html=1;rounded=0;strokeWidth=1;edgeStyle=orthogonalEdgeStyle;endFill=1;strokeColor=#666666;" edge="1" parent="1" source="notification" target="community">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="810" y="780"/>
+              <mxPoint x="600" y="780"/>
+            </Array>
+          </mxGeometry>
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
