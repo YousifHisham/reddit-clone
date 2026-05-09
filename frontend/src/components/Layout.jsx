@@ -4,6 +4,7 @@ import { getMe, logout } from '../api/auth';
 import { getCommunities, handleJoinRequest } from '../api/communities';
 import { getNotifications, markNotificationsRead, approvePost, rejectPost } from '../api/notifications';
 import { getThreads, getMessages, sendMessage, markThreadRead, searchUsers } from '../api/messages';
+import { search } from '../api/search';
 import CreateCommunityModal from './CreateCommunityModal';
 
 const RedditLogo = () => (
@@ -272,6 +273,12 @@ export default function Layout({ children }) {
   // Toast
   const [toast, setToast] = useState('');
 
+  // Search
+  const [searchResults, setSearchResults] = useState({ communities: [], users: [] });
+  const [showSearchDropdown, setShowSearchDropdown] = useState(false);
+  const searchTimeoutRef = useRef(null);
+  const searchContainerRef = useRef(null);
+
   const menuRef = useRef(null);
 
   useEffect(() => {
@@ -288,10 +295,29 @@ export default function Layout({ children }) {
       if (menuRef.current && !menuRef.current.contains(e.target)) setUserMenuOpen(false);
       if (notifRef.current && !notifRef.current.contains(e.target)) setShowNotifs(false);
       if (chatRef.current && !chatRef.current.contains(e.target)) setShowChat(false);
+      if (searchContainerRef.current && !searchContainerRef.current.contains(e.target)) setShowSearchDropdown(false);
     };
     document.addEventListener('mousedown', handler);
     return () => document.removeEventListener('mousedown', handler);
   }, []);
+
+  useEffect(() => {
+    if (!searchQuery.trim()) {
+      setSearchResults({ communities: [], users: [] });
+      setShowSearchDropdown(false);
+      clearTimeout(searchTimeoutRef.current);
+      return;
+    }
+    clearTimeout(searchTimeoutRef.current);
+    searchTimeoutRef.current = setTimeout(async () => {
+      const data = await search(searchQuery.trim());
+      if (data.success) {
+        setSearchResults({ communities: data.communities || [], users: data.users || [] });
+        setShowSearchDropdown(true);
+      }
+    }, 300);
+    return () => clearTimeout(searchTimeoutRef.current);
+  }, [searchQuery]);
 
   const showToast = (msg) => {
     setToast(msg);
@@ -301,7 +327,10 @@ export default function Layout({ children }) {
   const handleSearch = (e) => {
     e.preventDefault();
     const q = searchQuery.trim();
-    if (q) navigate(`/search?q=${encodeURIComponent(q)}`);
+    if (q) {
+      setShowSearchDropdown(false);
+      navigate(`/search?q=${encodeURIComponent(q)}`);
+    }
   };
 
   const handleLogout = async () => {
@@ -338,25 +367,74 @@ export default function Layout({ children }) {
         </div>
 
         <div className="nav-center">
-          <form onSubmit={handleSearch} className="search-wrap">
-            <div className="search-snoo">
-              <svg viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" width="28" height="28">
-                <circle cx="10" cy="10" r="10" fill="#FF4500" />
-                <path d="M16.67 10a1.46 1.46 0 0 0-2.47-1 7.12 7.12 0 0 0-3.85-1.23l.65-3.08 2.13.45a1 1 0 1 0 .14-.53l-2.38-.5a.27.27 0 0 0-.32.2l-.73 3.44a7.14 7.14 0 0 0-3.89 1.23 1.46 1.46 0 1 0-1.61 2.39 2.87 2.87 0 0 0 0 .44c0 2.24 2.61 4.06 5.83 4.06s5.83-1.82 5.83-4.06a2.87 2.87 0 0 0 0-.44 1.46 1.46 0 0 0 .57-1.37zM7.27 11a1 1 0 1 1 1 1 1 1 0 0 1-1-1zm5.58 2.71a3.58 3.58 0 0 1-2.85.79 3.58 3.58 0 0 1-2.85-.79.19.19 0 0 1 .27-.27 3.23 3.23 0 0 0 2.58.65 3.23 3.23 0 0 0 2.58-.65.19.19 0 0 1 .27.27zm-.17-1.71a1 1 0 1 1 1-1 1 1 0 0 1-1 1z" fill="white" />
-              </svg>
-            </div>
-            <input
-              className="search-input"
-              placeholder="Find anything"
-              value={searchQuery}
-              onChange={e => setSearchQuery(e.target.value)}
-            />
-            <div className="search-divider" />
-            <button type="button" className="search-ask-btn">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
-              Ask
-            </button>
-          </form>
+          <div className="search-container" ref={searchContainerRef}>
+            <form onSubmit={handleSearch} className="search-wrap">
+              <div className="search-snoo">
+                <svg viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" width="28" height="28">
+                  <circle cx="10" cy="10" r="10" fill="#FF4500" />
+                  <path d="M16.67 10a1.46 1.46 0 0 0-2.47-1 7.12 7.12 0 0 0-3.85-1.23l.65-3.08 2.13.45a1 1 0 1 0 .14-.53l-2.38-.5a.27.27 0 0 0-.32.2l-.73 3.44a7.14 7.14 0 0 0-3.89 1.23 1.46 1.46 0 1 0-1.61 2.39 2.87 2.87 0 0 0 0 .44c0 2.24 2.61 4.06 5.83 4.06s5.83-1.82 5.83-4.06a2.87 2.87 0 0 0 0-.44 1.46 1.46 0 0 0 .57-1.37zM7.27 11a1 1 0 1 1 1 1 1 1 0 0 1-1-1zm5.58 2.71a3.58 3.58 0 0 1-2.85.79 3.58 3.58 0 0 1-2.85-.79.19.19 0 0 1 .27-.27 3.23 3.23 0 0 0 2.58.65 3.23 3.23 0 0 0 2.58-.65.19.19 0 0 1 .27.27zm-.17-1.71a1 1 0 1 1 1-1 1 1 0 0 1-1 1z" fill="white" />
+                </svg>
+              </div>
+              <input
+                className="search-input"
+                placeholder="Find anything"
+                value={searchQuery}
+                onChange={e => setSearchQuery(e.target.value)}
+                onFocus={() => {
+                  if (searchQuery.trim() && (searchResults.communities.length > 0 || searchResults.users.length > 0))
+                    setShowSearchDropdown(true);
+                }}
+              />
+              <div className="search-divider" />
+              <button type="submit" className="search-ask-btn">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+                Ask
+              </button>
+            </form>
+
+            {showSearchDropdown && (searchResults.communities.length > 0 || searchResults.users.length > 0) && (
+              <div className="search-dropdown">
+                {searchResults.communities.length > 0 && (
+                  <div className="search-dropdown-section">
+                    <div className="search-dropdown-label">Communities</div>
+                    {searchResults.communities.slice(0, 4).map(c => (
+                      <div key={c._id} className="search-dropdown-item" onClick={() => { navigate(`/r/${c.name}`); setShowSearchDropdown(false); setSearchQuery(''); }}>
+                        <div className="search-dd-icon" style={c.icon ? { backgroundImage: `url(${c.icon})`, background: 'none' } : { background: '#ff4500' }}>
+                          {!c.icon && c.name[0].toUpperCase()}
+                        </div>
+                        <div>
+                          <div className="search-dd-name">r/{c.name}</div>
+                          <div className="search-dd-sub">{c.memberCount?.toLocaleString()} members</div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                )}
+                {searchResults.communities.length > 0 && searchResults.users.length > 0 && (
+                  <div className="search-dropdown-divider" />
+                )}
+                {searchResults.users.length > 0 && (
+                  <div className="search-dropdown-section">
+                    <div className="search-dropdown-label">People</div>
+                    {searchResults.users.slice(0, 4).map(u => (
+                      <div key={u._id} className="search-dropdown-item" onClick={() => { navigate(`/u/${u.username}`); setShowSearchDropdown(false); setSearchQuery(''); }}>
+                        <div className="search-dd-icon" style={u.profilePicture ? { backgroundImage: `url(${u.profilePicture})`, background: 'none' } : { background: '#0079d3' }}>
+                          {!u.profilePicture && u.username[0].toUpperCase()}
+                        </div>
+                        <div>
+                          <div className="search-dd-name">u/{u.username}</div>
+                          <div className="search-dd-sub">{((u.postKarma || 0) + (u.commentKarma || 0)).toLocaleString()} karma</div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                )}
+                <div className="search-dropdown-footer" onClick={() => { navigate(`/search?q=${encodeURIComponent(searchQuery)}`); setShowSearchDropdown(false); }}>
+                  View all results for "{searchQuery}"
+                </div>
+              </div>
+            )}
+          </div>
         </div>
 
         <div className="nav-right">
