@@ -50,7 +50,7 @@ export default function OtpPage() {
     if (data.success) {
       localStorage.setItem('accessToken', data.accessToken);
       if (data.isNewUser) {
-        navigate('/interests', { state: { token: data.accessToken } });
+        navigate('/gender', { state: { token: data.accessToken } });
       } else {
         navigate('/home');
       }

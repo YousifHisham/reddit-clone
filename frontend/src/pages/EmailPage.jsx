@@ -1,12 +1,30 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { sendOtp } from '../api/auth';
+import { GoogleLogin } from '@react-oauth/google';
+import { sendOtp, googleLogin } from '../api/auth';
 
 export default function EmailPage() {
   const [email, setEmail] = useState('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+
+  const handleGoogle = async (credentialResponse) => {
+    setError('');
+    setLoading(true);
+    const data = await googleLogin(credentialResponse.credential);
+    setLoading(false);
+    if (data.success) {
+      localStorage.setItem('accessToken', data.accessToken);
+      if (data.isNewUser) {
+        navigate('/gender', { state: { token: data.accessToken } });
+      } else {
+        navigate('/home');
+      }
+    } else {
+      setError(data.message || 'Google sign-in failed. Try again.');
+    }
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -52,6 +70,24 @@ export default function EmailPage() {
             {loading ? 'Sending...' : 'Continue'}
           </button>
         </form>
+
+        <div style={{ display: 'flex', alignItems: 'center', gap: '12px', margin: '20px 0' }}>
+          <div style={{ flex: 1, height: '1px', background: 'var(--border)' }} />
+          <span style={{ fontSize: '12px', color: 'var(--muted)', fontWeight: '500' }}>OR</span>
+          <div style={{ flex: 1, height: '1px', background: 'var(--border)' }} />
+        </div>
+
+        <div style={{ display: 'flex', justifyContent: 'center' }}>
+          <GoogleLogin
+            onSuccess={handleGoogle}
+            onError={() => setError('Google sign-in failed. Try again.')}
+            theme="outline"
+            size="large"
+            width="320"
+            text="continue_with"
+            shape="pill"
+          />
+        </div>
       </div>
     </div>
   );

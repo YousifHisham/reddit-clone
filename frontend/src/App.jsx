@@ -1,6 +1,8 @@
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import { GoogleOAuthProvider } from '@react-oauth/google';
 import EmailPage from './pages/EmailPage';
 import OtpPage from './pages/OtpPage';
+import GenderPage from './pages/GenderPage';
 import InterestsPage from './pages/InterestsPage';
 import HomePage from './pages/HomePage';
 import SubmitPage from './pages/SubmitPage';
@@ -11,6 +13,7 @@ import SearchPage from './pages/SearchPage';
 import AvatarEditPage from './pages/AvatarEditPage';
 import PopularPage from './pages/PopularPage';
 import ExplorePage from './pages/ExplorePage';
+import SettingsPage from './pages/SettingsPage';
 
 function ProtectedRoute({ children }) {
   const token = localStorage.getItem('accessToken');
@@ -22,10 +25,12 @@ export default function App() {
     document.documentElement.setAttribute('data-theme', 'dark');
   }
   return (
+    <GoogleOAuthProvider clientId={import.meta.env.VITE_GOOGLE_CLIENT_ID || ''}>
     <BrowserRouter>
       <Routes>
         <Route path="/Login" element={<EmailPage />} />
         <Route path="/verify-otp" element={<OtpPage />} />
+        <Route path="/gender" element={<GenderPage />} />
         <Route path="/interests" element={<InterestsPage />} />
         <Route
           path="/home"
@@ -57,8 +62,17 @@ export default function App() {
             </ProtectedRoute>
           }
         />
+        <Route
+          path="/settings"
+          element={
+            <ProtectedRoute>
+              <SettingsPage />
+            </ProtectedRoute>
+          }
+        />
         <Route path="*" element={<Navigate to="/Login" replace />} />
       </Routes>
     </BrowserRouter>
+    </GoogleOAuthProvider>
   );
 }

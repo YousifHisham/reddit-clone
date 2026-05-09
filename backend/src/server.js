@@ -12,6 +12,7 @@ const notificationsRoutes = require('./features/notifications/notifications.rout
 const messagesRoutes = require('./features/messages/messages.routes');
 const commentsRoutes = require('./features/comments/comments.routes');
 const searchRoutes = require('./features/search/search.routes');
+const settingsRoutes = require('./features/settings/settings.routes');
 
 const app = express();
 
@@ -28,6 +29,7 @@ app.use('/api/notifications', notificationsRoutes);
 app.use('/api/messages', messagesRoutes);
 app.use('/api/comments', commentsRoutes);
 app.use('/api/search', searchRoutes);
+app.use('/api/settings', settingsRoutes);
 
 app.use(errorMiddleware);
 

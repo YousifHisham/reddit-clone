@@ -90,6 +90,16 @@ export async function logout() {
   return fetchWithAuth('/api/auth/logout', { method: 'POST' });
 }
 
+export async function googleLogin(credential) {
+  const res = await fetch(`${BASE}/google`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    credentials: 'include',
+    body: JSON.stringify({ credential }),
+  });
+  return parseResponse(res);
+}
+
 export async function completeProfile(data, token) {
   const res = await fetch(`${BASE}/complete-profile`, {
     method: 'POST',
