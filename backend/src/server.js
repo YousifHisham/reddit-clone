@@ -36,13 +36,17 @@ app.use('/api/settings', settingsRoutes);
 app.use(errorMiddleware);
 
 if (process.env.NODE_ENV !== 'test') {
-  connectDB().then(async () => {
-    const Community = require('./features/communities/community.model');
-    await Community.updateMany({ category: { $exists: false } }, { $set: { category: 'General' } });
-    app.listen(process.env.PORT, () => {
-      console.log(`Server running on port ${process.env.PORT}`);
-    });
-  });
+  connectDB()
+    .then(async () => {
+      const Community = require('./features/communities/community.model');
+      await Community.updateMany({ category: { $exists: false } }, { $set: { category: 'General' } });
+      if (process.env.NODE_ENV !== 'production') {
+        app.listen(process.env.PORT || 5000, () => {
+          console.log(`Server running on port ${process.env.PORT || 5000}`);
+        });
+      }
+    })
+    .catch((err) => console.error('DB connection failed:', err));
 }
 
 module.exports = app;
