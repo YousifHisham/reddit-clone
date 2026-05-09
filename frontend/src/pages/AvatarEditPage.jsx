@@ -236,8 +236,13 @@ function SnooPreview({ state }) {
       <ellipse cx="110" cy="185" rx="42" ry="50" fill={body}/>
 
       {/* shirt / outfit top */}
-      {shirtC && <ellipse cx="110" cy="185" rx="42" ry="50" fill={shirtC} opacity="0.85"/>}
-      {shirtC && <ellipse cx="110" cy="188" rx="26" ry="32" fill="white" opacity="0.15"/>}
+      {shirtC && (
+        <>
+          <ellipse cx="110" cy="192" rx="42" ry="43" fill={shirtC}/>
+          <ellipse cx="110" cy="152" rx="28" ry="17" fill={body}/>
+          <ellipse cx="110" cy="195" rx="18" ry="22" fill="white" opacity="0.1"/>
+        </>
+      )}
       {!shirtC && <ellipse cx="110" cy="188" rx="26" ry="32" fill="white" opacity="0.35"/>}
 
       {/* arms */}
@@ -248,6 +253,9 @@ function SnooPreview({ state }) {
       {lhandC && <circle cx="48" cy="205" r="10" fill={lhandC}/>}
       {rhandC && <circle cx="172" cy="205" r="10" fill={rhandC}/>}
 
+      {/* waistband */}
+      {pantsC && <rect x="76" y="218" width="68" height="12" rx="3" fill={pantsC}/>}
+
       {/* legs */}
       <ellipse cx="90"  cy="242" rx="16" ry="22" fill={pantsC || body}/>
       <ellipse cx="130" cy="242" rx="16" ry="22" fill={pantsC || body}/>
@@ -256,10 +264,12 @@ function SnooPreview({ state }) {
 
       {/* hat */}
       {hatC && (
+        state.hat === 'ha1' ? <ellipse cx="110" cy="30" rx="46" ry="18" fill={hatC}/> :
+        state.hat === 'ha2' ? <><ellipse cx="110" cy="38" rx="50" ry="10" fill={hatC}/><ellipse cx="110" cy="28" rx="36" ry="16" fill={hatC}/></> :
         state.hat === 'ha3' ? <><rect x="80" y="18" width="60" height="30" rx="4" fill={hatC}/><rect x="65" y="46" width="90" height="8" rx="4" fill={hatC}/></> :
         state.hat === 'ha4' ? <><polygon points="110,10 90,40 130,40" fill="#f0a500"/><polygon points="110,10 95,38 125,38" fill="#ffd700"/></> :
         state.hat === 'ha5' ? <><ellipse cx="110" cy="38" rx="55" ry="8" fill={hatC}/><ellipse cx="110" cy="30" rx="28" ry="18" fill={hatC}/></> :
-        <ellipse cx="110" cy="34" rx="46" ry="16" fill={hatC}/>
+        <ellipse cx="110" cy="34" rx="46" ry="18" fill={hatC}/>
       )}
     </svg>
   );
@@ -271,8 +281,13 @@ export default function AvatarEditPage() {
   const [activeTab, setActiveTab] = useState('Colors');
   const [showHistory, setShowHistory] = useState(false);
 
-  // Live working state (not saved to history until Save)
-  const [current, setCurrent] = useState(DEFAULT_STATE);
+  // Live working state — load last saved avatar if available
+  const [current, setCurrent] = useState(() => {
+    try {
+      const saved = localStorage.getItem('savedAvatar');
+      return saved ? { ...DEFAULT_STATE, ...JSON.parse(saved) } : DEFAULT_STATE;
+    } catch { return DEFAULT_STATE; }
+  });
 
   // History: only saved snapshots
   const [history, setHistory] = useState([]);
