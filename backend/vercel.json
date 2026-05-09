@@ -1,17 +1,20 @@
 {
   "version": 2,
-  "headers": [
+  "routes": [
     {
-      "source": "/(.*)",
-      "headers": [
-        { "key": "Access-Control-Allow-Origin", "value": "https://reddit-clone-frontend-alpha.vercel.app" },
-        { "key": "Access-Control-Allow-Credentials", "value": "true" },
-        { "key": "Access-Control-Allow-Methods", "value": "GET,OPTIONS,PATCH,DELETE,POST,PUT" },
-        { "key": "Access-Control-Allow-Headers", "value": "Content-Type,Authorization" }
-      ]
+      "src": "/(.*)",
+      "methods": ["OPTIONS"],
+      "headers": {
+        "Access-Control-Allow-Origin": "https://reddit-clone-frontend-alpha.vercel.app",
+        "Access-Control-Allow-Credentials": "true",
+        "Access-Control-Allow-Methods": "GET,OPTIONS,PATCH,DELETE,POST,PUT",
+        "Access-Control-Allow-Headers": "Content-Type,Authorization"
+      },
+      "status": 204
+    },
+    {
+      "src": "/(.*)",
+      "dest": "/api/index"
     }
-  ],
-  "rewrites": [
-    { "source": "/(.*)", "destination": "/api/index" }
   ]
 }
