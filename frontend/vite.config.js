@@ -11,7 +11,7 @@ export default defineConfig(({ mode }) => {
     plugins: [react()],
     envDir: path.resolve(__dirname, '..'),
     server: {
-      allowedHosts: ['*'],
+      allowedHosts: true,
       proxy: {
         '/api': {
           target: 'http://localhost:5000',
