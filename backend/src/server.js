@@ -16,7 +16,7 @@ const settingsRoutes = require('./features/settings/settings.routes');
 
 const app = express();
 
-const corsOptions = { origin: process.env.CLIENT_URL, credentials: true };
+const corsOptions = { origin: true, credentials: true };
 app.use(cors(corsOptions));
 app.options('*', cors(corsOptions));
 app.use(express.json({ limit: '10mb' }));
