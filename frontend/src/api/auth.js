@@ -1,4 +1,6 @@
-const BASE = '/api/auth';
+import { API_BASE } from './base';
+
+const BASE = `${API_BASE}/api/auth`;
 
 async function parseResponse(res) {
   const text = await res.text();
@@ -83,11 +85,11 @@ export async function fetchWithAuth(url, options = {}) {
 }
 
 export async function getMe() {
-  return fetchWithAuth('/api/auth/me');
+  return fetchWithAuth(`${BASE}/me`);
 }
 
 export async function logout() {
-  return fetchWithAuth('/api/auth/logout', { method: 'POST' });
+  return fetchWithAuth(`${BASE}/logout`, { method: 'POST' });
 }
 
 export async function googleLogin(credential) {

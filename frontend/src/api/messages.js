@@ -1,6 +1,7 @@
 import { fetchWithAuth } from './auth';
+import { API_BASE } from './base';
 
-const BASE = '/api/messages';
+const BASE = `${API_BASE}/api/messages`;
 
 export async function getThreads(filters = {}) {
   const params = new URLSearchParams();
@@ -22,7 +23,7 @@ export async function markThreadRead(threadId) {
 }
 
 export async function searchUsers(q) {
-  const res = await fetch(`/api/users/search?q=${encodeURIComponent(q)}`);
+  const res = await fetch(`${API_BASE}/api/users/search?q=${encodeURIComponent(q)}`);
   const text = await res.text();
   try { return JSON.parse(text); } catch { return { success: false, users: [] }; }
 }

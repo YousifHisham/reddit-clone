@@ -19,7 +19,7 @@ const normalizeUsername = (username = '') => username.trim().toLowerCase();
 const getRefreshCookieOptions = () => ({
   httpOnly: true,
   secure: process.env.NODE_ENV === 'production',
-  sameSite: 'lax',
+  sameSite: 'none',
   path: '/api/auth',
   maxAge: durationToMs(process.env.REFRESH_TOKEN_EXPIRES_IN || '7d', 7 * 24 * 60 * 60 * 1000),
 });

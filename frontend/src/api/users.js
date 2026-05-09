@@ -1,6 +1,7 @@
 import { fetchWithAuth } from './auth';
+import { API_BASE } from './base';
 
-const BASE = '/api/users';
+const BASE = `${API_BASE}/api/users`;
 
 async function parseResponse(res) {
   const text = await res.text();
