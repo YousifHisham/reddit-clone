@@ -25,6 +25,7 @@ export default function InterestsPage() {
   const navigate = useNavigate();
   const location = useLocation();
   const token = location.state?.token || localStorage.getItem('accessToken');
+  const gender = location.state?.gender || '';
 
   const toggle = (id) =>
     setSelected((prev) => prev.includes(id) ? prev.filter((i) => i !== id) : [...prev, id]);
@@ -34,7 +35,7 @@ export default function InterestsPage() {
     if (selected.length < 3) return setError('Please select at least 3 interests.');
     setError('');
     setLoading(true);
-    const data = await completeProfile({ username, interests: selected }, token);
+    const data = await completeProfile({ username, gender, interests: selected }, token);
     setLoading(false);
     if (data.success) navigate('/home');
     else setError(data.message || 'Something went wrong.');

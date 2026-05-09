@@ -9,6 +9,7 @@ const {
   getMe,
   logout,
   checkUsername,
+  googleAuth,
 } = require('./auth.controller');
 
 const router = express.Router();
@@ -41,6 +42,7 @@ router.post(
   completeProfile
 );
 
+router.post('/google', googleAuth);
 router.get('/me', verifyToken, getMe);
 router.post('/logout', verifyToken, logout);
 router.get(

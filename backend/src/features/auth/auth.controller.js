@@ -1,4 +1,5 @@
 const { validationResult } = require('express-validator');
+const { OAuth2Client } = require('google-auth-library');
 const User = require('./auth.model');
 const {
   generateOtp,
@@ -315,6 +316,44 @@ const checkUsername = async (req, res, next) => {
   }
 };
 
+const googleAuth = async (req, res, next) => {
+  try {
+    const { credential } = req.body;
+    if (!credential) {
+      return res.status(400).json({ success: false, message: 'Google credential required', code: 'VALIDATION_ERROR' });
+    }
+
+    const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
+    let payload;
+    try {
+      const ticket = await client.verifyIdToken({
+        idToken: credential,
+        audience: process.env.GOOGLE_CLIENT_ID,
+      });
+      payload = ticket.getPayload();
+    } catch {
+      return res.status(401).json({ success: false, message: 'Invalid Google credential', code: 'UNAUTHORIZED' });
+    }
+
+    const { email, picture } = payload;
+    let user = await User.findOne({ email }).select('+refreshTokens');
+    const isNewUser = !user || !user.username;
+
+    if (!user) {
+      user = new User({ email, verified: true });
+      if (picture) user.profilePicture = picture;
+    } else {
+      user.verified = true;
+    }
+
+    const accessToken = await issueSessionTokens(user, res);
+
+    return res.json({ success: true, accessToken, token: accessToken, isNewUser, userId: user._id });
+  } catch (err) {
+    return next(err);
+  }
+};
+
 module.exports = {
   sendOtp,
   verifyOtpHandler,
@@ -323,4 +362,5 @@ module.exports = {
   getMe,
   logout,
   checkUsername,
+  googleAuth,
 };
