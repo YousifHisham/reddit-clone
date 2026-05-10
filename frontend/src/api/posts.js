@@ -28,6 +28,10 @@ export async function createPost(data) {
   });
 }
 
+export async function getDrafts() {
+  return fetchWithAuth(`${BASE}/drafts`);
+}
+
 export async function saveDraft(data) {
   const formData = new FormData();
   formData.append('title', data.title || '');

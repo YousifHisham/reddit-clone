@@ -267,4 +267,29 @@ const summarizePost = async (req, res, next) => {
   }
 };
 
-module.exports = { createPost, getPost, getCommunityPosts, getFeed, deletePost, updatePost, updatePostStatus, upvotePost, downvotePost, summarizePost };
+const saveDraft = async (req, res, next) => {
+  try {
+    const { title, content, community: communityId, url } = req.body;
+    const post = await Post.create({
+      title: title || 'Untitled Draft',
+      content: content || '',
+      url: url || '',
+      image: req.file ? req.file.path : '',
+      author: req.user.id,
+      community: communityId || undefined,
+      status: 'draft',
+    });
+    res.status(201).json({ success: true, post });
+  } catch (err) { next(err); }
+};
+
+const getDrafts = async (req, res, next) => {
+  try {
+    const posts = await Post.find({ author: req.user.id, status: 'draft' })
+      .sort({ createdAt: -1 })
+      .populate('community', 'name');
+    res.json({ success: true, posts });
+  } catch (err) { next(err); }
+};
+
+module.exports = { createPost, getPost, getCommunityPosts, getFeed, deletePost, updatePost, updatePostStatus, upvotePost, downvotePost, summarizePost, saveDraft, getDrafts };

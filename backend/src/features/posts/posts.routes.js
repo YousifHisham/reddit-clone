@@ -3,7 +3,7 @@ const { body } = require('express-validator');
 const jwt = require('jsonwebtoken');
 const { verifyToken } = require('../../middleware/auth.middleware');
 const { uploadPost } = require('../../config/cloudinary');
-const { createPost, getPost, getCommunityPosts, getFeed, deletePost, updatePost, updatePostStatus, upvotePost, downvotePost, summarizePost } = require('./posts.controller');
+const { createPost, getPost, getCommunityPosts, getFeed, deletePost, updatePost, updatePostStatus, upvotePost, downvotePost, summarizePost, saveDraft, getDrafts } = require('./posts.controller');
 const { getComments } = require('../comments/comments.controller');
 
 const optionalAuth = (req, res, next) => {
@@ -20,6 +20,8 @@ const optionalAuth = (req, res, next) => {
 const router = express.Router();
 
 router.get('/feed', optionalAuth, getFeed);
+router.get('/drafts', verifyToken, getDrafts);
+router.post('/draft', verifyToken, uploadPost.single('image'), saveDraft);
 router.post('/', verifyToken, uploadPost.single('image'), [
   body('title').trim().notEmpty().withMessage('Title required'),
   body('community').notEmpty().withMessage('Community required'),

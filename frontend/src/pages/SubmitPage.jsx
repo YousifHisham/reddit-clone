@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { getMe, logout } from '../api/auth';
-import { createPost, saveDraft } from '../api/posts';
+import { createPost, saveDraft, getDrafts } from '../api/posts';
 import { getCommunities, getCommunityFlairs } from '../api/communities';
 import { getNotifications, markNotificationsRead } from '../api/notifications';
 
@@ -204,6 +204,9 @@ export default function SubmitPage() {
   const [showNotifs, setShowNotifs] = useState(false);
   const notifRef = useRef(null);
   const editorRef = useRef(null);
+  const [showDrafts, setShowDrafts] = useState(false);
+  const [drafts, setDrafts] = useState([]);
+  const draftsRef = useRef(null);
 
   // flair + tags state
   const [showFlairModal, setShowFlairModal] = useState(false);
@@ -247,6 +250,7 @@ export default function SubmitPage() {
   useEffect(() => {
     const handler = e => {
       if (notifRef.current && !notifRef.current.contains(e.target)) setShowNotifs(false);
+      if (draftsRef.current && !draftsRef.current.contains(e.target)) setShowDrafts(false);
     };
     document.addEventListener('mousedown', handler);
     return () => document.removeEventListener('mousedown', handler);
@@ -297,6 +301,21 @@ export default function SubmitPage() {
     setLoading(false);
     if (res.success) navigate('/home');
     else setError(res.message || 'Failed to save draft.');
+  };
+
+  const handleDraftsOpen = async () => {
+    const res = await getDrafts();
+    if (res.success) setDrafts(res.posts);
+    setShowDrafts(o => !o);
+  };
+
+  const loadDraft = (draft) => {
+    setTitle(draft.title === 'Untitled Draft' ? '' : draft.title);
+    if (editorRef.current) editorRef.current.innerHTML = draft.content || '';
+    if (draft.url) { setUrl(draft.url); setActiveTab('Link'); }
+    const match = communities.find(c => c._id === draft.community?._id);
+    if (match) setSelectedCommunity(match);
+    setShowDrafts(false);
   };
 
   const handleLogout = async () => {
@@ -411,10 +430,26 @@ export default function SubmitPage() {
           {/* Page header */}
           <div className="sp-page-header">
             <h1 className="sp-page-title">Create post</h1>
-            <button className="sp-drafts-btn">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
-              Drafts
-            </button>
+            <div style={{ position: 'relative' }} ref={draftsRef}>
+              <button className="sp-drafts-btn" onClick={handleDraftsOpen}>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+                Drafts
+              </button>
+              {showDrafts && (
+                <div className="sp-drafts-dropdown">
+                  {drafts.length === 0 ? (
+                    <div style={{ padding: '12px 14px', fontSize: 13, color: 'var(--muted)' }}>No drafts saved</div>
+                  ) : (
+                    drafts.map(draft => (
+                      <button key={draft._id} className="sp-draft-item" onClick={() => loadDraft(draft)}>
+                        <div style={{ fontSize: 13, fontWeight: 600 }}>{draft.title || 'Untitled Draft'}</div>
+                        <div style={{ fontSize: 11, color: 'var(--muted)' }}>{new Date(draft.createdAt).toLocaleDateString()}</div>
+                      </button>
+                    ))
+                  )}
+                </div>
+              )}
+            </div>
           </div>
 
           {/* Community selector */}

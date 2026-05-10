@@ -1429,6 +1429,31 @@
   transition: border-color 0.15s, color 0.15s;
 }
 .sp-drafts-btn:hover { border-color: var(--text); color: var(--text); }
+.sp-drafts-dropdown {
+  position: absolute;
+  right: 0;
+  top: calc(100% + 6px);
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  min-width: 220px;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.12);
+  z-index: 100;
+  overflow: hidden;
+}
+.sp-draft-item {
+  display: block;
+  width: 100%;
+  text-align: left;
+  padding: 10px 14px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  border-bottom: 1px solid var(--border);
+  font-family: var(--font);
+}
+.sp-draft-item:last-child { border-bottom: none; }
+.sp-draft-item:hover { background: var(--hover); }
 
 /* Community selector */
 .sp-community-selector {

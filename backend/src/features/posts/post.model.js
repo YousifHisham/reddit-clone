@@ -10,7 +10,7 @@ const postSchema = new mongoose.Schema({
   flairColor: { type: String, default: '' },
   tags: [{ type: String }],
   nsfw: { type: Boolean, default: false },
-  status: { type: String, enum: ['published', 'pending', 'rejected'], default: 'published' },
+  status: { type: String, enum: ['published', 'pending', 'rejected', 'draft'], default: 'published' },
   upvotes: { type: Number, default: 0 },
   downvotes: { type: Number, default: 0 },
   upvoters: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
