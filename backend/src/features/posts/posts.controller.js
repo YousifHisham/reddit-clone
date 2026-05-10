@@ -209,4 +209,62 @@ const updatePostStatus = async (req, res, next) => {
   } catch (err) { next(err); }
 };
 
-module.exports = { createPost, getPost, getCommunityPosts, getFeed, deletePost, updatePost, updatePostStatus, upvotePost, downvotePost };
+const summarizePost = async (req, res, next) => {
+  try {
+    const post = await Post.findById(req.params.id)
+      .populate('author', 'username')
+      .populate('community', 'name');
+    if (!post) return res.status(404).json({ success: false, message: 'Post not found' });
+
+    if (!process.env.GROQ_API_KEY) {
+      return res.status(503).json({ success: false, message: 'AI summarization is not configured' });
+    }
+
+    const postText = [
+      `Title: ${post.title}`,
+      post.content ? `Body: ${post.content}` : null,
+      `Community: r/${post.community?.name}`,
+      `Author: u/${post.author?.username}`,
+      `Score: ${post.upvotes - post.downvotes} points`,
+      `Comments: ${post.commentCount}`,
+    ].filter(Boolean).join('\n');
+
+    const userContent = post.image
+      ? [
+          { type: 'text', text: `Summarize this Reddit post in 2-3 sentences. The post includes an image — describe what you see in it and how it relates to the post:\n\n${postText}` },
+          { type: 'image_url', image_url: { url: post.image } },
+        ]
+      : `Summarize this Reddit post in 2-3 sentences and mention 1-2 key things a reader should know:\n\n${postText}`;
+
+    const model = post.image ? 'meta-llama/llama-4-scout-17b-16e-instruct' : 'llama-3.1-8b-instant';
+
+    const response = await fetch('https://api.groq.com/openai/v1/chat/completions', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${process.env.GROQ_API_KEY}`,
+      },
+      body: JSON.stringify({
+        model,
+        max_tokens: 300,
+        messages: [
+          { role: 'system', content: 'You are a helpful assistant that summarizes Reddit posts concisely.' },
+          { role: 'user', content: userContent },
+        ],
+      }),
+    });
+
+    const data = await response.json();
+    if (!response.ok) {
+      console.error('[Groq error]', response.status, JSON.stringify(data));
+      return res.status(502).json({ success: false, message: data.error?.message || 'AI service error' });
+    }
+
+    const summary = data.choices?.[0]?.message?.content || 'Could not generate summary.';
+    return res.json({ success: true, summary });
+  } catch (err) {
+    return next(err);
+  }
+};
+
+module.exports = { createPost, getPost, getCommunityPosts, getFeed, deletePost, updatePost, updatePostStatus, upvotePost, downvotePost, summarizePost };

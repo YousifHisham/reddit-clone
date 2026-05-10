@@ -76,3 +76,8 @@ export async function getPost(id) {
   const res = await fetch(`${BASE}/${id}`);
   return parseResponse(res);
 }
+
+export async function summarizePost(id) {
+  const res = await fetch(`${BASE}/${id}/summarize`, { method: 'POST' });
+  return parseResponse(res);
+}

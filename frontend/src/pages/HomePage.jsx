@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import { useNavigate, useLocation, Link } from 'react-router-dom';
 import { getMe, logout } from '../api/auth';
-import { getFeed, createPost, upvotePost, downvotePost, updatePost, deletePost, updatePostStatus } from '../api/posts';
+import { getFeed, createPost, upvotePost, downvotePost, updatePost, deletePost, updatePostStatus, summarizePost } from '../api/posts';
 import { getCommunities, joinCommunity, leaveCommunity, createCommunity, createJoinRequest, handleJoinRequest } from '../api/communities';
 import { getNotifications, markNotificationsRead, approvePost, rejectPost } from '../api/notifications';
 import { getThreads, getMessages, sendMessage, markThreadRead, searchUsers } from '../api/messages';
@@ -63,8 +63,21 @@ function PostCard({ post, currentUser, isSaved = false, onSaveToggle, onDelete, 
   const [deleteError, setDeleteError] = useState('');
   const [saved, setSaved] = useState(isSaved);
   const [showShare, setShowShare] = useState(false);
+  const [summary, setSummary] = useState('');
+  const [summaryLoading, setSummaryLoading] = useState(false);
+  const [showSummary, setShowSummary] = useState(false);
 
   const isAuthor = currentUser && post.author?._id === currentUser._id;
+
+  const handleSummarize = async (e) => {
+    e.stopPropagation();
+    if (showSummary) { setShowSummary(false); return; }
+    if (summary) { setShowSummary(true); return; }
+    setSummaryLoading(true);
+    const data = await summarizePost(post._id);
+    setSummaryLoading(false);
+    if (data.success) { setSummary(data.summary); setShowSummary(true); }
+  };
 
   const handleSave = async e => {
     e.stopPropagation();
@@ -216,7 +229,21 @@ function PostCard({ post, currentUser, isSaved = false, onSaveToggle, onDelete, 
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
             <span>Share</span>
           </div>
+          {/* Summarize pill */}
+          <div className={`post-pill${showSummary ? ' post-pill-saved' : ''}`} onClick={handleSummarize} style={{ cursor: 'pointer' }}>
+            {summaryLoading
+              ? <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" style={{ animation: 'spin 1s linear infinite' }}><path d="M21 12a9 9 0 1 1-6.219-8.56"/></svg>
+              : <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+            }
+            <span>{summaryLoading ? 'Summarizing…' : 'Summarize'}</span>
+          </div>
         </div>
+        {showSummary && summary && (
+          <div style={{ margin: '10px 0 4px', padding: '10px 14px', background: 'var(--hover-bg)', borderRadius: 8, borderLeft: '3px solid var(--orange)', fontSize: 13, color: 'var(--text)', lineHeight: 1.6 }}>
+            <span style={{ fontWeight: 700, fontSize: 11, textTransform: 'uppercase', letterSpacing: 0.5, color: 'var(--orange)', display: 'block', marginBottom: 4 }}>✦ AI Summary</span>
+            {summary}
+          </div>
+        )}
       </div>
 
       {/* Delete confirmation dialog */}

@@ -898,6 +898,9 @@
     0% { background-position: 100% 0; }
     100% { background-position: -100% 0; }
   }
+  @keyframes spin {
+    to { transform: rotate(360deg); }
+  }
   .skeleton-card {
     height: 120px;
     margin-bottom: 10px;
